@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: Apr 30, 2020 at 12:36 AM
+-- Generation Time: Apr 30, 2020 at 09:07 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -38,10 +38,12 @@ CREATE TABLE `cars` (
   `dailyPrice` int(11) NOT NULL,
   `storeId` int(11) NOT NULL,
   `description` varchar(500) NOT NULL,
-  `photo` blob NOT NULL,
+  `photo` varchar(100) DEFAULT NULL,
   `passengers` int(11) NOT NULL,
   `fuelType` enum('gas','diesel','hybrid') NOT NULL,
-  `bags` int(11) NOT NULL
+  `bags` int(11) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -55,19 +57,6 @@ CREATE TABLE `cartypes` (
   `catetory` varchar(20) NOT NULL,
   `subtype` varchar(20) NOT NULL,
   `description` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `members`
---
-
-CREATE TABLE `members` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `points` int(11) NOT NULL,
-  `rank` enum('Standard','Premium') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -114,7 +103,9 @@ CREATE TABLE `stores` (
   `address` varchar(20) NOT NULL,
   `phone` varchar(10) NOT NULL,
   `postCode` varchar(10) NOT NULL,
-  `province` char(2) NOT NULL
+  `province` char(2) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -131,7 +122,8 @@ CREATE TABLE `users` (
   `address` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `phone` varchar(20) NOT NULL,
-  `role` enum('user','admin') NOT NULL
+  `role` enum('user','admin') NOT NULL,
+  `idPhoto` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -151,13 +143,6 @@ ALTER TABLE `cars`
 --
 ALTER TABLE `cartypes`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `members`
---
-ALTER TABLE `members`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userId` (`userId`);
 
 --
 -- Indexes for table `orders`
@@ -203,12 +188,6 @@ ALTER TABLE `cartypes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `members`
---
-ALTER TABLE `members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
@@ -242,12 +221,6 @@ ALTER TABLE `users`
 ALTER TABLE `cars`
   ADD CONSTRAINT `cars_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `cars_ibfk_2` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
-
---
--- Constraints for table `members`
---
-ALTER TABLE `members`
-  ADD CONSTRAINT `members_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `orders`
