@@ -1,0 +1,24 @@
+2020/04/30 Wang Wei
+1. Done since last scrum:
+- finish proposal
+
+2. To do until next Scrum:
+- discuss and design website structures
+- create database and tables
+
+3. Need assistance / figure things out
+- websock testing
+
+
+2020/04/30 Donghyeok Seo
+1. Done since last scrum
+- finish proposal
+
+2. To do until next Scrum:
+- discuss and design website structures
+- set up github, trello
+
+3. Need assistance / figure things out
+- social media login API
+
+**************************************************
