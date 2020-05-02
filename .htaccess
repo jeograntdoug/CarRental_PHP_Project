@@ -1,3 +1,9 @@
 RewriteEngine On
+
+RewriteCond "%{HTTP_HOST}"   "ipd20\.com" [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]

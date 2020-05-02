@@ -47,7 +47,11 @@ $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 DB::$user = 'carrental';
 DB::$password = 's?#-K;#"&6S0Msa:';
 DB::$dbName = 'carrental';
-DB::$port = 3333;
+
+
+
+
+
 DB::$error_handler = 'db_error_handler'; // runs on mysql query errors DB::$nonsql_error_handler = 'db_error_handler'; // runs on library errors (bad syntax, etc)
 
 function db_error_handler($params)
