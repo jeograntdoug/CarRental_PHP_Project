@@ -12,12 +12,8 @@
         "slim/twig-view": "^3.1",
         "monolog/monolog": "^2.0",
         "slim/psr7": "^1.0",
-        "phpunit/phpunit": "^8.5",
-        "lcobucci/jwt": "3.3.1",
-        "symfony/polyfill-uuid": "1.15.0",
-        "cakephp/chronos": "2.0.4",
         "cboden/ratchet": "0.4.2",
-        "supervisorphp/supervisor": "3.0.0"
+        "phpunit/phpunit": "9.1.4"
     }
     ,
     "require-dev": {

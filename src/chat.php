@@ -8,7 +8,7 @@
 
         public function __construct() {
             $this->clients = new \SplObjectStorage;
-            echo "Server started.";
+            echo "Server started.\n";
         }
 
         public function onOpen(ConnectionInterface $conn) {
