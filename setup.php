@@ -71,14 +71,6 @@
 // Set Global variable($_SESSION)
     $twig->getEnvironment()->addGlobal('session', $_SESSION);
 
-// //set global date formatter. this is valid
-// $twig->getEnvironment()
-//     ->getExtension(\Twig\Extension\CoreExtension::class)
-//     ->setDateFormat("F jS \\a\\t g:ia");
 
-
-// Add Twig-View Middleware
     $app->add(TwigMiddleware::create($app, $twig));
 
-
-    shell_exec("php chat-server.php");

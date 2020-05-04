@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="c5896639-97f4-446a-b8f7-54f677b29e5b" name="carrental.ipd20.com" url="http://ipd20.com">
+      <webServer id="c5896639-97f4-446a-b8f7-54f677b29e5b" name="carrental.ipd20.com" url="http://carrental.ipd20.com">
         <fileTransfer rootFolder="/carrental.ipd20.com" host="ipd20.com" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
