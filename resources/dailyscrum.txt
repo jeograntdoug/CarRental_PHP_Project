@@ -36,12 +36,11 @@
 
 
 2020/05/01 Donghyeok Seo
-1. Done since last scrum
-- finish proposal
-
-2. To do until next Scrum:
 - discuss and design website structures
 - set up github, trello
+
+2. To do until next Scrum:
+- design base website structures in Slim framework
 
 3. Need assistance / figure things out
 - social media login API
@@ -62,14 +61,13 @@
 
 2020/05/02 Donghyeok Seo
 1. Done since last scrum
-- finish proposal
+- study Middleware, controller, router concept in Slim
 
 2. To do until next Scrum:
-- discuss and design website structures
-- set up github, trello
+- design base website structures in Slim framework
 
 3. Need assistance / figure things out
-- social media login API
+
 
 **************************************************
 
@@ -87,13 +85,35 @@
 
 2020/05/03 Donghyeok Seo
 1. Done since last scrum
-- finish proposal
+- design base website structures in Slim framework
 
 2. To do until next Scrum:
-- discuss and design website structures
-- set up github, trello
+- Integrate PHPUnit , Guzzle packages for testing
 
 3. Need assistance / figure things out
-- social media login API
+
+**************************************************
+
+2020/05/04 Wang Wei
+1. Done since last scrum:
+- Ratchet websocket solution can work on localhost
+
+2. To do until next Scrum:
+- Decice whether using Ratchet library as websocket library
+- begin login/register/first search page
+
+3. Need assistance / figure things out
+- try phpunit library
+
+
+2020/05/04 Donghyeok Seo
+1. Done since last scrum
+- Integrate PHPUnit , Guzzle packages for testing
+
+2. To do until next Scrum:
+- Choose CSS framework( Tailwind or boostrap)
+- Create Master template
+
+3. Need assistance / figure things out
 
 **************************************************
