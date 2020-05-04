@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+    Welcome to my blog
+{% endblock title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Index page css-->
+    <link rel="stylesheet" type="text/css" href="/resources/styles/index.css" />
+
+{% endblock stylesheets %}
+
+{% block section %}
+    <h1>Welcome to my blog, read on!</h1>
+{% endblock section %}

@@ -1,0 +1,17 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+    Forbidden Access
+{% endblock title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        section {
+            background-image: url("/resources/images/trans_imageAndText_403.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 500px;
+        }
+    </style>
+{% endblock stylesheets %}
