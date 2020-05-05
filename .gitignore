@@ -91,3 +91,6 @@ fabric.properties
 # Local History for Visual Studio Code
 .history/
 
+cache/
+sftp.json
+/node_modules
