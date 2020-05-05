@@ -120,11 +120,10 @@
 
 2020/05/05 Wang Wei
 1. Done since last scrum:
-- Ratchet websocket solution can work on localhost
+- Not using ratchet for server config restriction in the project
 
 2. To do until next Scrum:
-- Decice whether using Ratchet library as websocket library
-- begin login/register/first search page
+- start login page implementation
 
 3. Need assistance / figure things out
 - try phpunit library
