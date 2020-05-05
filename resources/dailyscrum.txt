@@ -117,3 +117,29 @@
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/05 Wang Wei
+1. Done since last scrum:
+- Ratchet websocket solution can work on localhost
+
+2. To do until next Scrum:
+- Decice whether using Ratchet library as websocket library
+- begin login/register/first search page
+
+3. Need assistance / figure things out
+- try phpunit library
+
+
+2020/05/05 Donghyeok Seo
+1. Done since last scrum
+- Create Master template for user
+- install tailwind and laravel-mix 
+
+2. To do until next Scrum:
+- Create error pages
+- Try TTD(Test-driven development)
+- Authentication
+
+3. Need assistance / figure things out
+
+**************************************************

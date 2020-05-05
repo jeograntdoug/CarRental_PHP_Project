@@ -1,0 +1,52 @@
+<div class="p-2">
+    <div class="p-2 flex items-center justify-between">
+        <div class="text-5xl">
+            !!Logo!!
+        </div>
+        <div> 
+            <div class="text-right">
+                {% if session.user %}
+                    <span >You are logged in as {{ session.user.username }}</span>
+                    <a class="underline" href="/logout">Logout</a>
+                {% else %}
+                    <a class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
+                {% endif %}
+            </div>
+
+
+            <ul class="hidden sm:flex sm:mt-2">
+                <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu1</a></li>
+                <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu2</a></li>
+                <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu3</a></li>
+                <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu4</a></li>
+                <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu5</a></li>
+            </ul>
+
+            <div class="text-right sm:hidden">
+                <svg id="btMenu" class="inline-block mt-2 h-12 w-12 cursor-pointer fill-current text-gray-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path id="iconMenu" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    <path id="iconMenuClose" class="hidden" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <ul id="listMenu" class="hidden">
+        <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu1</a></li>
+        <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu2</a></li>
+        <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu3</a></li>
+        <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu4</a></li>
+        <li class="p-2 rounded hover:bg-gray-600 hover:text-gray-200"><a href=#>menu5</a></li>
+    </ul>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#btMenu").click(function(){
+            $("#listMenu").toggleClass("hidden");
+            $("#iconMenu").toggleClass("hidden");
+            $("#iconMenuClose").toggleClass("hidden");
+        });
+    });
+</script>

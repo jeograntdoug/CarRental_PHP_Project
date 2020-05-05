@@ -30,5 +30,5 @@ return function (App $app)
     
     $app->add(SessionMiddleware::class);
 
-    $app->add(AuthMiddleware::class);
+    //$app->add(AuthMiddleware::class);
 };

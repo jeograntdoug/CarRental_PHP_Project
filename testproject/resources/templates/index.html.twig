@@ -1,16 +1,47 @@
-{% extends "layout.html.twig" %}
+{% extends "layouts/layout.html.twig" %}
 
 {% block title %}
     Welcome to my blog
 {% endblock title %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <!-- Index page css-->
-    <link rel="stylesheet" type="text/css" href="/resources/styles/index.css" />
-
-{% endblock stylesheets %}
-
 {% block section %}
-    <h1>Welcome to my blog, read on!</h1>
+    <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
+    <ul class="p-4 bg-red-100">
+        <li>Error1Error1Error1Error1Error1Error1Error1Error1</li>
+        <li>Error2Error2Error2Error2Error2Error2Error2Error2</li>
+        <li>Error3Error3Error3Error3Error3Error3Error3Error3</li>
+    </ul>
+    {% if errors %}
+        <ul>
+        </ul>
+    {% endif %}
+<form class="text-lg p-4" action=# method="post">
+    <div>
+        <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City or Airport)</p>
+        <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="location" />
+        <input class="mr-1" type="checkbox" name="isDiffLocation" />Return to a different location
+    </div>
+    <div class="mt-4">
+        <p class="mb-2">2. PICK-UP TIME</p>
+        <div class="flex">
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="pickupDate" />
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="time" name="pickupTime" />
+        </div>
+    </div>
+    <div class="mt-4">
+        <p class="mb-2">3. RETURN TIME</p>
+        <div class="flex">
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="returnDate" />
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="time" name="returnTime" />
+        </div>
+    </div>
+    <div class="mt-4">
+        <p class="mb-2">4. Age (Postal Code, City or Airport)</p>
+        <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age" />
+    </div>
+    <div class="mt-4 text-right">
+        <button class="px-8 py-2 rounded bg-gray-500" type="submit">CONTINUE</button>
+    </div>
+</form>
+
 {% endblock section %}
