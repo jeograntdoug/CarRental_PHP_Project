@@ -23,12 +23,12 @@ return function (App $app)
 
 
     // Create Twig
-    $twig = Twig::create(__DIR__ . '/../resources/templates', ['cache' => __DIR__ . '/../cache', 'debug' =>true]);
+    $twig = Twig::create(__DIR__ . '/../src/templates', ['cache' => __DIR__ . '/../cache', 'debug' =>true]);
 
     // Add Twig-View Middleware
     $app->add(TwigMiddleware::create($app, $twig));
     
-    $app->add(SessionMiddleware::class);
+//    $app->add(SessionMiddleware::class);
 
     //$app->add(AuthMiddleware::class);
 };

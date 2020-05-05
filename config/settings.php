@@ -11,6 +11,10 @@ $log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
 $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
+//u=Zbhb-Zvhy7
+
+
+
 // MeekroDB Setting
 
 if  (strpos($_SERVER['PHP_SELF'],"phpunit")){

@@ -1,0 +1,73 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% block title %}
+    Welcome to my blog
+{% endblock title %}
+
+{% block section %}
+    <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
+    <ul class="p-4 bg-red-100">
+        <li>Error1Error1Error1Error1Error1Error1Error1Error1</li>
+        <li>Error2Error2Error2Error2Error2Error2Error2Error2</li>
+        <li>Error3Error3Error3Error3Error3Error3Error3Error3</li>
+    </ul>
+    {% if errors %}
+        <ul>
+        </ul>
+    {% endif %}
+    <form class="text-lg p-4" action=# method="post">
+        <div>
+            <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City or Airport)</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="location"/>
+            <input class="mr-1" type="checkbox" name="isDiffLocation"/>Return to a different location
+        </div>
+        {#
+               <p style="text-align: center;width: 100%">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d178790.95603882382!2d-73.87038497104587!3d45.55819684525927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91a541c64b70d%3A0x654e3138211fefef!2sMontreal%2C%20QC!5e0!3m2!1sen!2sca!4v1588711392446!5m2!1sen!2sca"
+                        width="80%" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                        tabindex="0"></iframe>
+               </p>#}
+
+
+        <div id="googleMap"></div>
+        <script>
+            function initMap() {
+                var location = {lat: -25.363, lng: 131.044};
+                var goolgeMap = new google.maps.Map(document.getElementById('googleMap'), {
+                    zoom: 4,
+                    center: location
+                });
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: goolgeMap
+                });
+            }
+        </script>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/
+        js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&callback=initMap"></script>
+
+        <div class="mt-4">
+            <p class="mb-2">2. PICK-UP TIME</p>
+            <div class="flex">
+                <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="pickupDate"/>
+                <input class="w-full p-2 h-10 border-2 border-gray-500" type="time" name="pickupTime"/>
+            </div>
+        </div>
+        <div class="mt-4">
+            <p class="mb-2">3. RETURN TIME</p>
+            <div class="flex">
+                <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="returnDate"/>
+                <input class="w-full p-2 h-10 border-2 border-gray-500" type="time" name="returnTime"/>
+            </div>
+        </div>
+        <div class="mt-4">
+            <p class="mb-2">4. Age (Postal Code, City or Airport)</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age"/>
+        </div>
+        <div class="mt-4 text-right">
+            <button class="px-8 py-2 rounded bg-gray-500" type="submit">CONTINUE</button>
+        </div>
+    </form>
+
+{% endblock section %}
