@@ -6,7 +6,7 @@ namespace App\Controller;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
-return function(App $app){
+return function(App $app) {
     // Routes
 
     $app->get('/', HomeController::class . ':home');
@@ -17,6 +17,7 @@ return function(App $app){
     $app->post('/user/create', UserController::class . ':create');
 
     
+
     //Routes for Errors Pages
     $app->group('/errors', function (RouteCollectorProxy $group) {
     // ??: Couldn't use /error url. Is it reserved??
@@ -24,5 +25,4 @@ return function(App $app){
         $group->get('/pagenotfound', ErrorController::class . ':pageNotFound');
         $group->get('/internal', ErrorController::class . ':internal');
     });
-
 };

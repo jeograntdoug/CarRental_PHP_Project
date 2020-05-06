@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="carrental.ipd20.com">
+  <component name="PublishConfigData" autoUpload="Always" serverName="carrental.ipd20.com" showDialogOnRemoteDnD="false">
     <serverData>
       <paths name="carrental.ipd20.com">
         <serverdata>
@@ -11,6 +11,7 @@
             <excludedPath local="true" path="$PROJECT_DIR$/.idea" />
             <excludedPath local="true" path="$PROJECT_DIR$/.gitignore" />
             <excludedPath local="true" path="$PROJECT_DIR$/cache" />
+            <excludedPath local="true" path="$PROJECT_DIR$/.vscode" />
           </excludedPaths>
         </serverdata>
       </paths>
