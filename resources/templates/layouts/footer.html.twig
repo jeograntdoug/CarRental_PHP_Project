@@ -1,25 +1,20 @@
+{% set footerItemList = 
+    [
+        [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
+        [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
+        [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
+        [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
+        [ 'link1_blah' , 'link2_blah' , 'link3_blah' ]
+    ]
+%}
+
 <div class="p-4">
     <div class="p-2 text-xl"> Logo </div>
-    <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
-        <li class="p-1"><a href=#>link1_blah</a></li>
-        <li class="p-1"><a href=#>link2_blah</a></li>
-        <li class="p-1"><a href=#>link3_blah</a></li>
-    </ul>
-    <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
-        <li class="p-1"><a href=#>link1_blah</a></li>
-        <li class="p-1"><a href=#>link2_blah</a></li>
-        <li class="p-1"><a href=#>link3_blah</a></li>
-    </ul>
-    <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
-        <li class="p-1"><a href=#>link1_blah</a></li>
-        <li class="p-1"><a href=#>link2_blah</a></li>
-        <li class="p-1"><a href=#>link3_blah</a></li>
-    </ul>
-    <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
-        <li class="p-1"><a href=#>link1_blah</a></li>
-        <li class="p-1"><a href=#>link2_blah</a></li>
-        <li class="p-1"><a href=#>link3_blah</a></li>
-    </ul>
-    <p>
-    </p>
+    {% for footerItem in footerItemList %}
+        <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
+            <li class="p-1"><a href=#>{{ footerItem[0] }}</a></li>
+            <li class="p-1"><a href=#>{{ footerItem[1] }}</a></li>
+            <li class="p-1"><a href=#>{{ footerItem[2] }}</a></li>
+        </ul>
+    {% endfor %}
 </div>

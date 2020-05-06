@@ -1,0 +1,31 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% block title %}
+    Login page
+{% endblock title %}
+
+{% block section %}
+<div class="max-w-sm mx-auto">
+    <h1 class="p-4 text-4xl font-bold">Login page</h1>
+
+    {% if error %}
+        <p class="px-4 text-red-500">{{ error }}</p>
+    {% endif %}
+
+    <form class="text-lg p-4" action="/login" method="post">
+        <div>
+            <p class="mb-2">Email</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="email" />
+        </div>
+        <div class="mt-4">
+            <p class="mb-2">Password</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="password" />
+        </div>
+        <div class="mt-4 text-right">
+            <button class="px-8 py-2 mr-2 rounded bg-gray-500" type="submit">Login</button>
+            <a href="/register">Register</a>
+        </div>
+    </form>
+</div>
+
+{% endblock section %}

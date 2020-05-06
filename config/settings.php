@@ -22,9 +22,9 @@ if  (strpos($_SERVER['PHP_SELF'],"phpunit")){
     DB::$password = 'UzXoLgOfibQ1Nk7n';
     DB::$dbName = 'cp4966_heok';
 } else { // local computer
-    DB::$user = 'day06eshop';
-    DB::$password = 'UzXoLgOfibQ1Nk7n';
-    DB::$dbName = 'day06eshop';
+    DB::$user = 'carrental';
+    DB::$password = 'sRPJwMOei4Y8lquD';
+    DB::$dbName = 'carrental';
     DB::$port = 3333;
 }
 
@@ -34,7 +34,7 @@ DB::$nonsql_error_handler = 'db_error_handler'; // runs on library errors (bad s
 
 function db_error_handler($params)
 {
-    header("Location: /errors/internal", 500);
+    header("Location: /errors/internal",true, 500);
 
     global $log;
     $log->error("Database erorr[Connection]: " . $params['error']);

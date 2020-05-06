@@ -10,13 +10,18 @@ return function(App $app){
     // Routes
 
     $app->get('/', HomeController::class . ':home');
-    $app->get('/hello', HomeController::class . ':hello');
-    $app->get('/jsondata', HomeController::class . ':jsondata');
+    $app->get('/register', HomeController::class . ':register');
+    $app->get('/login', HomeController::class . ':login');
 
+    $app->post('/login', AuthController::class . ':authenticate');
+    $app->post('/user/create', UserController::class . ':create');
+
+    
     //Routes for Errors Pages
     $app->group('/errors', function (RouteCollectorProxy $group) {
     // ??: Couldn't use /error url. Is it reserved??
         $group->get('/forbidden', ErrorController::class . ':forbidden');
+        $group->get('/pagenotfound', ErrorController::class . ':pageNotFound');
         $group->get('/internal', ErrorController::class . ':internal');
     });
 

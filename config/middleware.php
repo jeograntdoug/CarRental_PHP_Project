@@ -17,7 +17,7 @@ return function (App $app)
         HttpNotFoundException::class, 
         function () use ($app) {
             $response = $app->getResponseFactory()->createResponse();
-            return $response->withHeader('Location','/errors/forbidden',404);
+            return $response->withHeader('Location','/errors/pagenotfound',404);
         }
     );
 
@@ -28,7 +28,7 @@ return function (App $app)
     // Add Twig-View Middleware
     $app->add(TwigMiddleware::create($app, $twig));
     
-    $app->add(SessionMiddleware::class);
+    //$app->add(SessionMiddleware::class);
 
     //$app->add(AuthMiddleware::class);
 };
