@@ -15,6 +15,19 @@ final class HomeController
         return $view->render($response, 'index.html.twig');
     }
 
+    public function login(Request $request, Response $response)
+    {
+        $view = Twig::fromRequest($request);
+        return $view->render($response, 'login.html.twig');
+    }
+
+    public function register (Request $request, Response $response)
+    {
+        $view = Twig::fromRequest($request);
+        return $view->render($response, "register.html.twig");
+    }
+
+
     public function hello(Request $request, Response $response, $args = [])
     {
         $session = $request->getAttribute('session');

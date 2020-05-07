@@ -1,0 +1,50 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% block title %}
+    Register
+{% endblock title %}
+
+{% block section %}
+<div class="max-w-sm mx-auto">
+    <h1 class="p-4 text-4xl font-bold">Regisger page</h1>
+
+    {#
+        Test data errorList start
+    #}
+    {% if not errorList %}
+        {% set errorList = [
+            'Error1Error1Error1Error1Error1Error1Error1Error1',
+            'Error2Error2Error2Error2Error2Error2Error2Error2',
+            'Error3Error3Error3Error3Error3Error3Error3Error3'
+        ]%}
+    {% endif %}
+    {#
+        Test data errorList end
+    #}
+        {% if errorList %}
+            <ul class="p-4 bg-red-100">
+                {% for error in errorList %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    <form class="text-lg p-4" action="/user/create" method="post">
+        <div>
+            <p class="mb-2">Email</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="email" />
+        </div>
+        <div class="mt-4">
+            <p class="mb-2">Password</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="password" />
+        </div>
+        <div class="mt-4">
+            <p class="mb-2">Confirm</p>
+            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="confirm" />
+        </div>
+        <div class="mt-4 text-right">
+            <button class="px-8 py-2 rounded bg-gray-500" type="submit">CONTINUE</button>
+        </div>
+    </form>
+</div>
+
+{% endblock section %}
