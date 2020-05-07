@@ -142,3 +142,49 @@
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/06 Wang Wei
+1. Done since last scrum:
+- Not using ratchet for server config restriction in the project
+
+2. To do until next Scrum:
+- start login page implementation
+
+3. Need assistance / figure things out
+- try phpunit library
+
+
+2020/05/06 Donghyeok Seo
+1. Done since last scrum
+- Create error pages
+- Try TTD(Test-driven development)
+
+2. To do until next Scrum:
+- Authentication
+- Add library Respect/Validation for validation
+
+3. Need assistance / figure things out
+
+**************************************************
+
+2020/05/07 Wang Wei
+1. Done since last scrum:
+- Not using ratchet for server config restriction in the project
+
+2. To do until next Scrum:
+- start login page implementation
+
+3. Need assistance / figure things out
+- try phpunit library
+
+
+2020/05/07 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
