@@ -13,7 +13,32 @@ $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 //u=Zbhb-Zvhy7
 
+// // Twig Setting
+// // Add Twig function
+// $errorMessageFunction = new \Twig\TwigFunction('getRegisterFieldError', function ($field) {
+//     switch(strtolower($field))
+//     {
+//         case 'firstname':
+//         case 'lastname':
+//             return 'Must be a-z,A-Z,space,-,_. 1~20 long.';
+//         case 'drivinglicense':
+//             return 'Must be 1~10 long.';
+//         case 'address':
+//             return 'Must be 1~50 long.';
+//         case 'email':
+//             return 'Invalid Email';
+//         case 'phone':
+//             return 'Invalid Phone number';
+//         case 'password':
+//             return 'Must have at least 1 upper case. 1~100 long.';
+//         case 'confirm':
+//             return 'Password doesn\'t match';
+//         default:
+//             return 'This shouldn\'t happen.';
+//     }
+// });
 
+// $twig->addFunction($errorMessageFunction);
 
 // MeekroDB Setting
 

@@ -29,18 +29,20 @@
             </ul>
         {% endif %}
     <form class="text-lg p-4" action="/user/create" method="post">
+    {% set fieldList = ['Email','Password','Confirm','Firstname','Lastname','Drivinglicense','Address','phone']%}
+        {% for field in fieldList %}
+        <div class="my-2">
+            <p>{{ field }}</p>
+            <input class="w-full mt-2 p-2 h-10 border-2 border-gray-500" type="text" name="{{ field |lower }}" />
+            <p class="text-xs text-red-400">*</p>
+        </div>
+        {% endfor %}
         <div>
-            <p class="mb-2">Email</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="email" />
+            <p class="w-56">Id Photo</p>
+                <label class="flex w-56 h-48 mx-auto justify-center items-center border-2 border-gray-400 shadow-md text-center cursor-pointer" for="idPhoto">Click to choose your photo ( jpeg / png )</label>
+                <input id="idPhoto" class="hidden" type="file" name="idPhoto" accept="image/png, image/jpeg"/>
         </div>
-        <div class="mt-4">
-            <p class="mb-2">Password</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="password" />
-        </div>
-        <div class="mt-4">
-            <p class="mb-2">Confirm</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="confirm" />
-        </div>
+
         <div class="mt-4 text-right">
             <button class="px-8 py-2 rounded bg-gray-500" type="submit">CONTINUE</button>
         </div>

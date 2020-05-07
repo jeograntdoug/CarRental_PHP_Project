@@ -5,10 +5,8 @@ use Slim\App;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-use App\Middleware\SessionMiddleware;
-use App\Middleware\AuthMiddleware;
 
-return function (App $app)
+return function (App $app,Twig $twig)
 {
     // Add Error Middleware
     $errorMiddleware = $app->addErrorMiddleware(true, true, true);
@@ -22,13 +20,7 @@ return function (App $app)
     );
 
 
-    // Create Twig
-    $twig = Twig::create(__DIR__ . '/../src/templates', ['cache' => __DIR__ . '/../cache', 'debug' =>true]);
 
     // Add Twig-View Middleware
     $app->add(TwigMiddleware::create($app, $twig));
-    
-    //$app->add(SessionMiddleware::class);
-
-    //$app->add(AuthMiddleware::class);
 };
