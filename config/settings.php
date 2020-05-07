@@ -50,11 +50,15 @@ if  (strpos($_SERVER['PHP_SELF'],"phpunit")){
     DB::$user = 'cp4966_heok';
     DB::$password = 'UzXoLgOfibQ1Nk7n';
     DB::$dbName = 'cp4966_heok';
+    DB::$encoding = 'utf8'; // defaults to latin1 if omitted
+
 } else { // local computer
     DB::$user = 'carrental';
     DB::$password = 'sRPJwMOei4Y8lquD';
     DB::$dbName = 'carrental';
     DB::$port = 3333;
+    DB::$encoding = 'utf8'; // defaults to latin1 if omitted
+
 }
 
 

@@ -22,13 +22,13 @@
     <form class="text-lg p-4" action=# method="post">
         <div>
             <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City or Airport)</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="location"/>
+            <input placeholder="X1X or city name" class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="location" id="searchText"/>
             <input class="mr-1" type="checkbox" name="isDiffLocation"/>Return to a different location
         </div>
 
 
 
-        <div id="googleMap" style="width: 60%;height: 400px"></div>
+       {# <div id="googleMap" style="width: 60%;height: 400px"></div>#}
         <script>
             function initMap() {
                 var location = {lat: 45.4560, lng: -73.8623};
@@ -82,6 +82,24 @@
         </div>
     </form>
 
+    <script>
+        $(document).ready(function () {
+            $("#searchText").on("keyup", function () {
+                var curSearchText = $("#searchText").val();
 
+                if(!curSearchText.match("^[A-Z]|[A-Z][0-9]|[A-Z][0-9][A-Z]$")){
+                    $("#searchText").val("");
+
+                }else{
+
+                }
+            });
+
+        })
+        $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+            console.log("Ajax error occured on " + settings.url);
+            alert("Ajax error occurred");
+        });
+    </script>
 
 {% endblock section %}
