@@ -32,8 +32,37 @@ class ValidatorTest extends TestCase
     }
 
     /** @test */
+    public function emptyUserIsNotValid(){
+        $emptyUser = [
+            [
+                'firstname' => null,
+                'lastname' => null,
+                'drivinglicense' => null,
+                'address' => null,
+                'phone' => null,
+                'role' => null,
+                'email' => null,
+                'password' => null,
+                'confirm' => null
+            ]
+        ];
+
+        $errorList = $this->v->isValidUser($emptyUser);
+        $this->assertEquals(9,count($errorList));
+
+        $errorList = $this->v->isValidUser([]);
+        $this->assertEquals(9,count($errorList));
+
+        $errorList = $this->v->isValidUser(null);
+        $this->assertEquals(9,count($errorList));
+
+        $errorList = $this->v->isValidUser('');
+        $this->assertEquals(9,count($errorList));
+    }
+
+    /** @test */
     public function isValidUserName(){
-        $invalidUserList = [
+        $invalidFieldList = [
             [ 
                 'firstname' => '' ,
                 'lastname' => '' ,
@@ -56,24 +85,24 @@ class ValidatorTest extends TestCase
             ]
         ];
 
-        foreach($invalidUserList as $user){
+        foreach($invalidFieldList as $user){
             $errorList = $this->v->isValidUser($user, false);
-            $this->assertEquals(2,count($errorList));
             $this->assertArrayHasKey('firstName',$errorList);
             $this->assertArrayHasKey('lastName',$errorList);
+            $this->assertEquals(2,count($errorList));
         }
     }
 
     /** @test */
     public function isValidUserDrivingLicense(){
-        $invalidUserList = [
+        $invalidFieldList = [
             [ 'drivinglicense' => '' ], 
             [ 'drivinglicense' => null ], 
             [ 'drivinglicense' => '12345-67890-12345'], 
             [ 'drivinglicense' => 'a2345-67890-12345'], 
         ];
 
-        foreach($invalidUserList as $user){
+        foreach($invalidFieldList as $user){
             $errorList = $this->v->isValidUser($user, false);
             $this->assertEquals(1,count($errorList));
             $this->assertArrayHasKey('drivinglicense',$errorList);
@@ -82,12 +111,12 @@ class ValidatorTest extends TestCase
 
     /** @test */
     public function isValidUserAddress(){
-        $invalidUserList = [
+        $invalidFieldList = [
             [ 'address' => '' ], 
             [ 'address' => null ], 
         ];
 
-        foreach($invalidUserList as $user){
+        foreach($invalidFieldList as $user){
             $errorList = $this->v->isValidUser($user, false);
             $this->assertEquals(1,count($errorList));
             $this->assertArrayHasKey('address',$errorList);
@@ -96,7 +125,7 @@ class ValidatorTest extends TestCase
 
     /** @test */
     public function isValidUserEmail(){
-        $invalidUserList = [
+        $invalidFieldList = [
             [ 'email' => '' ], 
             [ 'email' => null ], 
             [ 'email' => ' asdf.com'], 
@@ -112,7 +141,7 @@ class ValidatorTest extends TestCase
             //[ 'email' => 'asdf@asdf.c.om'],  //this is valid
         ];
 
-        foreach($invalidUserList as $user){
+        foreach($invalidFieldList as $user){
             $errorList = $this->v->isValidUser($user, false);
             $this->assertEquals(1,count($errorList));
             $this->assertArrayHasKey('email',$errorList);
@@ -121,7 +150,7 @@ class ValidatorTest extends TestCase
 
     /** @test */
     public function isValidUserPhone(){
-        $invalidUserList = [
+        $invalidFieldList = [
             [ 'phone' => '' ], 
             [ 'phone' => null ], 
             [ 'phone' => '1-1-23-123-1234'], 
@@ -136,10 +165,91 @@ class ValidatorTest extends TestCase
             // [ 'phone' => '1-123-123-1234'], 
         ];
 
-        foreach($invalidUserList as $user){
+        foreach($invalidFieldList as $user){
             $errorList = $this->v->isValidUser($user, false);
             $this->assertEquals(1,count($errorList));
             $this->assertArrayHasKey('phone',$errorList);
+        }
+    }
+
+
+    /** @test */
+    public function isValidUserRole(){
+        $invalidFieldList = [
+            [ 'role' => '' ], 
+            [ 'role' => null ],
+            [ 'role' => 'hahahah' ], 
+        ];
+
+        foreach($invalidFieldList as $user){
+            $errorList = $this->v->isValidUser($user, false);
+            $this->assertEquals(1,count($errorList));
+            $this->assertArrayHasKey('role',$errorList);
+        }
+    }
+
+    /** @test */
+    public function isValidUserPassword(){
+        $invalidFieldList = [
+            [ 
+                'password' => '',
+                'confirm' => '',
+            ], 
+            [
+                'password' => null,
+                'confirm' => null,
+            ],
+            [
+                'password' => null,
+                'confirm' => 'Hahahah',
+            ],
+            [
+                'password' => 'hahahha',
+                'confirm' => '',
+            ],
+            [ 
+                'password' => ' Asdf123',
+                'confirm' => 'Hahahah',
+            ], 
+            [ 
+                'password' => '#Asdf123',
+                'confirm' => 'Hahahah',
+            ], 
+        ];
+
+        foreach($invalidFieldList as $user){
+            $errorList = $this->v->isValidUser($user, false);
+            $this->assertArrayHasKey('password',$errorList);
+            $this->assertArrayHasKey('confirm',$errorList);
+            $this->assertEquals(2,count($errorList));
+        }
+
+
+        $invalidFieldList = [
+            [ 
+                'confirm' => '',
+            ], 
+            [
+                'confirm' => null,
+            ],
+            [
+                'password' => 'Hahahah',
+                'confirm' => null,
+            ],
+            [
+                'password' => 'Hahahah',
+                'confirm' => '',
+            ],
+            [
+                'password' => 'Hahahah',
+                'confirm' => 'Hohohoh',
+            ],
+        ];
+
+        foreach($invalidFieldList as $user){
+            $errorList = $this->v->isValidUser($user, false);
+            $this->assertArrayHasKey('confirm',$errorList);
+            $this->assertEquals(1,count($errorList));
         }
     }
 

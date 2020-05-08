@@ -11,7 +11,18 @@ class Validator
     {
         $errorList = [];
         if (!v::notEmpty()->validate($user)) {
-            $errorList['empty'] = 'Invalid User Data(Empty).';
+            $errorList = [
+                'firstName' => 'Must be 1~20 letters',
+                'lastName' => 'Must be 1~20 letters',
+                'drivinglicense' => 'Invlid Driving License',
+                'address' => 'Must be 1~50 letters',
+                'email' => 'Invalid Email address',
+                'phone' => 'Invalid Phone number',
+                'role' => 'Must be user or admin',
+                'password' => 'At least one Upperletter and 1~100 long',
+                'confirm' => 'Password is not matched'
+            ];
+
             return $errorList;
         }
 
@@ -51,17 +62,34 @@ class Validator
             $errorList['role'] = 'Must be user or admin';
         }
 
+
         // password
-        if (v::key('password', v::alnum()->regex('/[A-Z]{1}/')->length(1, 100))->validate($user)) 
-        {
-            // confirm
-            if (!v::key('confirm', v::equals($user['password']), $forAll)->validate($user)) {
-                        $errorList['confirm'] = 'Password is not matched';
-            }
-        } 
-        elseif ($forAll)
-        {
+        if (!v::key(
+            'password', 
+            v::alnum()
+                ->regex('/[A-Z]{1}/')
+                ->length(1, 100), 
+            $forAll
+        )->validate($user)) {
             $errorList['password'] = 'At least one Upperletter and 1~100 long';
+        }
+
+        if (!v::key(
+            'confirm',
+            v::alnum()
+                ->regex('/[A-Z]{1}/')
+                ->length(1, 100),
+            $forAll
+        )->validate($user)) {
+            $errorList['confirm'] = 'Invalid Confirm password';
+        }
+
+        if (
+            v::key('password')->validate($user)
+            && v::key('password')->validate($user)
+            && !v::keyValue('confirm', 'equals', 'password')->validate($user)
+        ) {
+            $errorList['confirm'] = 'Password is not matched';
         }
 
         return $errorList;
