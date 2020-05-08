@@ -26,9 +26,10 @@
             <input class="mr-1" type="checkbox" name="isDiffLocation"/>Return to a different location
         </div>
 
+{#
 
 
-       {# <div id="googleMap" style="width: 60%;height: 400px"></div>#}
+        <div id="googleMap" style="width: 60%;height: 400px"></div>
         <script>
             function initMap() {
                 var location = {lat: 45.4560, lng: -73.8623};
@@ -56,6 +57,7 @@
 
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
+#}
 
 
 
@@ -63,20 +65,46 @@
             <p class="mb-2">2. PICK-UP TIME</p>
             <div class="flex">
                 <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="pickupDate"/>
-                <input class="w-full p-2 h-10 border-2 border-gray-500" type="time" name="pickupTime"/>
+                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time" list="pickupTime" step="600" name="pickupTime">
+                <datalist id="pickupTime">
+                    <option value="08:00"/>
+                    <option value="09:00"/>
+                    <option value="10:00"/>
+                    <option value="11:00"/>
+                    <option value="12:00"/>
+                    <option value="13:00"/>
+                    <option value="14:00"/>
+                    <option value="15:00"/>
+                    <option value="16:00"/>
+                    <option value="17:00"/>
+                    <option value="18:00"/>
+                </datalist>
             </div>
         </div>
         <div class="mt-4">
             <p class="mb-2">3. RETURN TIME</p>
             <div class="flex">
                 <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="returnDate"/>
-                <input class="w-full p-2 h-10 border-2 border-gray-500" type="time" name="returnTime"/>
+                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time"  step="600" list="returnTime" name="returnTime">
+                <datalist id="returnTime">
+                    <option value="08:00"/>
+                    <option value="09:00"/>
+                    <option value="10:00"/>
+                    <option value="11:00"/>
+                    <option value="12:00"/>
+                    <option value="13:00"/>
+                    <option value="14:00"/>
+                    <option value="15:00"/>
+                    <option value="16:00"/>
+                    <option value="17:00"/>
+                    <option value="18:00"/>
+                </datalist>
             </div>
         </div>
-        <div class="mt-4">
+       {# <div class="mt-4">
             <p class="mb-2">4. Age (Postal Code, City or Airport)</p>
             <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age"/>
-        </div>
+        </div>#}
         <div class="mt-4 text-right">
             <button class="px-8 py-2 rounded bg-gray-500" type="submit">CONTINUE</button>
         </div>
@@ -91,7 +119,7 @@
                     $("#searchText").val("");
 
                 }else{
-
+                    var dataString = JSON.stringify({"searchText": curSearchText})
                     $.ajax({ // FIXME: escape special characters using urlencode
                         url: "/search/location/",
                         type: "POST",
@@ -100,12 +128,12 @@
                         error: function (jqxhr, status, errorThrown) {
                             alert("AJAX error: " + jqxhr.responseText);
                         }
-                    }).done(function () {
-                        alert("Added successfully");
-                        refreshTodoList();
+                    }).done(function (cityList) {
+                        alert(cityList);
+
+
                     }).always(function () {
-                        $("#viewAddEditPane").hide();
-                        $("#waitForIt").hide();
+
                     });
                 }
             });

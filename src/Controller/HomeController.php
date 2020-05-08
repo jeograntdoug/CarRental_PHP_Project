@@ -10,6 +10,8 @@
 
     final class HomeController
     {
+
+
         public function home(Request $request, Response $response, $args = [])
         {
             $view = Twig::fromRequest($request);
@@ -51,12 +53,5 @@
                 ->withHeader('Content-Type', 'application/json');
         }
 
-        public function searchLocation(Request $request, Response $response)
-        {
-            $searchText = $request->getBody();
-            $result = DB::query("SELECT * FROM cities");
-            $response->getBody()->write("search location");
-            return $response
-                ->withHeader('Content-Type', 'application/json');
-        }
+
     }
