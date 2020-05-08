@@ -9,6 +9,8 @@ require('vendor/autoload.php');
 class UserControllerTest extends TestCase
 {
     protected $client;
+    protected $faker;
+
     /**
      * This method is called before the first test of this test class is run.
      */
@@ -18,6 +20,8 @@ class UserControllerTest extends TestCase
         DB::$password = 'sRPJwMOei4Y8lquD';
         DB::$dbName = 'carrental';
         DB::$port = 3333;
+
+        $this->faker = Faker\Factory::create();
     }
 
     /**
