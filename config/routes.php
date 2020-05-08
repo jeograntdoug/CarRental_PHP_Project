@@ -25,4 +25,6 @@ return function(App $app) {
         $group->get('/pagenotfound', ErrorController::class . ':pageNotFound');
         $group->get('/internal', ErrorController::class . ':internal');
     });
+
+    $app->get('/search/location/', HomeController::class . ':searchLocation');
 };
