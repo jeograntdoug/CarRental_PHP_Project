@@ -21,7 +21,6 @@ class BooksTest extends TestCase
 
         //$data = json_decode($response->getBody(), true);
 
-        var_dump($response->getBody()->getContents());
         $this->assertEquals(200, $response->getStatusCode());
     }
 }
