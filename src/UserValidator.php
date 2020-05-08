@@ -5,7 +5,7 @@ namespace App;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
 
-class Validator
+class UserValidator
 {
     public function isValidUser($user, $forAll = true)
     {

@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\Validator;
+use App\UserValidator;
 
-class ValidatorTest extends TestCase
+class UserValidatorTest extends TestCase
 {
     private $faker;
     private $v;
@@ -11,7 +11,7 @@ class ValidatorTest extends TestCase
     protected function setUp():void
     {
         $this->faker = Faker\Factory::create();
-        $this->v = new Validator();
+        $this->v = new UserValidator();
     }
 
     /** @test */
