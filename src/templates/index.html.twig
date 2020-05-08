@@ -92,6 +92,21 @@
 
                 }else{
 
+                    $.ajax({ // FIXME: escape special characters using urlencode
+                        url: "/search/location/",
+                        type: "POST",
+                        dataType: "json",
+                        data: dataString,
+                        error: function (jqxhr, status, errorThrown) {
+                            alert("AJAX error: " + jqxhr.responseText);
+                        }
+                    }).done(function () {
+                        alert("Added successfully");
+                        refreshTodoList();
+                    }).always(function () {
+                        $("#viewAddEditPane").hide();
+                        $("#waitForIt").hide();
+                    });
                 }
             });
 
