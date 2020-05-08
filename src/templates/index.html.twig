@@ -19,7 +19,7 @@
 
 
 
-    <form class="text-lg p-4" action=# method="post">
+    <form class="text-lg p-4" method="post" action="car_selection.html.twig">
         <div>
             <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City or Airport)</p>
             <input placeholder="X1X or city name" class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="location" id="searchText"/>
@@ -106,7 +106,7 @@
             <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age"/>
         </div>#}
         <div class="mt-4 text-right">
-            <button class="px-8 py-2 rounded bg-gray-500" type="submit">CONTINUE</button>
+            <button class="px-8 py-2 rounded bg-gray-500" type="submit" value="car_selection">CONTINUE</button>
         </div>
     </form>
 
@@ -120,7 +120,11 @@
 
                 }else{
                     var dataString = JSON.stringify({"searchText": curSearchText})
-                    $.ajax({ // FIXME: escape special characters using urlencode
+                    let url = "/search/location/" + curSearchText;
+                    $.get(url, function (data) {
+                        alert(data);
+                    })
+                    /*$.ajax({ // FIXME: escape special characters using urlencode
                         url: "/search/location/",
                         type: "POST",
                         dataType: "json",
@@ -134,7 +138,7 @@
 
                     }).always(function () {
 
-                    });
+                    });*/
                 }
             });
 

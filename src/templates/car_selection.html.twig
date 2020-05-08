@@ -1,0 +1,22 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% block title %}
+    Login page
+{% endblock title %}
+
+{% block section %}
+    <div class="max-w-sm mx-auto">
+        <h1 class="p-4 text-4xl font-bold">Login page</h1>
+
+        {% if error %}
+            <p class="px-4 text-red-500">{{ error }}</p>
+        {% endif %}
+
+        {% for vehicle in allVehicles %}
+            <p>{{ vehicle.id }}</p>
+        {% endfor %}
+
+
+    </div>
+
+{% endblock section %}

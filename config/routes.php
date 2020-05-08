@@ -8,6 +8,11 @@
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
     use Slim\Routing\RouteCollectorProxy;
+    use Slim\Views\Twig;
+
+
+    require_once "settings.php";
+
 
     return function (App $app) {
         // Routes
@@ -28,13 +33,28 @@
             $group->get('/internal', ErrorController::class . ':internal');
         });
 
-        $app->post('/search/location/', function (Request $request, Response $response, array $args) {
-            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
-            $searchText = $request->getBody();
+        $app->get('/search/location/{searchText}', function (Request $request, Response $response, array $args) {
+            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+            $view = Twig::fromRequest($request);
+            $searchText = $args['searchText'];
 
             $result = DB::query("SELECT * FROM cities WHERE postalCode like %ss", $searchText);
             $response->getBody()->write($result);
 
-            return $response;
+            return $view->render($response, 'car_selection.html.twig',[
+                'result'=>$result
+            ]);
+        });
+
+        $app->post('/car_selection', function (Request $request, Response $response, array $args){
+            $view = Twig::fromRequest($request);
+           // $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+            $allVehicles = DB::query("SELECT * FROM cartypes");
+
+            print_r($allVehicles);
+
+            return $view->render($response, 'car_selection.html.twig',[
+                'allVehicles'=>$allVehicles
+            ]);
         });
     };
