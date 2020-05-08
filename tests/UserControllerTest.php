@@ -33,7 +33,7 @@ class UserControllerTest extends TestCase
     {
         $this->client = new GuzzleHttp\Client([
             'base_uri' => 'http://project.ipd20:8888',
-            // 'http_errors' => false
+            'http_errors' => false
         ]);
 
     }
@@ -81,7 +81,21 @@ class UserControllerTest extends TestCase
             ]
         ]);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
+    }
 
+    /**
+     *  @depends guestCanRegister 
+     *  @test 
+    */
+    public function nonRegisterUserCannotLogin(){
+        $response = $this->client->post('/login',[
+            'form_params' => [
+                'email' => 'janeDoe@example.com',
+                'password' => 'q1w2E#'
+            ]
+        ]);
+
+        $this->assertEquals(401, $response->getStatusCode());
     }
 }

@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 
 class UserValidator
 {
-    public function isValidUser($user, $forAll = true)
+    public function isNotValidUser($user, $forAll = true)
     {
         $errorList = [];
         if (!v::notEmpty()->validate($user)) {
