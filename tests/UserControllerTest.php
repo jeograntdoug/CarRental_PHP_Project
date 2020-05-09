@@ -16,7 +16,7 @@ class UserControllerTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         DB::$user = 'carrental';
-        DB::$password = 'sRPJwMOei4Y8lquD';
+        DB::$password = 'QFzyVmD4mYO8Ah8G';
         DB::$dbName = 'carrental';
         DB::$port = 3333;
     }
@@ -26,7 +26,7 @@ class UserControllerTest extends TestCase
      */
     public static function tearDownAfterClass(): void
     {
-        DB::query("DELETE FROM users");
+        // DB::query("DELETE FROM users");
     }
 
     protected function setUp():void
@@ -55,10 +55,11 @@ class UserControllerTest extends TestCase
             'phone' => '123-456-789',
             'role' => 'user',
             'email' => 'johndoe@example.com',
-            'password' => 'q1w2E#'
+            'password' => 'q1w2E#',
+            'confirm' => 'q1w2E3'
         ];
 
-        $response = $this->client->post('/user/create', [
+        $response = $this->client->post('/register', [
             'form_params' =>$johnDoe
         ]);
 
@@ -67,6 +68,58 @@ class UserControllerTest extends TestCase
         $countJohnDoe = DB::queryFirstField("SELECT COUNT(*) FROM users WHERE email=%s",$johnDoe['email']);
 
         $this->assertEquals(1, $countJohnDoe);
+    }
+
+    private function createMultipart($user, $photoPath){
+        $multipart = [];
+
+        foreach($user as $key => $value){
+            array_push(
+                $multipart, 
+                [
+                    'name' => $key,
+                    'contents' => $value,
+                ]
+            );
+        }
+        
+        array_push(
+            $multipart,
+            [
+                'name' => 'idPhoto',
+                'contents' => fopen($photoPath,'r')
+            ]
+        );
+        return $multipart;
+    }
+
+    /**
+     * @test
+     */
+    public function guestCanRegisterWithPhoto() {
+        $janeDoe = [
+            'firstname' => 'jane',
+            'lastname' => 'doe',
+            'drivinglicense' => 'D1234-12345-12345',
+            'address' => '12-1, rue Montreal',
+            'phone' => '(555)555-5555',
+            'role' => 'user',
+            'email' => 'janedoe@example.com',
+            'password' => 'q1w2E3',
+            'confirm' => 'q1w2E3'
+        ];
+
+        $multipart = $this->createMultipart($janeDoe,__DIR__. '/../tmp/test.jpg');
+        $response = $this->client->post('/register', [
+            'multipart' => $multipart
+            ]
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $countJaneDoe = DB::queryFirstField("SELECT COUNT(*) FROM users WHERE email=%s",$janeDoe['email']);
+
+        $this->assertEquals(1, $countJaneDoe);
     }
 
     /**

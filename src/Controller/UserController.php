@@ -1,10 +1,11 @@
 <?php
 namespace App\Controller;
 
+use App\UserValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use DB;
-
+use Respect\Validation\Validator as v;
 use Slim\Views\Twig;
 
 class UserController 
@@ -15,53 +16,82 @@ class UserController
     
     public function create (Request $request,Response $response)
     {
-        $post = $request->getParsedBody();
-
-        $errorList = [];
-        //TODO: password and email validation
-
-        // $johnDoe = [
-        //     'firstname' => 'john',
-        //     'lastname' => 'doe',
-        //     'drivinglicense' => '123456789',
-        //     'address' => '123, rue johnabbott',
-        //     'phone' => '123-456-789',
-        //     'role' => 'user',
-        //     'email' => 'johndoe@example.com',
-        //     'password' => 'q1w2E#'
-        // ];
-
-
-
-
+        $view = Twig::fromRequest($request);
+        $newUser = $request->getParsedBody();
+        $photo = $request->getUploadedFiles();
+        $errorList = UserValidator::getValidationErrorList($newUser);
 
         if(!empty($errorList)) 
         {
-            $view = Twig::fromRequest($request);
-
-            return $view->render($response,'auth/register.html.twig',[
+            return $view->render($response,'register.html.twig',[
                 'errorList' => $errorList,
-                'prevInput' => $post
+                'prevInput' => $newUser
             ]);
         }
 
         $user = DB::queryFirstRow(
-            "SELECT * FROM users WHERE email=%s",$post['email']
+            "SELECT * FROM users WHERE email=%s",$newUser['email']
         );
 
         if(empty($user)){
-            DB::insert('users',$post);
+            unset($newUser['confirm']);
+
+            if(v::key('idPhoto')->validate($photo)){
+
+                $idPhoto = $photo['idPhoto'];
+                $this->setPhoto($newUser,$idPhoto);
+            }
+
+            DB::insert('users',$newUser);
             return $response->withHeader('Location','/');        
         }
 
-        $view = Twig::fromRequest($request);
-
-        return $view->render($response,'auth/register.html.twig',[
+        return $view->render($response,'register.html.twig',[
             'errorList' => $errorList,
-            'prevInput' => $post
+            'prevInput' => $newUser
         ]);
     }
 
 
+    private function isValidPhoto($photo){
+        if(!v::notEmpty()->validate($photo)){
+            return false;
+        }
+
+        if(!v::numericVal()
+            ->between(10*1000,1000*1000)
+            ->validate($photo->getSize()))
+        {
+            return false;
+        }
+
+        if(!v::anyOf(
+            v::equals('image/jpeg'),
+            v::equals('image/jpg'),
+            v::equals('image/png')
+            )->validate($photo->getClientMediaType())
+        ){
+            return false;
+        }
+
+        return true;
+    }
+
+    private function setPhoto($newUser,$idPhoto){
+        if($this->isValidPhoto($idPhoto))
+        {
+            $tmpPath = __DIR__ . '/../../tmp/' . $newUser['email'] . '.' ;
+
+            if($idPhoto->getClientMediaType() == 'image/png'){
+                $tmpPath .= 'png';
+            } else {
+                $tmpPath .= 'jpg';
+            }
+
+            $idPhoto->moveTo($tmpPath);
+            $newUser['idPhoto'] = file_get_contents($tmpPath);
+            //TODO : delete photo from folder
+        }
+    }
 
 }

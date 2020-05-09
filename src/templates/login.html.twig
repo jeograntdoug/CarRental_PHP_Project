@@ -29,3 +29,20 @@
 </div>
 
 {% endblock section %}
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $token = "Bearer LCI78uqypvFlg3vOtQYB4cKtKI6keFjBLg7qA7CN5f0pfsuZuoTdmbYfDGVRXPnNBBndigW9S3uElwg4bGhZH1gavZREul4hCK5nxHS6ZMxL9G9S0qVAnSmQaXyxXnYx";
+         $.ajax({
+                url: "https://api.yelp.com/v3/businesses/search?location=montreal&categories=restaurants",
+                type: "GET",
+                dataType: "json",
+                Authorization: $token
+            }).done(function (result) {
+                alert(result);
+            }).fail(function (error){
+                console.log(error);
+            });
+    });
+</script>
+{% endblock scripts %}

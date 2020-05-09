@@ -17,12 +17,13 @@
     return function (App $app) {
         // Routes
 
-        $app->get('/', HomeController::class . ':home');
+        // $app->get('/', HomeController::class . ':home');
+        $app->get('/', HomeController::class . ':test');
         $app->get('/register', HomeController::class . ':register');
         $app->get('/login', HomeController::class . ':login');
 
         $app->post('/login', AuthController::class . ':authenticate');
-        $app->post('/user/create', UserController::class . ':create');
+        $app->post('/register', UserController::class . ':create');
 
 
         //Routes for Errors Pages

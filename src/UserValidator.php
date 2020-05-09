@@ -7,13 +7,13 @@ use Respect\Validation\Validator as v;
 
 class UserValidator
 {
-    public function isNotValidUser($user, $forAll = true)
+    public static function getValidationErrorList($user, $forAll = true)
     {
         $errorList = [];
         if (!v::notEmpty()->validate($user)) {
             $errorList = [
-                'firstName' => 'Must be 1~20 letters',
-                'lastName' => 'Must be 1~20 letters',
+                'firstname' => 'Must be 1~20 letters',
+                'lastname' => 'Must be 1~20 letters',
                 'drivinglicense' => 'Invlid Driving License',
                 'address' => 'Must be 1~50 letters',
                 'email' => 'Invalid Email address',
@@ -29,12 +29,12 @@ class UserValidator
 
         // firstname
         if (!v::key('firstname', v::alpha(' ')->length(1, 20), $forAll)->validate($user)) {
-            $errorList['firstName'] = 'Must be 1~20 letters';
+            $errorList['firstname'] = 'Must be 1~20 letters';
         }
 
         // lastname
         if (!v::key('lastname', v::alpha(' ')->length(1, 20), $forAll)->validate($user)) {
-            $errorList['lastName'] = 'Must be 1~20 letters';
+            $errorList['lastname'] = 'Must be 1~20 letters';
         }
 
         // drivinglicense

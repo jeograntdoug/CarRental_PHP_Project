@@ -30,4 +30,10 @@ class AuthController
                 'error' => 'The email or password is incorrect.'
         ]);
     }
+
+
+    // public function register (Request $request, Response $response)
+    // {
+
+    // }
 }
