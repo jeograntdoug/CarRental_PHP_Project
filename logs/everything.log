@@ -13,3 +13,5 @@
 [2020-05-06T04:22:24.216850+02:00] main.ERROR: Database error[Query]: INSERT INTO `users` (`email`,`password`,`confirm`) VALUES ('', '', '') [] []
 [2020-05-07T19:09:37.986429+02:00] main.ERROR: Database erorr[Connection]: Unknown column 'confirm' in 'field list' [] []
 [2020-05-07T19:09:37.992362+02:00] main.ERROR: Database error[Query]: INSERT INTO `users` (`email`,`password`,`confirm`,`firstname`,`lastname`,`drivinglicense`,`address`,`phone`,`idPhoto`) VALUES ('asdf', 'asdf', 'asdf', 'asdf', 'asdf', 'asdf', 'asdf', 'sdf', '') [] []
+[2020-05-08T23:54:12.910710+02:00] main.ERROR: Database erorr[Connection]: Unable to connect to MySQL server! Error: Access denied for user 'carrental'@'localhost' (using password: YES) [] []
+[2020-05-08T23:54:25.934993+02:00] main.ERROR: Database erorr[Connection]: Unable to connect to MySQL server! Error: Access denied for user 'carrental'@'localhost' (using password: YES) [] []

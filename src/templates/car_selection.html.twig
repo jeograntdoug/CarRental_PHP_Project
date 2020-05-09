@@ -1,20 +1,50 @@
 {% extends "layouts/layout.html.twig" %}
 
 {% block title %}
-    Login page
+    Car selection
 {% endblock title %}
 
 {% block section %}
     <div class="max-w-sm mx-auto">
-        <h1 class="p-4 text-4xl font-bold">Login page</h1>
+
 
         {% if error %}
             <p class="px-4 text-red-500">{{ error }}</p>
         {% endif %}
 
-        {% for vehicle in allVehicles %}
-            <p>{{ vehicle.id }}</p>
-        {% endfor %}
+        <div class="vehicleList" style="width: 800px">
+            {% for vehicle in allVehicles %}
+                <div class="carType" style="display:flex;flex-direction: row;">
+                    <div>
+                        <img src= {{ vehicle.photoPath }} width="300"/>
+                    </div>
+                    <div style="display: flex;flex-direction: column">
+                        <div>
+                            <p style="font-size: 26px; font-weight: bold;">{{ vehicle.subtype }}</p>
+                        </div>
+                        <div style="display: flex;flex-direction: row">
+                            <div style="width: 200px">
+                                <p>{{ vehicle.description }}</p><br>
+                                <i class="material-icons">directions_car</i>
+                                <span>{{ vehicle.passengers }} People</span><br>
+                                <i class="material-icons">work</i> <span>{{ vehicle.bags }} Bags</span>
+                            </div>
+                            <div style="padding-left: 20px;">
+                                <p style="font-weight: bold; font-size: 16px">CAD
+                                    <span>{{ vehicle.dailyPrice }}</span></p><br><br>
+                                <button style="font-size: 16px;padding: 6px;color: darkblue;background: lightyellow;
+                                font-weight: bold;border: black 2px solid;">
+                                    Select
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            {% endfor %}
+        </div>
 
 
     </div>

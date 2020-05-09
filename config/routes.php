@@ -39,9 +39,9 @@
             $searchText = $args['searchText'];
 
             $result = DB::query("SELECT * FROM cities WHERE postalCode like %ss", $searchText);
-            $response->getBody()->write($result);
+            $response->getBody()->write("Hello");
 
-            return $view->render($response, 'car_selection.html.twig',[
+            return $view->render($response, 'index.html.twig',[
                 'result'=>$result
             ]);
         });
@@ -50,8 +50,6 @@
             $view = Twig::fromRequest($request);
            // $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
             $allVehicles = DB::query("SELECT * FROM cartypes");
-
-            print_r($allVehicles);
 
             return $view->render($response, 'car_selection.html.twig',[
                 'allVehicles'=>$allVehicles
