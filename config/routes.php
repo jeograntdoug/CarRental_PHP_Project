@@ -11,9 +11,6 @@
     use Slim\Views\Twig;
 
 
-    require_once "settings.php";
-
-
     return function (App $app) {
         // Routes
 
@@ -40,8 +37,14 @@
             
             $data = json_decode($jsonText,true);
 
-            $result = DB::query("SELECT * FROM cities WHERE postalCode like %s" , $data['searchText'] . '%');
+            $searchText = $data['searchText'];
 
+            $secondChar = substr($searchText, 1,1);
+            if(ctype_digit($secondChar) && strlen($searchText) <=3) {
+                $result = DB::query("SELECT * FROM cities WHERE postalCode like %s", $searchText . '%');
+            }else{
+                $result = DB::query("SELECT * FROM cities WHERE name like %s", $searchText . '%');
+            }
 
             $response->getBody()->write(json_encode($result));
 
@@ -50,11 +53,21 @@
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args){
             $view = Twig::fromRequest($request);
-           // $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
             $allVehicles = DB::query("SELECT * FROM cartypes");
 
             return $view->render($response, 'car_selection.html.twig',[
                 'allVehicles'=>$allVehicles
+            ]);
+        });
+
+        $app->get('/review_reserve', function (Request $request, Response $response, array $args){
+            $view = Twig::fromRequest($request);
+            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+
+
+            return $view->render($response, 'review_reserve.html.twig',[
+
             ]);
         });
     };

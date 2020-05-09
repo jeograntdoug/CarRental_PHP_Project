@@ -21,10 +21,10 @@
 
     <form class="text-lg p-4" method="post" action="/car_selection">
         <div>
-            <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City or Airport)</p>
+            <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City)</p>
             <input placeholder="X1X or city name" class="w-full p-2 h-10 border-2 border-gray-500" type="text"
                    name="location" id="searchText" list="searchResult"/><br>
-            <datalist id="searchResult" >
+            <datalist id="searchResult">
             </datalist>
             <input class="mr-1" type="checkbox" name="isDiffLocation"/>Return to a different location
         </div>
@@ -118,34 +118,30 @@
         $(document).ready(function () {
             $("#searchText").on("keyup", function () {
                 var curSearchText = $("#searchText").val();
+                if (curSearchText.length >= 2) {
+                    var dataString = JSON.stringify({searchText: curSearchText})
 
-                var dataString = JSON.stringify({searchText: curSearchText})
-                /* let url = "/search/location/" + curSearchText;
-                $.get(url, function (data) {
-                    alert(data);
-                })*/
+                    $.ajax({ // FIXME: escape special characters using urlencode
+                        url: "/search/location",
+                        type: "POST",
+                        dataType: "json",
+                        data: dataString,
+                        error: function (jqxhr, status, errorThrown) {
+                            alert("AJAX error: " + jqxhr.responseText);
+                        }
+                    }).done(function (cityList) {
 
-                $.ajax({ // FIXME: escape special characters using urlencode
-                    url: "/search/location",
-                    type: "POST",
-                    dataType: "json",
-                    data: dataString,
-                    error: function (jqxhr, status, errorThrown) {
-                        alert("AJAX error: " + jqxhr.responseText);
-                    }
-                }).done(function (cityList) {
+                        $("#searchResult").empty();
+                        $.each(cityList, function (i, item) {
+                            var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
+                            $("#searchResult").append(option);
+                        });
 
-                    $("#searchResult").empty();
-                    $.each(cityList, function (i, item) {
-                        var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
-                        $("#searchResult").append(option);
+
+                    }).always(function () {
+
                     });
-
-
-                }).always(function () {
-
-                });
-
+                }
             });
 
         })
