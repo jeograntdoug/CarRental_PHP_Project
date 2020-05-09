@@ -18,14 +18,34 @@ class UserController
     {
         $view = Twig::fromRequest($request);
         $newUser = $request->getParsedBody();
+        $newUser['role'] = 'user';
         $photo = $request->getUploadedFiles();
         $errorList = UserValidator::getValidationErrorList($newUser);
+
+        // Photo
+        $idPhotoBase64 = null;
+        if(v::key('idPhoto')->validate($photo)
+            && $photo['idPhoto']->getSize() != 0){
+
+            $idPhoto = $photo['idPhoto'];
+            $photoBinary = $this->photoFileToBinary($newUser['email'],$idPhoto);
+
+            $newUser['idPhoto'] = $photoBinary;
+
+            $idPhotoBase64 = 'data:' . $idPhoto->getClientMediaType() . ';base64,' . base64_encode($photoBinary);
+        }else if(v::key('idPhotoBase64',v::notEmpty())->validate($newUser)){
+            $idPhotoBase64 = $newUser['idPhotoBase64'];
+            $newUser['idPhoto'] = $this->base64ToBinary($idPhotoBase64);
+        }
+
+        unset($newUser['idPhotoBase64']);
 
         if(!empty($errorList)) 
         {
             return $view->render($response,'register.html.twig',[
                 'errorList' => $errorList,
-                'prevInput' => $newUser
+                'prevInput' => $newUser,
+                'idPhotoBase64' => $idPhotoBase64
             ]);
         }
 
@@ -36,19 +56,17 @@ class UserController
         if(empty($user)){
             unset($newUser['confirm']);
 
-            if(v::key('idPhoto')->validate($photo)){
-
-                $idPhoto = $photo['idPhoto'];
-                $this->setPhoto($newUser,$idPhoto);
-            }
-
             DB::insert('users',$newUser);
             return $response->withHeader('Location','/');        
         }
 
+
+        $errorList['email'] = 'Email already exists';
+
         return $view->render($response,'register.html.twig',[
             'errorList' => $errorList,
-            'prevInput' => $newUser
+            'prevInput' => $newUser,
+            'idPhotoBase64' => $idPhotoBase64
         ]);
     }
 
@@ -77,10 +95,10 @@ class UserController
         return true;
     }
 
-    private function setPhoto($newUser,$idPhoto){
+    private function photoFileToBinary($email, $idPhoto){
         if($this->isValidPhoto($idPhoto))
         {
-            $tmpPath = __DIR__ . '/../../tmp/' . $newUser['email'] . '.' ;
+            $tmpPath = __DIR__ . '/../../tmp/' . $email . '.' ;
 
             if($idPhoto->getClientMediaType() == 'image/png'){
                 $tmpPath .= 'png';
@@ -89,9 +107,16 @@ class UserController
             }
 
             $idPhoto->moveTo($tmpPath);
-            $newUser['idPhoto'] = file_get_contents($tmpPath);
-            //TODO : delete photo from folder
+            $binaryImg = file_get_contents($tmpPath);
+            unlink($tmpPath);
+
+            return $binaryImg;
         }
+    }
+
+    private function base64ToBinary($base){
+        $data = explode(';base64,',$base,2);
+        return base64_decode($data[1]);
     }
 
 }

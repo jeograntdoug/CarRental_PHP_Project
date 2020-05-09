@@ -26,7 +26,7 @@ class UserControllerTest extends TestCase
      */
     public static function tearDownAfterClass(): void
     {
-        // DB::query("DELETE FROM users");
+        DB::query("DELETE FROM users");
     }
 
     protected function setUp():void
@@ -50,12 +50,12 @@ class UserControllerTest extends TestCase
         $johnDoe = [
             'firstname' => 'john',
             'lastname' => 'doe',
-            'drivinglicense' => '123456789',
-            'address' => '123, rue johnabbott',
-            'phone' => '123-456-789',
+            'drivinglicense' => 'D1234-12345-12345',
+            'address' => '12-1, rue Montreal',
+            'phone' => '(555)555-5555',
             'role' => 'user',
             'email' => 'johndoe@example.com',
-            'password' => 'q1w2E#',
+            'password' => 'q1w2E3',
             'confirm' => 'q1w2E3'
         ];
 

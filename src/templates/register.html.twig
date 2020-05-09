@@ -18,14 +18,18 @@
         {% for field in fieldList %}
         <div class="my-2">
             <p>{{ field }}</p>
-            <input class="w-full mt-2 p-2 h-10 border-2 border-gray-500" type="text" name="{{ field |lower }}" />
+            <input class="w-full mt-2 p-2 h-10 border-2 border-gray-500" type="text" name="{{ field |lower }}" value="{{ prevInput[field|lower] }}"/>
             <p class="text-xs text-red-400">{{errorList [field|lower ] }}</p>
         </div>
         {% endfor %}
         <div>
-            <p class="w-56">Id Photo</p>
-                <label class="flex w-56 h-48 mx-auto justify-center items-center border-2 border-gray-400 shadow-md text-center cursor-pointer" for="idPhoto">Click to choose your photo ( jpeg / png )</label>
-                <input id="idPhoto" class="hidden" type="file" name="idPhoto" accept="image/png, image/jpeg"/>
+            <p>Id Photo</p>
+            <label id="lblPhoto" class="block border-2 border-gray-400 shadow-md cursor-pointer" for="idPhoto">
+                <img id="idPhotoHolder" class="w-full h-48 object-contain"
+                alt="ID Photo" src="{{ idPhotoBase64 ?? '/resources/images/empty_photo.png'}}" />
+            </label>
+            <input id="idPhoto" class="hidden" type="file" name="idPhoto" accept="image/png, image/jpeg"/>
+            <input type="text" class="hidden" name="idPhotoBase64" value="{{ idPhotoBase64 }}"/>
         </div>
 
         <div class="mt-4 text-right">
@@ -35,3 +39,16 @@
 </div>
 
 {% endblock section %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function (){
+        $("input#idPhoto").change(function() {
+            let imgFile = this.files[0];
+            if(imgFile != ''){
+                $("#idPhotoHolder").attr("src",URL.createObjectURL(imgFile));
+            }
+        });
+    });
+</script>
+{% endblock scripts %}

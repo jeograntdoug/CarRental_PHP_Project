@@ -15,7 +15,7 @@
         // Routes
 
         // $app->get('/', HomeController::class . ':home');
-        $app->get('/', HomeController::class . ':test');
+        $app->get('/', HomeController::class . ':home');
         $app->get('/register', HomeController::class . ':register');
         $app->get('/login', HomeController::class . ':login');
 
