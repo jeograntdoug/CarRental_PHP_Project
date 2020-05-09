@@ -5,16 +5,13 @@
 {% endblock title %}
 
 {% block section %}
-    <div class="max-w-sm mx-auto">
-
-
-        {% if error %}
-            <p class="px-4 text-red-500">{{ error }}</p>
-        {% endif %}
-
-        <div class="vehicleList" style="width: 800px">
+    <div class="flex">
+        <div class="bg-red-400 w-1/5">
+            filter
+        </div>
+        <div class="vehicleList bg-blue-400 w-4/5">
             {% for vehicle in allVehicles %}
-                <div class="carType" style="display:flex;flex-direction: row;">
+                <div class="carType">
                     <div>
                         <img src= {{ vehicle.photoPath }} width="300"/>
                     </div>

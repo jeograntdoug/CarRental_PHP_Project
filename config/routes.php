@@ -33,17 +33,18 @@
             $group->get('/internal', ErrorController::class . ':internal');
         });
 
-        $app->get('/search/location/{searchText}', function (Request $request, Response $response, array $args) {
-            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
-            $view = Twig::fromRequest($request);
-            $searchText = $args['searchText'];
+        $app->post('/search/location', function (Request $request, Response $response, array $args) {
+            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
 
-            $result = DB::query("SELECT * FROM cities WHERE postalCode like %ss", $searchText);
-            $response->getBody()->write("Hello");
+            $jsonText = $request->getBody()->getContents();
+            
+            $data = json_decode($jsonText,true);
 
-            return $view->render($response, 'index.html.twig',[
-                'result'=>$result
-            ]);
+            $result = DB::query("SELECT * FROM cities WHERE postalCode like %ss" , $data['searchText']);
+            
+            $response->getBody()->write(json_encode("Hello"));
+
+            return $response;
         });
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args){

@@ -119,13 +119,14 @@
                     $("#searchText").val("");
 
                 }else{
-                    var dataString = JSON.stringify({"searchText": curSearchText})
-                    let url = "/search/location/" + curSearchText;
+                    var dataString = JSON.stringify({searchText: curSearchText})
+                    /* let url = "/search/location/" + curSearchText;
                     $.get(url, function (data) {
                         alert(data);
-                    })
-                    /*$.ajax({ // FIXME: escape special characters using urlencode
-                        url: "/search/location/",
+                    })*/ 
+
+                    $.ajax({ // FIXME: escape special characters using urlencode
+                        url: "/search/location",
                         type: "POST",
                         dataType: "json",
                         data: dataString,
@@ -138,7 +139,7 @@
 
                     }).always(function () {
 
-                    });*/
+                    });
                 }
             });
 
