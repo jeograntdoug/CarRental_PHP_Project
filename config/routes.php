@@ -40,9 +40,10 @@
             
             $data = json_decode($jsonText,true);
 
-            $result = DB::query("SELECT * FROM cities WHERE postalCode like %ss" , $data['searchText']);
-            
-            $response->getBody()->write(json_encode("Hello"));
+            $result = DB::query("SELECT * FROM cities WHERE postalCode like %s" , $data['searchText'] . '%');
+
+
+            $response->getBody()->write(json_encode($result));
 
             return $response;
         });

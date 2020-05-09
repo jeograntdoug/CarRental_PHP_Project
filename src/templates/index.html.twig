@@ -22,50 +22,53 @@
     <form class="text-lg p-4" method="post" action="/car_selection">
         <div>
             <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City or Airport)</p>
-            <input placeholder="X1X or city name" class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="location" id="searchText"/>
+            <input placeholder="X1X or city name" class="w-full p-2 h-10 border-2 border-gray-500" type="text"
+                   name="location" id="searchText" list="searchResult"/><br>
+            <datalist id="searchResult" >
+            </datalist>
             <input class="mr-1" type="checkbox" name="isDiffLocation"/>Return to a different location
         </div>
 
-{#
+        {#
 
 
-        <div id="googleMap" style="width: 60%;height: 400px"></div>
-        <script>
-            function initMap() {
-                var location = {lat: 45.4560, lng: -73.8623};
-                var map = new google.maps.Map(document.getElementById("googleMap"), {
-                    zoom: 8,
-                    center: location,
-                    draggable: true
-                });
+                <div id="googleMap" style="width: 60%;height: 400px"></div>
+                <script>
+                    function initMap() {
+                        var location = {lat: 45.4560, lng: -73.8623};
+                        var map = new google.maps.Map(document.getElementById("googleMap"), {
+                            zoom: 8,
+                            center: location,
+                            draggable: true
+                        });
 
-                var icon={
-                    url:"../../resources/images/pin_red.png",
-                    scaledSize:new google.maps.Size(50,50),
-                    origin: new google.maps.Point(0,0),
-                    anchor: new google.maps.Point(25,25)
-                }
+                        var icon={
+                            url:"../../resources/images/pin_red.png",
+                            scaledSize:new google.maps.Size(50,50),
+                            origin: new google.maps.Point(0,0),
+                            anchor: new google.maps.Point(25,25)
+                        }
 
-                var marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    icon:icon
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map,
+                            icon:icon
 
-                });
-            }
-        </script>
+                        });
+                    }
+                </script>
 
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
-#}
-
+                <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
+        #}
 
 
         <div class="mt-4">
             <p class="mb-2">2. PICK-UP TIME</p>
             <div class="flex">
                 <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="pickupDate"/>
-                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time" list="pickupTime" step="600" name="pickupTime">
+                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time" list="pickupTime"
+                       step="600" name="pickupTime">
                 <datalist id="pickupTime">
                     <option value="08:00"/>
                     <option value="09:00"/>
@@ -85,7 +88,8 @@
             <p class="mb-2">3. RETURN TIME</p>
             <div class="flex">
                 <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="returnDate"/>
-                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time"  step="600" list="returnTime" name="returnTime">
+                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time" step="600"
+                       list="returnTime" name="returnTime">
                 <datalist id="returnTime">
                     <option value="08:00"/>
                     <option value="09:00"/>
@@ -101,10 +105,10 @@
                 </datalist>
             </div>
         </div>
-       {# <div class="mt-4">
-            <p class="mb-2">4. Age (Postal Code, City or Airport)</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age"/>
-        </div>#}
+        {# <div class="mt-4">
+             <p class="mb-2">4. Age (Postal Code, City or Airport)</p>
+             <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age"/>
+         </div>#}
         <div class="mt-4 text-right">
             <button class="px-8 py-2 rounded bg-gray-500" type="submit" value="car_selection">CONTINUE</button>
         </div>
@@ -115,36 +119,37 @@
             $("#searchText").on("keyup", function () {
                 var curSearchText = $("#searchText").val();
 
-                if(!curSearchText.match("^[A-Z]|[A-Z][0-9]|[A-Z][0-9][A-Z]$")){
-                    $("#searchText").val("");
+                var dataString = JSON.stringify({searchText: curSearchText})
+                /* let url = "/search/location/" + curSearchText;
+                $.get(url, function (data) {
+                    alert(data);
+                })*/
 
-                }else{
-                    var dataString = JSON.stringify({searchText: curSearchText})
-                    /* let url = "/search/location/" + curSearchText;
-                    $.get(url, function (data) {
-                        alert(data);
-                    })*/ 
+                $.ajax({ // FIXME: escape special characters using urlencode
+                    url: "/search/location",
+                    type: "POST",
+                    dataType: "json",
+                    data: dataString,
+                    error: function (jqxhr, status, errorThrown) {
+                        alert("AJAX error: " + jqxhr.responseText);
+                    }
+                }).done(function (cityList) {
 
-                    $.ajax({ // FIXME: escape special characters using urlencode
-                        url: "/search/location",
-                        type: "POST",
-                        dataType: "json",
-                        data: dataString,
-                        error: function (jqxhr, status, errorThrown) {
-                            alert("AJAX error: " + jqxhr.responseText);
-                        }
-                    }).done(function (cityList) {
-                        alert(cityList);
-
-
-                    }).always(function () {
-
+                    $("#searchResult").empty();
+                    $.each(cityList, function (i, item) {
+                        var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
+                        $("#searchResult").append(option);
                     });
-                }
+
+
+                }).always(function () {
+
+                });
+
             });
 
         })
-        $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+        $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
             console.log("Ajax error occured on " + settings.url);
             alert("Ajax error occurred");
         });
