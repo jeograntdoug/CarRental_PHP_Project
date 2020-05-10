@@ -7,7 +7,7 @@
 {% block section %}
     <div>
         <div class="w-full">
-            <span class="font-bold text-3xl text-dark">CHOOSE A VEHICLE CLASS</span>
+            <span class="font-bold text-4xl text-dark">CHOOSE A VEHICLE CLASS</span>
             <div class="float-right">
                 <span class="font-bold">SORT BY</span>
                 <select>
@@ -29,7 +29,7 @@
 
                         <ul>
                             <li>
-                                <input type="checkbox">
+                                <input type="checkbox" value="Car" onchange="filterVehicleType(this.value);">
                                 <span class="font-bold">Cars</span>
                                 <span>CAD21</span>
                             </li>
@@ -79,9 +79,10 @@
                 </div>
             </div>
 
-            <div class="bg-blue-400 w-4/5">
+            <div class="bg-blue-400 w-4/5 " id="vehicleList">
                 {% for vehicle in allVehicles %}
-                    <div class="flex flex-row">
+
+                    <div class="flex flex-row {{ vehicle.category }}">
                         <div class="m-2 w-1/3">
                             <img src= {{ vehicle.photoPath }} width="300"/>
                         </div>
@@ -111,11 +112,20 @@
         </div>
     </div>
 
-    <script>
+    <script>function
+        filterVehicleType(type) {
+            if(this.che){
+                alert("checked");
+                $('Car').css("visiblity", "hidden");
+            }
+        }
+
         $(document).ready(function () {
             $("button").on("click", function () {
-                document.location.href="/review_reserve";
+                document.location.href = "/review_reserve";
             })
+
+
         })
     </script>
 
