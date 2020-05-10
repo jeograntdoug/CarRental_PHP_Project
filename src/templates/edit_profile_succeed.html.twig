@@ -1,0 +1,15 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% block title %}
+    Edit Succeed!
+{% endblock title %}
+
+{% block section %}
+<div class="max-w-sm mx-auto">
+    <h1 class="p-4 text-4xl font-bold">Edit Your Profile Succeed!</h1>
+    <div class="text-center">
+        Go <a class="underline" href="/">home</a> or <a class="underline" href="/profile/{{loginUser.id}}">Continue Edit</a>
+    </div>
+</div>
+
+{% endblock section %}

@@ -12,12 +12,8 @@
     {
         public function home(Request $request, Response $response, $args = [])
         {
-            $user = $request->getAttributes();
-
             $view = Twig::fromRequest($request);
-            return $view->render($response, 'index.html.twig', [
-                'user' => $request->getAttribute('user')
-            ]);
+            return $view->render($response, 'index.html.twig');
         }
 
         public function login(Request $request, Response $response)
@@ -44,28 +40,6 @@
 
             $view = Twig::fromRequest($request);
             return $view->render($response, "register.html.twig");
-        }
-
-
-        public function hello(Request $request, Response $response, $args = [])
-        {
-            $session = $request->getAttribute('session');
-
-            $str = isset($session['example']) ? $session['example'] : 'Empty Session, ';
-
-            $response->getBody()->write($str . ' Hello!');
-            return $response;
-        }
-
-        public function jsondata(Request $request, Response $response, $args = [])
-        {
-            $data = array('name' => 'Rob', 'age' => 40);
-
-            $payload = json_encode($data);
-
-            $response->getBody()->write($payload);
-            return $response
-                ->withHeader('Content-Type', 'application/json');
         }
 
 
