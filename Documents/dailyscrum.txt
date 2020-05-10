@@ -170,16 +170,85 @@
 
 2020/05/07 Wang Wei
 1. Done since last scrum:
--
+- implement search postal code from db with ajax
 
 2. To do until next Scrum:
--
+- implement search postal code or city name from db with ajax
+- add search car page
 
 3. Need assistance / figure things out
 -
 
 
 2020/05/07 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
+
+2020/05/08 Wang Wei
+1. Done since last scrum:
+- update search postal code and city name from db, trigger postal code from second character, default search city name
+- add select car page layout
+
+2. To do until next Scrum:
+- finish select car page layout
+- add review_reserve page
+
+3. Need assistance / figure things out
+-
+
+
+2020/05/08 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
+
+2020/05/09 Wang Wei
+1. Done since last scrum:
+- finish select car page and review_reserve page layout
+
+2. To do until next Scrum:
+- add javascript to select_car and review_reserve pages
+
+3. Need assistance / figure things out
+-
+
+
+2020/05/09 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
+
+2020/05/09 Wang Wei
+1. Done since last scrum:
+- add javascript to select_car page
+
+2. To do until next Scrum:
+- add recaptura and beautify map functions
+
+3. Need assistance / figure things out
+-
+
+
+2020/05/09 Donghyeok Seo
 1. Done since last scrum
 - Add library Respect/Validation for validation
 

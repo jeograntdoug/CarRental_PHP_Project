@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: May 10, 2020 at 12:13 AM
+-- Generation Time: May 10, 2020 at 05:38 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -59,7 +59,7 @@ INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `milleag
 
 CREATE TABLE `cartypes` (
   `id` int(11) NOT NULL,
-  `catetory` varchar(20) NOT NULL,
+  `category` varchar(20) NOT NULL,
   `subtype` varchar(20) NOT NULL,
   `description` varchar(500) NOT NULL,
   `passengers` int(11) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `cartypes` (
 -- Dumping data for table `cartypes`
 --
 
-INSERT INTO `cartypes` (`id`, `catetory`, `subtype`, `description`, `passengers`, `bags`, `dailyPrice`, `photoPath`) VALUES
+INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`, `bags`, `dailyPrice`, `photoPath`) VALUES
 (1, 'Car', 'Economy', 'Chevrolet Spark or similar', 4, 2, 79.98, '\\resources\\carimages\\economy_car.png'),
 (2, 'Car', 'Compact', 'Hyundai Accent or similar', 5, 2, 89.98, '\\resources\\carimages\\compact_car.png'),
 (3, 'Car', 'Intermediate', 'Kia Forte or similar', 5, 3, 99.98, '\\resources\\carimages\\intermediate_car.png'),
@@ -1846,21 +1846,26 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `firstname` varchar(20) NOT NULL,
   `lastname` varchar(20) NOT NULL,
-  `drivinglicense` varchar(10) NOT NULL,
+  `drivinglicense` varchar(17) NOT NULL,
   `address` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `role` enum('user','admin') NOT NULL,
-  `idPhoto` varchar(100) DEFAULT NULL,
+  `idPhoto` blob DEFAULT NULL,
   `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `users`
+-- Table structure for table `usersessions`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`, `email`, `phone`, `role`, `idPhoto`, `password`) VALUES
-(1, 'Tom', 'Miller', 'G8394983', '767, Rd Solfye', 'Tmiller@gmail.com', '5143928976', 'user', NULL, 'Tommiller123');
+CREATE TABLE `usersessions` (
+  `sessionId` varchar(200) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -1919,6 +1924,13 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `usersessions`
+--
+ALTER TABLE `usersessions`
+  ADD PRIMARY KEY (`sessionId`) USING BTREE,
+  ADD KEY `userId` (`userId`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1962,7 +1974,7 @@ ALTER TABLE `stores`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- Constraints for dumped tables
@@ -1980,18 +1992,24 @@ ALTER TABLE `cars`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservations` (`id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
-  ADD CONSTRAINT `orders_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`);
+  ADD CONSTRAINT `orders_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`),
+  ADD CONSTRAINT `orders_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`carId`) REFERENCES `cars` (`id`),
-  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
-  ADD CONSTRAINT `reservations_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`);
+  ADD CONSTRAINT `reservations_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`),
+  ADD CONSTRAINT `reservations_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `usersessions`
+--
+ALTER TABLE `usersessions`
+  ADD CONSTRAINT `fk_users_userSessions` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
