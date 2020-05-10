@@ -5,6 +5,7 @@ use Slim\App;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use App\Middleware\AuthMiddleware;
 
 return function (App $app,Twig $twig)
 {
@@ -23,4 +24,5 @@ return function (App $app,Twig $twig)
 
     // Add Twig-View Middleware
     $app->add(TwigMiddleware::create($app, $twig));
+    $app->add(AuthMiddleware::class);
 };

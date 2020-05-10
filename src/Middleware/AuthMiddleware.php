@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use DateTime;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface as Middleware;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use DB;
 
 class AuthMiddleware implements Middleware
 {
@@ -15,13 +17,54 @@ class AuthMiddleware implements Middleware
      */
     public function process(Request $request, RequestHandler $handler) : Response
     {
-        //TODO : check user is valid
-        $isValidUser = true;
-        if(!$isValidUser){
-            $uri = $request->getUri();
-            $request = $request->withUri($uri->withPath('/errors/forbidden'));
+        session_start();
+
+        // 2 mins max
+        $expiredTime = date('Y-m-d H:i:s',time() - 60 * 2);
+
+        $user = DB::queryFirstRow(
+            "SELECT u.id AS 'id', u.firstname AS 'name'
+            FROM users AS u
+            JOIN userSessions AS s
+            ON s.userId = u.id
+            WHERE s.updated_at > %s
+            AND s.sessionId = %s", $expiredTime , session_id());
+
+        if(!empty($user)){
+            DB::update('userSessions',[
+                'updated_at' => date('Y-m-d H:i:s',time())
+            ],'sessionId=%s',session_id());
+            $request = $request->withAttribute('user',$user);
         }
 
         return $handler->handle($request);
+    }
+
+
+    public static function mustBeLogin()
+    {
+        return function (Request $request, RequestHandler $handler) {
+            $user = $request->getAttribute('user');
+            $response = $handler->handle($request);
+
+            if(empty($user)){
+                return $response->withHeader('Location','/error/forbidden');
+            }
+
+            return $response;
+        };
+    }
+
+    public static function mustNotLogin()
+    {
+        return function (Request $request, RequestHandler $handler){
+            $user = $request->getAttribute('user');
+            $response = $handler->handle($request);
+            if(empty($user)){
+                return $response;
+            }
+
+            return $response->withHeader('Location','/');
+        };
     }
 }

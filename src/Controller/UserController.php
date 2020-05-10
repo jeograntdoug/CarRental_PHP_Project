@@ -57,6 +57,8 @@ class UserController
             unset($newUser['confirm']);
 
             DB::insert('users',$newUser);
+            
+            $newUserId = DB::insertId();
             return $response->withHeader('Location','/');        
         }
 
@@ -70,6 +72,13 @@ class UserController
         ]);
     }
 
+    
+
+
+
+    /**
+     * Helper Methods
+     */
 
     private function isValidPhoto($photo){
         if(!v::notEmpty()->validate($photo)){

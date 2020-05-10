@@ -10,18 +10,20 @@ use DB;
 
 class AuthController
 {
-    public function authenticate (Request $request, Response $response)
+    public function authorize (Request $request, Response $response)
     {
         $post = $request->getParsedBody();
 
         $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s",$post['email']);
 
-        // if(v::notEmpty()->validate($user)) {
-
-        // }
-        if(isset($user['passsword']) && $post['password'] === $user['password']){
+        if(isset($user['password']) && $post['password'] == $user['password']){
             unset($user['password']);
-            $_SESSION['user'] = $user;
+
+            DB::replace("userSessions",[
+                'userId' => $user['id'],
+                'sessionId' => session_id(),
+                'updated_at' => date('Y-m-d H:i:s',time())
+            ]);
             return $response->withHeader('Location','/');
         }
 
