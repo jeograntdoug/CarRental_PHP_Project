@@ -5,27 +5,130 @@
 {% endblock title %}
 
 {% block section %}
-   <div>
-       <div>
-           <span>REVIEW & RESERVE</span>
-       </div>
-       <div>
-           <div>
-               <div>
-                   <span class="font-bold text-lg">Rental Details</span><br>
-                   <li>
-                       <span class="font-bold">DATES & TIMES</span>
-                       <span class="font-bold text-green-600 text-underline"><a href="#">NIDUFT</a></span>
-                   </li>
-               </div>
-               <div>
+    <div>
+        <div>
+            <span class="font-bold text-4xl">REVIEW & RESERVE</span>
+        </div>
+        <div class="flex flex-row">
+            <div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg">Rental Details</span><br>
+                    <ul>
+                        <li>
+                            <span class="font-bold">DATES & TIMES</span>
+                            <span class="font-bold text-green-700 text-underline"><a href="#">MODIFY</a></span>
+                        </li>
+                        <li>
+                            <span>Mon, May 11, 2020 @ 12:00 PM</span><br>
+                            <span>Tue, May 12, 2020 @ 12:00 PM</span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <span class="font-bold">PICK-UP & RETURN LOCATION</span>
+                            <span class="font-bold text-green-700 text-underline"><a href="#">MODIFY</a></span>
+                        </li>
+                        <li>
+                            <span>Dollard-des-Ormeaux Boulevard Saint-Jean</span><br>
+                            <span>4655 Boul Saint-Jean Ste D</span><br>
+                            <span>Dollard-Des-Ormeaux, QC H9H 2A7</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-3">
+                    <div class="flex flex-row">
+                        <div>
+                            <span class="font-bold text-lg">Full Size</span><br>
+                            <span>Chevrolet Malibu or similar</span>
+                        </div>
 
-               </div>
-           </div>
-           <div>
+                        <div>
+                            <img src="resources/carimages/fullsize_car.png" width="100">
+                        </div>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>
+                                <span class="font-bold">VEHICLE</span>
+                                <span class="font-bold text-green-700 text-underline"><a href="#">MODIFY</a></span>
+                            </li>
+                            <li>
+                                <span>Time And Distance 1 Day(s) @ CAD 19.99 / Day</span>
+                                <span>CAD 19.99</span>
+                            </li>
+                            <li>
+                                <span>Unlimited Kilometres</span>
+                                <span>Included</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>
+                                <span class="font-bold">TAXES & FEES</span>
+                                <span class="font-bold text-green-700 text-underline"><a href="#">LEARN MORE</a></span>
+                            </li>
+                            <li>
+                                <span>TPS / GST (5.0%)</span>
+                                <span>CAD 1.23</span>
+                            </li>
+                            <li>
+                                <span>TVQ / QST (9.975%)</span>
+                                <span>CAD 2.45</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg">ESTIMATED TOTAL</span>
+                        <span>CAD</span>
+                        <span class="text-lg">28</span>
+                        <span>.22</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <span>* required to complete your reservation</span>
+                </div>
+                <div>
+                    <form method="post" action="#">
+                        <div class="flex flex-row">
+                            <div>
+                                <label for="firstName">First Name *</label><br>
+                                <input type="text" name="firstName" id="firstName">
+                            </div>
+                            <div class="ml-6">
+                                <label for="lastname">Last Name *</label><br>
+                                <input type="text" name="lastName" id="lastname">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="phoneNumber">Phone Number *</label><br>
+                            <input name="phoneNumber" type="number" id="phoneNumber">
+                        </div>
+                        <div>
+                            <label for="email">Email Address *</label><br>
+                            <input type="email" name="email" id="email">
+                        </div>
+                        <div>
+                            <lable for="drivingLicense">Driver's License</lable><br>
+                            <input type="text" name="drivingLicense" id="drivingLicense">
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg text-underline">Complete Your Booking</span><br>
+                            <span>You will be charged when you pick up your rental.</span>
+                            <div class="float-right">
+                                <sup>CAD</sup><span class="font-bold">28</span><sup class="font-bold">.22</sup>
+                            </div>
 
-           </div>
-       </div>
-   </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+    </div>
 
 {% endblock section %}
