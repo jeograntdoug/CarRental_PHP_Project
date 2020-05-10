@@ -12,8 +12,7 @@ final class ErrorController
     {
         $view = Twig::fromRequest($request);
 
-
-        return $view->render($response, 'errors/error_forbidden.html.twig');
+        return $view->render($response->withStatus(403), 'errors/error_forbidden.html.twig');
     } 
 
     public function pageNotFound(Request $request, Response $response, $args = [])
@@ -26,6 +25,6 @@ final class ErrorController
     public function internal(Request $request, Response $response, $args = [])
     {
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'errors/error_internal.html.twig');
+        return $view->render($response->withStatus(500), 'errors/error_internal.html.twig');
     } 
 }

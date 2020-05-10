@@ -18,6 +18,9 @@ use DB;
 
         $app->get('/', HomeController::class . ':home');
         $app->get('/ajax/logout', HomeController::class . ':logout');
+        $app->get('/profile/{id:[0-9]+}', UserController::class . ':show');
+        $app->post('/profile/{id:[0-9]+}', UserController::class . ':update');
+
 
         $app->group('', function (RouteCollectorProxy $group) {
             $group->get('/register', HomeController::class . ':register');
@@ -28,6 +31,9 @@ use DB;
         })->add(AuthMiddleware::mustNotLogin());
 
 
+        $app->group('/admin', function(RouteCollectorProxy $group) {
+        });
+
         //Routes for Errors Pages
         $app->group('/errors', function (RouteCollectorProxy $group) {
             // ??: Couldn't use /error url. Is it reserved??
@@ -35,6 +41,7 @@ use DB;
             $group->get('/pagenotfound', ErrorController::class . ':pageNotFound');
             $group->get('/internal', ErrorController::class . ':internal');
         });
+
 
         $app->post('/search/location', function (Request $request, Response $response, array $args) {
             $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');

@@ -1,12 +1,12 @@
 <div class="p-2">
     <div class="p-2 flex items-center justify-between">
         <div class="text-5xl">
-            !!Logo!!
+            <a href="/">!!Logo!!</a>
         </div>
         <div> 
             <div id="loginDiv" class="text-right">
-                {% if user %}
-                    <span >You are logged in as {{ user.name }}</span>
+                {% if loginUser %}
+                    <span >You are logged in as <a href="/profile/{{ loginUser.id }}">{{ loginUser.name }}</a></span>
                     <button id="btLogout" class="underline">Logout</button>
                 {% else %}
                     <a class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
@@ -42,11 +42,13 @@
         });
 
         $("#btLogout").click(function(){
-            $("#loginDiv")
-                .load("/ajax/logout")
-                .fail(function(){
-                    console.log("logout Fail!!");
-                });
+            $.get( "/ajax/logout", function(data) {
+                $("#loginDiv").html(data);
+                location.reload();
+            })
+            .fail(function() {
+                console.log("logout Fail!!");
+            });
         });
     });
 </script>
