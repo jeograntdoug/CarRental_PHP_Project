@@ -11,7 +11,6 @@
     $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
-//u=Zbhb-Zvhy7
 
 // // Twig Setting
 // // Add Twig function

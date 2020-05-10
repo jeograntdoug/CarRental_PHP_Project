@@ -3,10 +3,12 @@
 
     namespace App\Controller;
 
-    use DB;
+use App\Middleware\AuthMiddleware;
+use DB;
     use Slim\App;
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
+    use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
     use Slim\Routing\RouteCollectorProxy;
     use Slim\Views\Twig;
 
@@ -15,11 +17,15 @@
         // Routes
 
         $app->get('/', HomeController::class . ':home');
-        $app->get('/register', HomeController::class . ':register');
-        $app->get('/login', HomeController::class . ':login');
+        $app->get('/ajax/logout', HomeController::class . ':logout');
 
-        $app->post('/login', AuthController::class . ':authenticate');
-        $app->post('/user/create', UserController::class . ':create');
+        $app->group('', function (RouteCollectorProxy $group) {
+            $group->get('/register', HomeController::class . ':register');
+            $group->get('/login', HomeController::class . ':login');
+            $group->post('/login', AuthController::class . ':authorize');
+            $group->post('/register', UserController::class . ':create');
+
+        })->add(AuthMiddleware::mustNotLogin());
 
 
         //Routes for Errors Pages

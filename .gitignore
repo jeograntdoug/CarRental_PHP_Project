@@ -94,5 +94,6 @@ fabric.properties
 cache/
 sftp.json
 /node_modules
+tmp/
 
 .env
