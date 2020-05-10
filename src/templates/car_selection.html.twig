@@ -10,10 +10,10 @@
             <span class="font-bold text-4xl text-dark">CHOOSE A VEHICLE CLASS</span>
             <div class="float-right">
                 <span class="font-bold">SORT BY</span>
-                <select>
+                <select id="sortSelector">
                     <option>Featured</option>
-                    <option>Price low to high</option>
-                    <option>Price high to low</option>
+                    <option name="lowToHigh">Price low to high</option>
+                    <option name="highToLow">Price high to low</option>
                 </select>
             </div>
         </div>
@@ -105,7 +105,7 @@
             </div>
 
             <div class="bg-blue-400 w-4/5 " id="vehicleList">
-                {% for vehicle in allVehicles %}
+                {% for vehicle in allVehicles|sort((a,b)=> a.category <=> b.category) %}
 
                     <div class="flex flex-row vehicles {{ vehicle.category }} {{ "bags_" ~ vehicle.bags }} {{ "passengers_" ~ vehicle.passengers }}">
                         <div class="m-2 w-1/3">
@@ -113,7 +113,7 @@
                         </div>
                         <div class="flex flex-col m-2 w-2/3">
                             <div>
-                                <p class="font-bold text-2xl">{{ vehicle.subtype }}</p>
+                                <p class="font-bold text-2xl subtype">{{ vehicle.subtype }}</p>
                             </div>
                             <div class="flex flex-row">
                                 <div class="w-1/2">
@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="">
                                     <p class="text-lg font-bold">CAD
-                                        <span>{{ vehicle.dailyPrice }}</span></p><br><br>
+                                        <span class="dailyPrice">{{ vehicle.dailyPrice }}</span></p><br><br>
                                     <button class="font-bold text-lg px-4 py-1 text-blue-800 bg-yellow-100 border-solid border-teal-800 border-2">
                                         Select
                                     </button>
@@ -150,7 +150,7 @@
                 $(".vehicles").map(function (i, item) {
                     var curPassNum = item.querySelector(".passengers").innerText;
                     var curBagNum = item.querySelector(".bags").innerText;
-                    if (curBagNum >= passengerNum && curBagNum >= bagNum) {
+                    if (curPassNum >= passengerNum && curBagNum >= bagNum) {
                         // alert("satisfied: " + curPassNum + ", " + curBagNum);
                         $(item).show();
                     }
@@ -160,7 +160,7 @@
                     $(`.${this.name}`).map(function (i, item) {
                         var curPassNum = item.querySelector(".passengers").innerText;
                         var curBagNum = item.querySelector(".bags").innerText;
-                        if (curBagNum >= passengerNum && curBagNum >= bagNum) {
+                        if (curPassNum >= passengerNum && curBagNum >= bagNum) {
                             // alert("satisfied: " + curPassNum + ", " + curBagNum);
                             $(item).show();
                         }
@@ -170,6 +170,19 @@
             }
         }
 
+        function sortLowToHigh(a, b) {
+            return Number(a.querySelector(".dailyPrice").innerText) - Number(b.querySelector(".dailyPrice").innerText);
+        }
+
+        function sortHighToLow(a,b){
+            return Number(b.querySelector(".dailyPrice").innerText) - Number(a.querySelector(".dailyPrice").innerText);
+        }
+
+        function sortFeatured(a, b){
+            //alert(a.querySelector(".subtype").innerText < b.querySelector(".subtype").innerText);
+            return a.querySelector(".subtype").innerText < b.querySelector(".subtype").innerText ? -1 : 1;
+        }
+
         $(document).ready(function () {
             $("button").on("click", function () {
                 document.location.href = "/review_reserve";
@@ -177,6 +190,23 @@
 
             $("input[type=checkbox]").on("click", function () {
                 toggleVehicles();
+            })
+
+
+            $("#sortSelector").change(function () {
+                if ($(this).find("option:selected").attr("name") === "lowToHigh") {
+                    //alert("low to high");
+                    $(".vehicles").sort(sortLowToHigh).appendTo($("#vehicleList"));
+
+                } else if ($(this).find("option:selected").attr("name") === "highToLow") {
+                    //alert("high to low");
+                    $(".vehicles").sort(sortHighToLow).appendTo($("#vehicleList"));
+                } else {
+                    //alert("featured");
+                    $(".vehicles").sort(sortFeatured).appendTo($("#vehicleList"));
+                }
+
+
             })
         })
     </script>
