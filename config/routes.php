@@ -71,7 +71,7 @@ use DB;
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args){
             $view = Twig::fromRequest($request);
-            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+
             $allVehicles = DB::query("SELECT * FROM cartypes");
 
             return $view->render($response, 'car_selection.html.twig',[
@@ -79,16 +79,30 @@ use DB;
             ]);
         });
 
-        $app->get('/review_reserve', function (Request $request, Response $response, array $args){
+
+        $app->post('/review_reserve/{id:[0-9]+}', function (Request $request, Response $response, array $args){
             $view = Twig::fromRequest($request);
-            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+            $selId = $args['id'];
 
-            $jsonText = $request->getBody()->getContents();
-
-            $data = json_decode($jsonText,true);
+            $selVehicle = DB::query("SELECT * FROM cartypes WHERE id = %s", $selId);
 
             return $view->render($response, 'review_reserve.html.twig',[
-
+                'selVehicle'=>$selVehicle[0]
             ]);
         });
+
+
+   /*     $app->post('/review_reserve', function (Request $request, Response $response, array $args){
+            $view = Twig::fromRequest($request);
+
+        $jsonText = $request->getBody()->getContents();
+
+           // $data = json_decode($jsonText,true);
+
+            $result = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = 2" );
+            $jsonData = json_encode($result);
+            return $response->getBody()->write($jsonData);
+        });*/
+
+
     };

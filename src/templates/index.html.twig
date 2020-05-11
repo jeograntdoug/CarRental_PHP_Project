@@ -130,13 +130,11 @@
                             alert("AJAX error: " + jqxhr.responseText);
                         }
                     }).done(function (cityList) {
-
                         $("#searchResult").empty();
                         $.each(cityList, function (i, item) {
                             var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
                             $("#searchResult").append(option);
                         });
-
 
                     }).always(function () {
 
