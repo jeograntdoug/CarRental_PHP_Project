@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
     declare(strict_types=1);
 
     namespace App\Controller;
@@ -76,8 +76,11 @@ use DB;
 
         $app->get('/review_reserve', function (Request $request, Response $response, array $args){
             $view = Twig::fromRequest($request);
-            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
 
+            $jsonText = $request->getBody()->getContents();
+
+            $data = json_decode($jsonText,true);
 
             return $view->render($response, 'review_reserve.html.twig',[
 
