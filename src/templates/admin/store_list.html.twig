@@ -1,0 +1,60 @@
+{% extends "admin/layouts/layout.html.twig" %}
+
+{% block title %}
+    Store List
+{% endblock title %}
+
+{% block section %}
+<div>
+    <div class="flex">
+        <input class="p-2 border-2 w-full h-full" type="text" name="searchKeyword" placeHolder="Search here..."/>
+        <button class="ml-2 px-4 rounded bg-gray-700 text-gray-300 border-3" >Search</button>
+    </div>
+</div>
+
+<div>
+    <div id="editorDiv" class="">
+        <label id="editorLabel">Something to edit: </label>
+        <input id="editorInput" class="text-right" type="text" value="" />
+        <button id="editorButton" class="bg-gray-500 rounded py-1 px-2">Edit</button>
+    </div>
+    <table class="w-full mt-2 border-2 border-collapse">
+        <tr id="tableHeader" class="bg-gray-800 text-gray-200">
+            <th class="border-2 border-gray-200">ID</th>
+            <th class="border-2 border-gray-200">Province</th>
+            <th class="border-2 border-gray-200">City</th>
+            <th class="border-2 border-gray-200">Postal Code</th>
+            <th class="border-2 border-gray-200">Address</th>
+            <th class="border-2 border-gray-200">Phone</th>
+        </tr>
+        <tbody id="tbodyStoreList" class="text-center">
+        {% for store in storeList %}
+            <tr> 
+                <td class="storeId border-2 border-gray-500">{{ store.id }}</td> 
+                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.province }}</td> 
+                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.city }}</td>
+                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.postCode }}</td>
+                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.address }}</td>
+                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.phone }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock section %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $("td.storeField").click(function () {
+            let index = $(this).index();
+            let fieldName = $("#tableHeader").children().eq(index).html();
+            $("#editorLabel").html(fieldName);
+            $("#editorInput").val($(this).html());
+        });
+        $("#editorButton").click(function () {
+
+        });
+    });
+</script>
+{% endblock scripts %}

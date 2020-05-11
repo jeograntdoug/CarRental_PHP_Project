@@ -32,6 +32,11 @@ use DB;
 
 
         $app->group('/admin', function(RouteCollectorProxy $group) {
+            $group->get('', AdminController::class . ':home');
+            $group->get('/stores', AdminController::class . ':storeList');
+            $group->get('/cartypes', AdminController::class . ':carTypeList');
+            $group->get('/cars', AdminController::class . ':carList');
+            $group->get('/reservations', AdminController::class . ':reservationList');
         });
 
         //Routes for Errors Pages
