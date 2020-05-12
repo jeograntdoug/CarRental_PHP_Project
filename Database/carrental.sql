@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: May 10, 2020 at 05:38 PM
+-- Generation Time: May 12, 2020 at 04:08 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -95,7 +95,7 @@ INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`
 (20, 'Truck', 'Small Pickup', 'Chevy Colorado or similar', 4, 3, 446.98, '\\resources\\carimages\\small_pickup_truck.png'),
 (21, 'Truck', 'Pickup', 'Ford F150 Super Crew or similar', 5, 4, 506.98, '\\resources\\carimages\\pickup_truck.png'),
 (22, 'Van', '7 Passenger Minivan', 'Dodge Grand Caravan or similar', 7, 5, 325.98, '\\resources\\carimages\\7_passenger_van.png'),
-(23, 'Van', 'Cargo Van', 'Ford Transit Cargo or similar', 2, 0, 425.98, '\\resources\\carimages\\cargo_van.png');
+(23, 'Van', 'Cargo Van', 'Ford Transit Cargo or similar', 2, 50, 425.98, '\\resources\\carimages\\cargo_van.png');
 
 -- --------------------------------------------------------
 
@@ -1855,6 +1855,13 @@ CREATE TABLE `users` (
   `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`, `email`, `phone`, `role`, `idPhoto`, `password`) VALUES
+(1, 'Tom', 'Miller', 'G8394983', '6755,Rue Brunswick', 'Tmiller@gmail.com', '5148797982', 'user', NULL, 'Tmillier123');
+
 -- --------------------------------------------------------
 
 --
@@ -1974,7 +1981,7 @@ ALTER TABLE `stores`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

@@ -21,7 +21,8 @@
                 <div>
                     <p class="mb-2 font-bold">1. PICK-UP LOCATION (Postal Code, City)</p>
                     <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
-                           name="pickupLocation" id="pickupSearchText" list="pickupLocationList" autocomplete="false"/><br>
+                           name="pickupLocation" id="pickupSearchText" list="pickupLocationList"
+                           autocomplete="false"/><br>
                     <datalist id="pickupLocationList">
                     </datalist>
                 </div>
@@ -33,42 +34,42 @@
                 <div id="returnLocation" class="hidden">
                     <p class="my-2 font-bold text-blue-900">PICK-UP RETURN LOCATION (Postal Code, City)</p>
                     <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
-                           name="returnLocation" id="returnSearchText" list="returnLocationList" autocomplete="false"/><br>
+                           name="returnLocation" id="returnSearchText" list="returnLocationList"
+                           autocomplete="false"/><br>
                     <datalist id="returnLocationList">
                     </datalist>
                 </div>
             </div>
 
-            {#
-                    <div id="googleMap" style="width: 60%;height: 400px"></div>
-                    <script>
-                        function initMap() {
-                            var location = {lat: 45.4560, lng: -73.8623};
-                            var map = new google.maps.Map(document.getElementById("googleMap"), {
-                                zoom: 8,
-                                center: location,
-                                draggable: true
-                            });
 
-                            var icon={
-                                url:"../../resources/images/pin_red.png",
-                                scaledSize:new google.maps.Size(50,50),
-                                origin: new google.maps.Point(0,0),
-                                anchor: new google.maps.Point(25,25)
-                            }
+            <div id="googleMap"  class="my-5 w-3/4" style="height: 400px"></div>
+            <script>
+                function initMap() {
+                    var location = {lat: 45.4560, lng: -73.8623};
+                    var map = new google.maps.Map(document.getElementById("googleMap"), {
+                        zoom: 8,
+                        center: location,
+                        draggable: true
+                    });
 
-                            var marker = new google.maps.Marker({
-                                position: location,
-                                map: map,
-                                icon:icon
+                    var icon = {
+                        url: "../../resources/companyimages/enterprise_icon.jpg",
+                        scaledSize: new google.maps.Size(50, 50),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(25, 25)
+                    }
 
-                            });
-                        }
-                    </script>
+                    var marker = new google.maps.Marker({
+                        position: location,
+                        map: map,
+                        icon: icon
 
-                    <script async defer
-                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
-            #}
+                    });
+                }
+            </script>
+
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
 
 
             <div class="mt-6">
@@ -195,7 +196,6 @@
             $("#returnSearchText").on("keyup", function () {
                 searchCities(this, "#returnLocationList");
             });
-
 
 
             $("#pickupDate").val(getTodayDate);

@@ -279,6 +279,7 @@
 2. To do until next Scrum:
 - Authentication using Token
 
+
 3. Need assistance / figure things out
 
 **************************************************
@@ -298,6 +299,30 @@
 
 
 2020/05/11 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
+
+2020/05/12 Wang Wei
+1. Done since last scrum:
+- update layout and javascript design.
+
+
+2. To do until next Scrum:
+- finish reservation submit and database modification
+- implement moidfy functions on review_reserve page
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/12 Donghyeok Seo
 1. Done since last scrum
 - Add library Respect/Validation for validation
 
