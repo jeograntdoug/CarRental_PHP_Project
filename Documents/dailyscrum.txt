@@ -206,12 +206,12 @@
 
 2020/05/08 Donghyeok Seo
 1. Done since last scrum
-- Add library Respect/Validation for validation
 
 2. To do until next Scrum:
-- Authentication using Token
+- user information validation using respect/validation library
 
 3. Need assistance / figure things out
+- Authentication using Token
 
 **************************************************
 
@@ -228,10 +228,10 @@
 
 2020/05/09 Donghyeok Seo
 1. Done since last scrum
-- Add library Respect/Validation for validation
+- user information validation using respect/validation library
 
 2. To do until next Scrum:
-- Authentication using Token
+- keep user login for 1 hour with session id
 
 3. Need assistance / figure things out
 
@@ -250,10 +250,10 @@
 
 2020/05/09 Donghyeok Seo
 1. Done since last scrum
-- Add library Respect/Validation for validation
+- user information validation using respect/validation library
 
 2. To do until next Scrum:
-- Authentication using Token
+- keep user login for 1 hour with session id
 
 3. Need assistance / figure things out
 
@@ -274,10 +274,12 @@
 
 2020/05/10 Donghyeok Seo
 1. Done since last scrum
-- Add library Respect/Validation for validation
+- keep user login for 1 hour with session id
 
 2. To do until next Scrum:
-- Authentication using Token
+- add authorization middleware save session id with user id
+in this middleware
+- check if user login expired or not in middleware
 
 
 3. Need assistance / figure things out
@@ -300,10 +302,14 @@
 
 2020/05/11 Donghyeok Seo
 1. Done since last scrum
-- Add library Respect/Validation for validation
+- add authorization middleware save session id with user id
+in this middleware
+- check if user login expired or not in middleware
 
 2. To do until next Scrum:
-- Authentication using Token
+- admin page layout
+- admin store page
+- Crud for store page
 
 3. Need assistance / figure things out
 
@@ -324,10 +330,12 @@
 
 2020/05/12 Donghyeok Seo
 1. Done since last scrum
-- Add library Respect/Validation for validation
+- admin page layout
+- admin store page
 
 2. To do until next Scrum:
-- Authentication using Token
+- Crud for store page
+- Validation for store page
 
 3. Need assistance / figure things out
 
