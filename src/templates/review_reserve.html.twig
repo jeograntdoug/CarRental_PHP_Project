@@ -1,32 +1,35 @@
 {% extends "layouts/layout.html.twig" %}
 
 {% block title %}
-    Login page
+    Review And Reserve page
 {% endblock title %}
 
 {% block section %}
     <div>
         <div>
-            <span class="font-bold text-4xl">REVIEW & RESERVE</span>
+            <span class="font-bold text-4xl w-full block mx-12 my-5">REVIEW & RESERVE</span>
         </div>
-        <div class="flex flex-row">
-            <div>
-                <div class="flex flex-col">
-                    <span class="font-bold text-lg">Rental Details</span><br>
+        <hr style="border-bottom: 3px solid grey">
+        <div class="flex items-stretch">
+            <div class="w-2/5 mx-12 mt-6 self-start">
+                <div class="flex flex-col bg-gray-400 p-5 block border-solid border-black border">
+                    <span class="font-bold text-3xl">Rental Details</span><br>
                     <ul>
-                        <li>
-                            <span class="font-bold">DATES & TIMES</span>
-                            <span class="font-bold text-green-700 text-underline"><a href="#">MODIFY</a></span>
+                        <li class="flex my-3">
+                            <span class="font-bold flex-1 text-lg ">DATES & TIMES</span>
+                            <span class="font-bold text-green-700  underline flex-1 text-center"><a
+                                        href="#">MODIFY</a></span>
                         </li>
                         <li>
                             <span>Mon, May 11, 2020 @ 12:00 PM</span><br>
                             <span>Tue, May 12, 2020 @ 12:00 PM</span>
                         </li>
                     </ul>
-                    <ul>
-                        <li>
-                            <span class="font-bold">PICK-UP & RETURN LOCATION</span>
-                            <span class="font-bold text-green-700 text-underline"><a href="#">MODIFY</a></span>
+                    <ul class="mt-5">
+                        <li class="flex my-3">
+                            <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
+                            <span class="font-bold  text-center flex-1 text-green-700 underline"><a
+                                        href="#">MODIFY</a></span>
                         </li>
                         <li>
                             <span>Dollard-des-Ormeaux Boulevard Saint-Jean</span><br>
@@ -35,85 +38,92 @@
                         </li>
                     </ul>
                 </div>
-                <div class="mt-3">
+                <div class="my-8 block px-5 py-3 bg-gray-400 border-solid border-black border">
                     <div class="flex flex-row">
-                        <div>
-                            <span class="font-bold text-lg">Full Size</span><br>
-                            <span>Chevrolet Malibu or similar</span>
+                        <div class="flex-1">
+                            <span class="font-bold inline-block text-3xl text-red-900 text-opacity-100 my-3">{{ selVehicle.subtype }}</span><br>
+                            <span>{{ selVehicle.description }}</span>
                         </div>
 
-                        <div>
-                            <img src="resources/carimages/fullsize_car.png" width="100">
+                        <div class="block flex-1 flex justify-center">
+                            <img class="w-3/5 text-center" src={{ selVehicle.photoPath }}>
                         </div>
                     </div>
-                    <div>
+                    <div class="block mt-3">
                         <ul>
-                            <li>
-                                <span class="font-bold">VEHICLE</span>
-                                <span class="font-bold text-green-700 text-underline"><a href="#">MODIFY</a></span>
+                            <li class="flex mb-3">
+                                <span class="font-bold text-lg flex-1">VEHICLE</span>
+                                <span class="font-bold text-green-700 underline flex-1 text-center"><a
+                                            href="#">MODIFY</a></span>
                             </li>
-                            <li>
-                                <span>Time And Distance 1 Day(s) @ CAD 19.99 / Day</span>
-                                <span>CAD 19.99</span>
+                            <li class="flex">
+                                <span class="flex-1">Time And Distance 1 Day(s) @ CAD {{ selVehicle.dailyPrice }} / Day</span><br>
+                                <span class="flex-1 text-center">CAD 19.99</span>
                             </li>
-                            <li>
-                                <span>Unlimited Kilometres</span>
-                                <span>Included</span>
+                            <li class="flex">
+                                <span class="flex-1">Unlimited Kilometres</span>
+                                <span class="flex-1 text-center">Included</span>
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    <div class="block mt-5">
                         <ul>
-                            <li>
-                                <span class="font-bold">TAXES & FEES</span>
-                                <span class="font-bold text-green-700 text-underline"><a href="#">LEARN MORE</a></span>
+                            <li class="flex">
+                                <span class="font-bold text-lg flex-1">TAXES & FEES</span>
+                                <span class="font-bold text-green-700 underline flex-1 text-center"><a href="#">LEARN MORE</a></span>
                             </li>
-                            <li>
-                                <span>TPS / GST (5.0%)</span>
-                                <span>CAD 1.23</span>
+                            <li class="flex">
+                                <span class="flex-1">TPS / GST (5.0%)</span>
+                                <span class="flex-1 text-center">CAD 1.23</span>
                             </li>
-                            <li>
-                                <span>TVQ / QST (9.975%)</span>
-                                <span>CAD 2.45</span>
+                            <li class="flex">
+                                <span class="flex-1">TVQ / QST (9.975%)</span>
+                                <span class="flex-1 text-center">CAD 2.45</span>
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <span class="font-bold text-lg">ESTIMATED TOTAL</span>
-                        <span>CAD</span>
-                        <span class="text-lg">28</span>
-                        <span>.22</span>
+                    <hr style="border-bottom: 2px solid grey; margin-top: 5px">
+                    <div class="block my-5 flex">
+                        <span class="font-bold text-xl flex-1">ESTIMATED TOTAL</span>
+                        <div class="flex-1 text-center">
+                            <sup>CAD</sup>
+                            <span class="text-lg">28</span>
+                            <sup>.22</sup>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="mt-6 mx-12  w-2/5 self-start">
                 <div>
-                    <span>* required to complete your reservation</span>
+                    <span class="mb-3 px-5 block">* Required to complete your reservation</span>
                 </div>
-                <div>
+                <div class="block border border-black border-solid p-5">
                     <form method="post" action="#">
-                        <div class="flex flex-row">
-                            <div>
-                                <label for="firstName">First Name *</label><br>
-                                <input type="text" name="firstName" id="firstName">
+                        <div class="flex flex-row pb-5 inline-block">
+                            <div class="flex-1">
+                                <label for="firstName" class="pb-2 inline-block font-bold">First Name *</label><br>
+                                <input type="text" name="firstName" id="firstName" class="w-2/3" value={{ userInfo.firstname }}>
                             </div>
-                            <div class="ml-6">
-                                <label for="lastname">Last Name *</label><br>
-                                <input type="text" name="lastName" id="lastname">
+                            <div class="flex-1">
+                                <label for="lastname" class="pb-2 inline-block font-bold">Last Name *</label><br>
+                                <input type="text" name="lastName" id="lastname" class="w-2/3" value={{ userInfo.lastname }}>
                             </div>
                         </div>
-                        <div>
-                            <label for="phoneNumber">Phone Number *</label><br>
-                            <input name="phoneNumber" type="number" id="phoneNumber">
+                        <div class="pb-5 block">
+                            <label for="phoneNumber" class="pb-2 inline-block font-bold">Phone Number *</label><br>
+                            <input name="phoneNumber" type="number" id="phoneNumber" class="w-2/5" value={{ userInfo.phone }}>
                         </div>
-                        <div>
-                            <label for="email">Email Address *</label><br>
-                            <input type="email" name="email" id="email">
+                        <div class="pb-5 block">
+                            <label for="email" class="pb-2 inline-block font-bold">Email Address *</label><br>
+                            <input type="email" name="email" id="email" class="w-1/2" value={{ userInfo.email }}>
                         </div>
-                        <div>
-                            <lable for="drivingLicense">Driver's License</lable><br>
-                            <input type="text" name="drivingLicense" id="drivingLicense">
+                        <div class="block pb-5">
+                            <label for="drivingLicense" class="inline-block pb-2 font-bold">Driver's License *</label>
+                            <br>
+                            <input type="text" name="drivingLicense" id="drivingLicense" class="w-1/2" value={{ userInfo.drivinglicense }}>
                         </div>
+                        <hr style="border: 1px solid grey; margin-bottom: 2em">
                         <div>
                             <span class="font-bold text-lg text-underline">Complete Your Booking</span><br>
                             <span>You will be charged when you pick up your rental.</span>
@@ -122,13 +132,15 @@
                             </div>
 
                         </div>
+                        <div class="flex justify-center mt-10">
+                            <input type="submit" value="RESERVE ORDER" class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
-        <div>
 
-        </div>
     </div>
 
 {% endblock section %}

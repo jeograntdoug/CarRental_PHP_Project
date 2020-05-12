@@ -258,3 +258,27 @@
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/10 Wang Wei
+1. Done since last scrum:
+- finish filters/sorting/passing data on car_selection page
+
+2. To do until next Scrum:
+- finish review_reserve page
+- page layout adjustment
+- add more map functions
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/10 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
