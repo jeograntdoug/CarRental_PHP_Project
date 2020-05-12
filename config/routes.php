@@ -59,9 +59,9 @@
 
             $secondChar = substr($searchText, 1, 1);
             if (ctype_digit($secondChar) && strlen($searchText) <= 3) {
-                $result = DB::query("SELECT * FROM cities WHERE postalCode like %s", $searchText . '%');
+                $result = DB::query("SELECT * FROM cities WHERE postalCode like %s ORDER BY name", $searchText . '%');
             } else {
-                $result = DB::query("SELECT * FROM cities WHERE name like %s", $searchText . '%');
+                $result = DB::query("SELECT * FROM cities WHERE name like %s ORDER BY name", $searchText . '%');
             }
 
             $response->getBody()->write(json_encode($result));
@@ -71,6 +71,7 @@
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
+            $dateLocateData = $request->getParsedBody();
 
             $allVehicles = DB::query("SELECT * FROM cartypes");
             $carMinPrice = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
@@ -102,7 +103,8 @@
                 'bag3'=>$bag3,
                 'bag4'=>$bag4,
                 'bag5'=>$bag5,
-                'bag7'=>$bag7
+                'bag7'=>$bag7,
+                'dateLocationData'=>$dateLocateData
             ]);
         });
 
@@ -112,9 +114,11 @@
             $selId = $args['id'];
 
             $selVehicle = DB::query("SELECT * FROM cartypes WHERE id = %s", $selId);
+            $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
 
             return $view->render($response, 'review_reserve.html.twig', [
-                'selVehicle' => $selVehicle[0]
+                'selVehicle' => $selVehicle[0],
+                'userInfo'=>$userInfo
             ]);
         });
 

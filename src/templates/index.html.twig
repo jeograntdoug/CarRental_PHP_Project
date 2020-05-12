@@ -5,142 +5,227 @@
 {% endblock title %}
 
 {% block section %}
-    <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
-    <ul class="p-4 bg-red-100">
-        <li>Error1Error1Error1Error1Error1Error1Error1Error1</li>
-        <li>Error2Error2Error2Error2Error2Error2Error2Error2</li>
-        <li>Error3Error3Error3Error3Error3Error3Error3Error3</li>
-    </ul>
-    {% if errors %}
-        <ul>
+    <div class=" mx-auto w-3/5">
+        <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
+        <ul class="p-4 font-bold text-2xl text-green-900">
+            <li>Welcome, please select location and date</li>
         </ul>
-    {% endif %}
+        {% if errors %}
+            <ul>
+            </ul>
+        {% endif %}
 
 
+        <form class="text-lg p-4" method="post" action="/car_selection">
+            <div>
+                <div>
+                    <p class="mb-2 font-bold">1. PICK-UP LOCATION (Postal Code, City)</p>
+                    <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
+                           name="pickupLocation" id="pickupSearchText" list="pickupLocationList" autocomplete="false"/><br>
+                    <datalist id="pickupLocationList">
+                    </datalist>
+                </div>
 
+                <div class="mt-2">
+                    <input type="checkbox" name="isDiffLocation"/>
+                    <span class="font-bold">Return to a different location</span>
+                </div>
+                <div id="returnLocation" class="hidden">
+                    <p class="my-2 font-bold text-blue-900">PICK-UP RETURN LOCATION (Postal Code, City)</p>
+                    <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
+                           name="returnLocation" id="returnSearchText" list="returnLocationList" autocomplete="false"/><br>
+                    <datalist id="returnLocationList">
+                    </datalist>
+                </div>
+            </div>
 
-    <form class="text-lg p-4" method="post" action="/car_selection">
-        <div>
-            <p class="mb-2">1. PICK-UP LOCATION (Postal Code, City)</p>
-            <input placeholder="X1X or city name" class="w-full p-2 h-10 border-2 border-gray-500" type="text"
-                   name="location" id="searchText" list="searchResult" autocomplete="false"/><br>
-            <datalist id="searchResult">
-            </datalist>
-            <input class="mr-1" type="checkbox" name="isDiffLocation"/>Return to a different location
-        </div>
+            {#
+                    <div id="googleMap" style="width: 60%;height: 400px"></div>
+                    <script>
+                        function initMap() {
+                            var location = {lat: 45.4560, lng: -73.8623};
+                            var map = new google.maps.Map(document.getElementById("googleMap"), {
+                                zoom: 8,
+                                center: location,
+                                draggable: true
+                            });
 
-        {#
+                            var icon={
+                                url:"../../resources/images/pin_red.png",
+                                scaledSize:new google.maps.Size(50,50),
+                                origin: new google.maps.Point(0,0),
+                                anchor: new google.maps.Point(25,25)
+                            }
 
+                            var marker = new google.maps.Marker({
+                                position: location,
+                                map: map,
+                                icon:icon
 
-                <div id="googleMap" style="width: 60%;height: 400px"></div>
-                <script>
-                    function initMap() {
-                        var location = {lat: 45.4560, lng: -73.8623};
-                        var map = new google.maps.Map(document.getElementById("googleMap"), {
-                            zoom: 8,
-                            center: location,
-                            draggable: true
-                        });
-
-                        var icon={
-                            url:"../../resources/images/pin_red.png",
-                            scaledSize:new google.maps.Size(50,50),
-                            origin: new google.maps.Point(0,0),
-                            anchor: new google.maps.Point(25,25)
+                            });
                         }
+                    </script>
 
-                        var marker = new google.maps.Marker({
-                            position: location,
-                            map: map,
-                            icon:icon
-
-                        });
-                    }
-                </script>
-
-                <script async defer
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
-        #}
+                    <script async defer
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
+            #}
 
 
-        <div class="mt-4">
-            <p class="mb-2">2. PICK-UP TIME</p>
-            <div class="flex">
-                <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="pickupDate"/>
-                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time" list="pickupTime"
-                       step="600" name="pickupTime">
-                <datalist id="pickupTime">
-                    <option value="08:00"/>
-                    <option value="09:00"/>
-                    <option value="10:00"/>
-                    <option value="11:00"/>
-                    <option value="12:00"/>
-                    <option value="13:00"/>
-                    <option value="14:00"/>
-                    <option value="15:00"/>
-                    <option value="16:00"/>
-                    <option value="17:00"/>
-                    <option value="18:00"/>
-                </datalist>
+            <div class="mt-6">
+                <div class="flex inline-block">
+                    <span class="mb-2 font-bold w-5/12 ">2. PICK-UP TIME</span>
+                    <span class="mb-2 font-bold pl-10">RENT DAYS</span>
+                </div>
+
+                <div class="">
+                    <input class="w-1/5 font-bold text-center p-2 mr-5 h-10 border-2 border-gray-500" type="date"
+                           name="pickupDate" id="pickupDate" value="2012-1-2"/>
+                    <input class="pickupTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500 mr-5"
+                           value="09:00:00"
+                           type="time"
+                           list="pickupTimeList"
+                           step="600" name="pickupTime" id="pickupTime">
+                    <datalist id="pickupTimeList">
+                        <option value="08:00"/>
+                        <option value="09:00"/>
+                        <option value="10:00"/>
+                        <option value="11:00"/>
+                        <option value="12:00"/>
+                        <option value="13:00"/>
+                        <option value="14:00"/>
+                        <option value="15:00"/>
+                        <option value="16:00"/>
+                        <option value="17:00"/>
+                        <option value="18:00"/>
+                        <option value="19:00"/>
+                        <option value="20:00"/>
+                    </datalist>
+                    <input class="w-1/6 text-center font-bold p-2 h-10 border-2 border-gray-500" type="number" min="1"
+                           value="1"
+                           id="rentDays"/>
+                </div>
             </div>
-        </div>
-        <div class="mt-4">
-            <p class="mb-2">3. RETURN TIME</p>
-            <div class="flex">
-                <input class="w-full p-2 h-10 border-2 border-gray-500" type="date" name="returnDate"/>
-                <input class="w-full p-2 h-10 border-2 border-gray-500" value="09:00:00" type="time" step="600"
-                       list="returnTime" name="returnTime">
-                <datalist id="returnTime">
-                    <option value="08:00"/>
-                    <option value="09:00"/>
-                    <option value="10:00"/>
-                    <option value="11:00"/>
-                    <option value="12:00"/>
-                    <option value="13:00"/>
-                    <option value="14:00"/>
-                    <option value="15:00"/>
-                    <option value="16:00"/>
-                    <option value="17:00"/>
-                    <option value="18:00"/>
-                </datalist>
+            <div class="mt-4">
+                <p class="mb-2 font-bold">3. RETURN TIME</p>
+                <div class="flex">
+                    <input class="returnDate font-bold w-1/5 text-center p-2 mr-5 h-10 border-2 border-gray-500"
+                           type="date"
+                           name="returnDate" id="returnDate"/>
+                    <input class="returnTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500"
+                           value="09:00:00"
+                           type="time" step="600"
+                           list="returnTimeList" name="returnTime" id="returnTime">
+                    <datalist id="returnTimeList">
+                        <option value="08:00"/>
+                        <option value="09:00"/>
+                        <option value="10:00"/>
+                        <option value="11:00"/>
+                        <option value="12:00"/>
+                        <option value="13:00"/>
+                        <option value="14:00"/>
+                        <option value="15:00"/>
+                        <option value="16:00"/>
+                        <option value="17:00"/>
+                        <option value="18:00"/>
+                        <option value="19:00"/>
+                        <option value="20:00"/>
+                    </datalist>
+                </div>
             </div>
-        </div>
-        {# <div class="mt-4">
-             <p class="mb-2">4. Age (Postal Code, City or Airport)</p>
-             <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="age"/>
-         </div>#}
-        <div class="mt-4 text-right">
-            <button class="px-8 py-2 rounded bg-gray-500" type="submit" value="car_selection">CONTINUE</button>
-        </div>
-    </form>
+
+            <div class="mt-6 text-right">
+                <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
+            </div>
+        </form>
+    </div>
 
     <script>
-        $(document).ready(function () {
-            $("#searchText").on("keyup", function () {
-                var curSearchText = $("#searchText").val();
-                if (curSearchText.length >= 2) {
-                    var dataString = JSON.stringify({searchText: curSearchText})
 
-                    $.ajax({ // FIXME: escape special characters using urlencode
-                        url: "/search/location",
-                        type: "POST",
-                        dataType: "json",
-                        data: dataString,
-                        error: function (jqxhr, status, errorThrown) {
-                            alert("AJAX error: " + jqxhr.responseText);
-                        }
-                    }).done(function (cityList) {
-                        $("#searchResult").empty();
-                        $.each(cityList, function (i, item) {
-                            var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
-                            $("#searchResult").append(option);
-                        });
+        function getTodayDate() {
+            var today = new Date();
+            return today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+        }
 
-                    }).always(function () {
+        function getNowTime() {
+            var today = new Date();
 
+            return ("0" + today.getHours()).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10).slice(-2);
+        }
+
+        function getReturnDate(days) {
+            days = days > 0 ? days : 1;
+
+            var today = new Date();
+            var retDate = new Date(Number(today));
+            retDate.setDate(today.getDate() + days);
+            return retDate.getFullYear() + "-" + ("0" + (retDate.getMonth() + 1)).slice(-2) + "-" + ("0" + retDate.getDate()).slice(-2);
+        }
+
+        function searchCities(element, listElement) {
+            var curSearchText = $(element).val();
+            if (curSearchText.length >= 2) {
+                var dataString = JSON.stringify({searchText: curSearchText})
+
+                $.ajax({ // FIXME: escape special characters using urlencode
+                    url: "/search/location",
+                    type: "POST",
+                    dataType: "json",
+                    data: dataString,
+                    error: function (jqxhr, status, errorThrown) {
+                        alert("AJAX error: " + jqxhr.responseText);
+                    }
+                }).done(function (cityList) {
+                    $(listElement).empty();
+                    $.each(cityList, function (i, item) {
+                        var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
+                        $(listElement).append(option);
                     });
-                }
+
+                }).always(function () {
+
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            $("#pickupSearchText").on("keyup", function () {
+                searchCities(this, "#pickupLocationList");
             });
+
+            $("#returnSearchText").on("keyup", function () {
+                searchCities(this, "#returnLocationList");
+            });
+
+
+
+            $("#pickupDate").val(getTodayDate);
+            $("#pickupTime").val(getNowTime);
+            $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
+            $("#returnTime").val(getNowTime);
+
+            $("#returnDate").on("change", function () {
+                var retDate = $(this).val();
+                var picDate = $("#pickupDate").val();
+                if (retDate <= picDate) {
+                    alert("Return date must be at least one day after pick-up date!");
+                }
+            })
+
+            $("#rentDays").on("change", function () {
+                var days = $(this).val() > 0 ? $("#rentDays").val() : 1;
+                $(this).val(days);
+                $("#returnDate").val(getReturnDate(Number(days)));
+            })
+
+            $("input[name=isDiffLocation]").on("click", function () {
+                if ($(this).prop("checked")) {
+                    //alert("selected");
+                    $("#returnLocation").show();
+                } else {
+                    $("#returnLocation").hide();
+                }
+            })
+
 
         })
         $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
