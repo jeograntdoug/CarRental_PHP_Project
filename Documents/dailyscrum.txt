@@ -282,3 +282,28 @@
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/11 Wang Wei
+1. Done since last scrum:
+- update layout of index, car_selection, review_reserve pages.
+- implement different location input
+- partially finish data passing from car_selection to review_reserve page
+
+2. To do until next Scrum:
+- save date and locations data to session.
+- save reservation to db.
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/11 Donghyeok Seo
+1. Done since last scrum
+- Add library Respect/Validation for validation
+
+2. To do until next Scrum:
+- Authentication using Token
+
+3. Need assistance / figure things out
+
+**************************************************
