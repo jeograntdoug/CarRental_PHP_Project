@@ -20,11 +20,25 @@ class AdminStoreController
         ]);
     }
 
+    public function create (Request $request, Response $response, array $args){
+        // TODO : Authentication
+        
+        $fieldList = ['province','city','postCode','address','phone'];
+
+        $jsonData = json_decode($request->getBody(), true);
+        // TODO : validate $post
+
+        DB::insert('stores',$jsonData);
+
+        return $response;
+    }
+
     public function delete (Request $request, Response $response, array $args){
         // TODO : Authentication
         $storeId = $args['id'];
 
-        DB::delete('stores','id=%s',$storeId);
+        DB::delete('stores','id=%i',$storeId);
+        $response->getBody()->write(json_encode(DB::affectedRows()));
 
         return $response;
     }
@@ -43,6 +57,7 @@ class AdminStoreController
         ];
 
         DB::update('stores',$data,'id=%s',$storeId);
+        $response->getBody()->write(json_encode(DB::affectedRows()));
 
         return $response;
     }

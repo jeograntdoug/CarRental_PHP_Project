@@ -1,10 +1,16 @@
-<div id="grayout" class="hidden fixed inset-0 w-full h-full bg-gray-800 opacity-50">
-    <div id="grayoutContainer">
-        <span id="grayoutBtClose" class="material-icons absolute right-0 text-write"> clear </span>
-        <div id="grayoutContent">
-            {% block content %}
-
-            {% endblock content %}
-        </div>
+<div id="grayout" class="fixed inset-0 flex items-center justify-center ">
+    <div class="absolute w-full h-full bg-gray-800 opacity-50"></div>
+    <div id="grayoutContainer" class="relative z-20 inline-block  rounded bg-gray-200 border-2">
+        <span id="grayoutBtClose" class="material-icons absolute hover:text-gray-500 cursor-pointer right-0 text-write"> clear </span>
+        {% block content %}
+        {% endblock content %}
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#grayoutBtClose").click(function () {
+            $("#grayout").addClass("hidden");
+        });
+    });
+</script>
