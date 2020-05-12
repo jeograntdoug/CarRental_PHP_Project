@@ -51,11 +51,12 @@
 
         $("#btAdd").click(function () {
             $.ajax({
-
+                
             }).done(function () {
-
+                $("#notificationTitle").html("New Store Added!");
+                $("#notificationDiv").show(300).delay(2000).hide(500);
             }).fail(function () {
-
+                console.log("Add new store ajax failed");
             });
 
 
