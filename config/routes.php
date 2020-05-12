@@ -38,6 +38,7 @@
             $group->get('/reservations', AdminController::class . ':reservationList');
 
             $group->get('/ajax/stores', AdminStoreController::class . ':index');
+            $group->post('/ajax/stores', AdminStoreController::class . ':create');
             $group->patch('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':edit');
             $group->delete('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':delete');
         });

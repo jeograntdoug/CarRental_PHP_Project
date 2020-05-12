@@ -1,6 +1,68 @@
 {% extends "admin/grayout/grayout_layout.html.twig" %}
 
 {% block content%}
-<div>
+<div class="p-4">
+    <div class="flex justify-between mt-2">
+        <label class="mr-3">Province</label>
+        <div>
+            <input class="w-56" type="text" name="province" required/>
+            <p class="text-xs text-red-400 h-3">errorMsg</p>
+        </div>
+    </div>
+    <div class="flex justify-between mt-2">
+        <label class="mr-3">City</label>
+        <div>
+            <input class="w-56" type="text" name="city" required/>
+            <p class="text-xs text-red-400 h-3">errorMsg</p>
+        </div>
+    </div>
+    <div class="flex justify-between mt-2">
+        <label class="mr-3">Postal Code</label>
+        <div>
+            <input class="w-56" type="text" name="postCode" required/>
+            <p class="text-xs text-red-400 h-3">errorMsg</p>
+        </div>
+    </div>
+    <div class="flex justify-between mt-2">
+        <label class="mr-3">Address</label>
+        <div>
+            <input class="w-56" type="text" name="address" required/>
+            <p class="text-xs text-red-400 h-3">errorMsg</p>
+        </div>
+    </div>
+    <div class="flex justify-between mt-2">
+        <label class="mr-3">Phone</label>
+        <div>
+            <input class="w-56" type="text" name="phone" required/>
+            <p class="text-xs text-red-400 h-3">errorMsg</p>
+        </div>
+    </div>
+    <div class="flex justify-center mt-5">
+        <button id="btAdd" class="py-1 px-2 mr-3 bg-green-400 rounded">Add Store</button>
+        <button id="btCancel" class="py-1 px-2 bg-green-400 rounded" >Cancel</button>
+    </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#btCancel").click(function () {
+            $("#grayout").addClass("hidden");
+        });
+
+        $("#btAdd").click(function () {
+            $.ajax({
+                
+            }).done(function () {
+                $("#notificationTitle").html("New Store Added!");
+                $("#notificationDiv").show(300).delay(2000).hide(500);
+            }).fail(function () {
+                console.log("Add new store ajax failed");
+            });
+
+
+            $("#grayout").addClass("hidden");
+        });
+    });
+</script>
+
 {% endblock content%}
