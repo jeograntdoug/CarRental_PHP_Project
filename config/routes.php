@@ -8,7 +8,6 @@
     use Slim\App;
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
-    use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
     use Slim\Routing\RouteCollectorProxy;
     use Slim\Views\Twig;
 
@@ -37,6 +36,10 @@
             $group->get('/cartypes', AdminController::class . ':carTypeList');
             $group->get('/cars', AdminController::class . ':carList');
             $group->get('/reservations', AdminController::class . ':reservationList');
+
+            $group->get('/ajax/stores', AdminStoreController::class . ':index');
+            $group->patch('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':edit');
+            $group->delete('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':delete');
         });
 
         //Routes for Errors Pages
