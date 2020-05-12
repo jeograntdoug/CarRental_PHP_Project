@@ -13,10 +13,12 @@
 </div>
 
 <div>
-    <div id="editorDiv" class="">
-        <label id="editorLabel">Something to edit: </label>
-        <input id="editorInput" class="text-right" type="text" value="" />
-        <button id="editorButton" class="bg-gray-500 rounded py-1 px-2">Edit</button>
+    <div id="editorDiv" class="hidden flex absolute z-20 top-0 items-center bg-gray-200 border-1 border-gray-800">
+        <input id="editorInput" class="text-center" type="text" value="" />
+        <button id="editorButton" class="bg-gray-500 font-bold text-sm rounded py-1 px-2">Edit</button>
+    </div>
+
+    <div>
     </div>
     <table class="w-full mt-2 border-2 border-collapse">
         <tr id="tableHeader" class="bg-gray-800 text-gray-200">
@@ -28,33 +30,108 @@
             <th class="border-2 border-gray-200">Phone</th>
         </tr>
         <tbody id="tbodyStoreList" class="text-center">
-        {% for store in storeList %}
-            <tr> 
-                <td class="storeId border-2 border-gray-500">{{ store.id }}</td> 
-                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.province }}</td> 
-                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.city }}</td>
-                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.postCode }}</td>
-                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.address }}</td>
-                <td class="storeField border-2 border-gray-500 cursor-pointer">{{ store.phone }}</td>
-            </tr>
-        {% endfor %}
+            {% include 'admin/cards/store_card.html.twig' %}
         </tbody>
     </table>
+    <div class="text-right">
+        <button class="mt-3 px-3 py-1 rounded bg-green-400">Add new store</button>
+    </div>
 </div>
 {% endblock section %}
+
+{% block grayout %}
+    {% include "admin/grayout/grayout_store_list.html.twig" %}
+{% endblock grayout %}
 
 {% block scripts %}
 <script>
     $(document).ready(function () {
-        $("td.storeField").click(function () {
-            let index = $(this).index();
-            let fieldName = $("#tableHeader").children().eq(index).html();
-            $("#editorLabel").html(fieldName);
-            $("#editorInput").val($(this).html());
-        });
-        $("#editorButton").click(function () {
+        function reloadstoreList()
+        {
+            let url = "/admin/ajax/stores";
+            $.ajax({
+                url: url,
+                type: "GET",
+            }).done(function (storeList) {
+                $("#tbodyStoreList").html(storeList);
+            }).fail(function () {
+                console.log("store list ajax fail!");
+            });
+        }
 
+        let selStoreId = 1;
+        let fieldIndex = 1;
+
+        $("table").on("click","tbody td.storeField",function () 
+        {
+            event.stopPropagation();
+
+            selStoreId = $(this).parent().children(".storeId").html();
+
+            $("#editorDiv").addClass("flex");
+            $("#editorDiv").removeClass("hidden");
+
+            fieldIndex = $(this).index();
+
+            $("#editorInput").val($(this).html());
+
+            $("#editorDiv").offset($(this).position());
+
+            let width = $(this).width();
+            $("#editorInput")
+                .width(width - 20)
+                .focus();
         });
+
+        $("#editorInput").click(function () {
+            event.stopImmediatePropagation();
+        });
+
+        $("#editorButton").click(function () 
+        {
+            event.stopImmediatePropagation();
+
+            let value = $("#editorInput").val();
+            let data = {
+                "fieldIndex" : fieldIndex,
+                "value" : value
+            };
+            let url = "/admin/ajax/stores/" + selStoreId;
+
+            $.ajax({
+                url: url,
+                type: "PATCH",
+                data: JSON.stringify(data),
+                datatype: 'json'
+            })
+            .done(function (storeList) {
+                reloadstoreList();
+            }).fail(function () {
+                console.log("store deletion ajax fail!");
+            });
+
+            $("#editorDiv").addClass("hidden");
+            $("#editorDiv").removeClass("flex");
+        });
+
+        $("table").on("click","tbody td span.btDelete",function () 
+        {
+            let storeId = $(this).parents("tr").children(".storeId").html();
+            let url = "/admin/ajax/stores/" + storeId;
+
+            $.ajax({
+                url: url,
+                type: "DELETE",
+            })
+            .done(function (storeList) {
+                reloadstoreList();
+            }).fail(function () {
+                console.log("store deletion ajax fail!");
+            });
+        });
+
+        /** Gray Out control */
+
     });
 </script>
 {% endblock scripts %}

@@ -13,6 +13,8 @@ class AdminController
         $view = Twig::fromRequest($request);
         return $view->render($response, 'admin/index.html.twig');
     }
+
+
     public function storeList(Request $request, Response $response){
         $view = Twig::fromRequest($request);
 
@@ -22,14 +24,20 @@ class AdminController
             'storeList' => $storeList
         ]);
     }
+
+
     public function carTypeList(Request $request, Response $response){
         $view = Twig::fromRequest($request);
         return $view->render($response, 'admin/cartype_list.html.twig');
     }
+
+
     public function carList(Request $request, Response $response){
         $view = Twig::fromRequest($request);
         return $view->render($response, 'admin/car_list.html.twig');
     }
+
+
     public function reservationList(Request $request, Response $response){
         $view = Twig::fromRequest($request);
         return $view->render($response, 'admin/reservation_list.html.twig');
