@@ -340,3 +340,29 @@ in this middleware
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/13 Wang Wei
+1. Done since last scrum:
+- add store records to database.
+- add recenter google map when search different location
+
+
+2. To do until next Scrum:
+- finish modify location, map marker to show store info
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/13 Donghyeok Seo
+1. Done since last scrum
+- admin page layout
+- admin store page
+
+2. To do until next Scrum:
+- Crud for store page
+- Validation for store page
+
+3. Need assistance / figure things out
+
+**************************************************

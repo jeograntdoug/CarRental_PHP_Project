@@ -49,6 +49,7 @@
             <script>
                 function initMap() {
                     var location = {lat: 45.4560, lng: -73.8623};
+                    //var location = {lat:44,lng:-80};
                     var map = new google.maps.Map(document.getElementById("googleMap"), {
                         zoom: 8,
                         center: location,
@@ -229,7 +230,12 @@
                     alert("AJAX error: " + jqxhr.responseText);
                 }
             }).done(function (cityCoordinates) {
-                map.setCenter(cityCoordinates);
+                location = {lat: Number(cityCoordinates.lat), lng: Number(cityCoordinates.lng)};
+
+                var map =new google.maps.Map(document.getElementById("googleMap"),{
+                    center: new google.maps.LatLng(Number(cityCoordinates.lat), Number(cityCoordinates.lng))
+                });
+
 
             }).always(function () {
 
@@ -254,8 +260,12 @@
 
                 for (let i = 0; i < options.length; i++) {
                     var option = options[i];
-
-                    alert(`${option.innerText} : ${input} : ${option.innerText === input}`);
+                    if (option.innerText === input) {
+                        //alert(`${option.innerText} : ${input} : ${option.innerText === input}`);
+                        var cityname = option.innerText.substr(0, option.innerText.length - 6);
+                        resetMapCenter(cityname);
+                        break;
+                    }
 
 
                 }

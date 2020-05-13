@@ -179,10 +179,10 @@
 
             $cityname = $request->getBody()->getContents();
 
-            $cityCoorinates = DB::queryFirstRow("SELECT latitude, longitude FROM cities WHERE name = %s", json_decode($cityname));
+            $cityCoorinates = DB::queryFirstRow("SELECT latitude as 'lat', longitude as 'lng' FROM cities WHERE name = %s", json_decode($cityname));
 
 
-            $response->getBody()->write(json_encode($adjacentStores));
+            $response->getBody()->write(json_encode($cityCoorinates));
             return $response;
         });
 
