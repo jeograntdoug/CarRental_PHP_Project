@@ -10,7 +10,6 @@ class UserControllerTest extends TestCase
 {
     protected $client;
     protected $faker;
-    protected $session;
 
     /**
      * This method is called before the first test of this test class is run.
@@ -33,7 +32,6 @@ class UserControllerTest extends TestCase
     protected function setUp():void
     {
         $this->faker = Faker\Factory::create();
-        $this->session = new GuzzleHttp\Cookie\CookieJar;
         $this->client = new GuzzleHttp\Client([
             'base_uri' => 'http://project.ipd20:8888',
             'http_errors' => false,
@@ -146,9 +144,7 @@ class UserControllerTest extends TestCase
         ]);
 
 
-        $cookie = new GuzzleHttp\Cookie\CookieJar;
         $johnResponse = $this->client->post('/login',[
-            'cookies' => $cookie,
             'form_params' => [
                 'email' => 'johndoe@example.com',
                 'password' => 'q1w2E3'
@@ -156,20 +152,15 @@ class UserControllerTest extends TestCase
         ]);
 
         $this->assertEquals(200, $johnResponse->getStatusCode());
-        $path = $cookie->getCookieByName('PHPSESSID')->getPath();
-        $this->assertEquals('/',$path);
 
         $janeResponse = $this->client->post('/login',[
-            'cookies' => $cookie,
             'form_params' => [
                 'email' => 'janeDoe@example.com',
                 'password' => 'q1w2E3'
             ]
         ]);
 
-        $this->assertEquals(401, $janeResponse->getStatusCode());
-        $path = $cookie->getCookieByName('PHPSESSID')->getPath();
-        $this->assertEquals('/',$path);
+        $this->assertEquals(200, $janeResponse->getStatusCode());
     }
 
     
