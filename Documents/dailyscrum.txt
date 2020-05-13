@@ -340,3 +340,29 @@ in this middleware
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/13 Wang Wei
+1. Done since last scrum:
+- update layout and javascript design.
+
+
+2. To do until next Scrum:
+- finish reservation submit and database modification
+- implement moidfy functions on review_reserve page
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/13 Donghyeok Seo
+1. Done since last scrum
+- Crud for store page
+- Validation for store page
+
+2. To do until next Scrum:
+- Crud for other admin pages
+- Validation for other admin pages
+
+3. Need assistance / figure things out
+
+**************************************************
