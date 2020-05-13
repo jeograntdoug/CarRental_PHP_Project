@@ -24,7 +24,7 @@ class UserController
             && $photo['idPhoto']->getSize() != 0){
 
             $idPhoto = $photo['idPhoto'];
-            $photoBinary = $this->photoFileToBinary($newUser['email'],$idPhoto);
+            $photoBinary = $this->photoFileToBinary($idPhoto);
 
             $newUser['idPhoto'] = $photoBinary;
 
@@ -94,7 +94,7 @@ class UserController
             && $photo['idPhoto']->getSize() != 0){
 
             $idPhoto = $photo['idPhoto'];
-            $photoBinary = $this->photoFileToBinary($newUser['email'],$idPhoto);
+            $photoBinary = $this->photoFileToBinary($idPhoto);
 
             $newUser['idPhoto'] = $photoBinary;
 
@@ -136,6 +136,7 @@ class UserController
         return $view->render($response, 'profile.html.twig',[
             'user' => [
                 'id' => $user['id'],
+                'email' => $user['email'],
                 'name' => $user['firstname'],
                 'firstname' => $user['firstname'],
                 'lastname' => $user['lastname'],
@@ -177,10 +178,10 @@ class UserController
         return true;
     }
 
-    private function photoFileToBinary($email, $idPhoto){
+    private function photoFileToBinary($idPhoto){
         if($this->isValidPhoto($idPhoto))
         {
-            $tmpPath = __DIR__ . '/../../tmp/' . $email . '.' ;
+            $tmpPath = __DIR__ . '/../../tmp/'. session_id() .'.' ;
 
             if($idPhoto->getClientMediaType() == 'image/png'){
                 $tmpPath .= 'png';

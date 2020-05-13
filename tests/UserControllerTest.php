@@ -167,7 +167,7 @@ class UserControllerTest extends TestCase
             ]
         ]);
 
-        $this->assertEquals(200, $janeResponse->getStatusCode());
+        $this->assertEquals(401, $janeResponse->getStatusCode());
         $path = $cookie->getCookieByName('PHPSESSID')->getPath();
         $this->assertEquals('/',$path);
     }
@@ -195,10 +195,10 @@ class UserControllerTest extends TestCase
             'form_params' => $janeDoe
         ]);
         
-        $janeResponse = $this->client->request('GET','/user/' . $johnId);
+        $janeResponse = $this->client->request('GET','/profile/' . $johnId);
         $this->assertEquals(403,$janeResponse->getStatusCode());
 
-        $janeResponse = $this->client->request('GET','/user/' . $janeId);
+        $janeResponse = $this->client->request('GET','/profile/' . $janeId);
         $this->assertEquals(200,$janeResponse->getStatusCode());
     }
 
