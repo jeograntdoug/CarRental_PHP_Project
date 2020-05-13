@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: May 12, 2020 at 04:08 AM
+-- Generation Time: May 13, 2020 at 04:44 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -1773,7 +1773,9 @@ INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `l
 (1652, 'S9X', 'Meadow Lake', 'SK', 54.1335, -108.4347),
 (1653, 'Y0A', 'Southeastern Yukon (Watson Lake)', 'YT', 61.5793, -131.1481),
 (1654, 'Y0B', 'Central Yukon (Dawson City)', 'YT', 64.645, -137.536),
-(1655, 'Y1A', 'Whitehorse', 'YT', 60.7161, -135.0537);
+(1655, 'Y1A', 'Whitehorse', 'YT', 60.7161, -135.0537),
+(1656, 'M4B', 'Toronto', 'ON', 43.6532, -79.3832),
+(1657, 'K0A', 'Ottawa', 'ON', 45.4215, -75.6972);
 
 -- --------------------------------------------------------
 
@@ -1821,8 +1823,9 @@ CREATE TABLE `reservations` (
 CREATE TABLE `stores` (
   `id` int(11) NOT NULL,
   `city` varchar(20) NOT NULL,
-  `address` varchar(20) NOT NULL,
-  `phone` varchar(10) NOT NULL,
+  `storeName` varchar(50) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `phone` varchar(15) NOT NULL,
   `postCode` varchar(10) NOT NULL,
   `province` char(2) NOT NULL,
   `latitude` double NOT NULL,
@@ -1833,8 +1836,18 @@ CREATE TABLE `stores` (
 -- Dumping data for table `stores`
 --
 
-INSERT INTO `stores` (`id`, `city`, `address`, `phone`, `postCode`, `province`, `latitude`, `longitude`) VALUES
-(1, 'Kirkland', '6755,Rue Brunswick', '5148797982', 'H9J2K3', 'QC', 45.456, -73.8623);
+INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`, `province`, `latitude`, `longitude`) VALUES
+(1, 'Kirkland', 'Montreal West Island', '6755,Rue Brunswick', '514-879-7982', 'H9J 2K3', 'QC', 45.456, -73.8623),
+(2, 'Toronto', 'North Toronto Eglinton & Yonge', '2512 Yonge Street', '416-413-0725', 'M4P 2H7', 'ON', 43.7068, -79.3983),
+(3, 'Richmond', 'Vancouver International Airport', '3211 Grant Mcconachi', '833-619-3651', 'V7B 0A4', 'BC', 49.1967, 123.1815),
+(4, 'Montreal', 'Montreal Delta Hotel', '475 President Kennedy', '514-931-3722', 'H3A 1J7', 'QC', 45.5070645, -73.5682808),
+(5, 'Laval', 'Laval NCL Procolor', '1616 Desserte Sud Aut. 440 Est', '450-688-0414', 'H7M 5E5', 'QC', 45.5896979, -73.731631),
+(6, 'Chateauguay', 'Châteauguay', '79 St-jean Baptiste', '450-923-5400', 'J6J 3H7', 'QC', 45.3629762, -73.8148386),
+(7, 'Montreal', 'Montreal Boulevard Décarie', '5960 Boulevard Decarie', '514-737-9292', 'H3X 2J7', 'QC', 45.4884633, -73.6432817),
+(8, 'Mississauga', 'Toronto Pearson International Airport', 'Pearson International Airport', '833-619-3659', 'L5P 1A2', 'ON', 43.6777215, -79.6270084),
+(9, 'Toronto', 'Toronto York-Crosstown Runnymede', '3441 Dundas St. West', '416-766-1307', 'M6S 2S5', 'ON', 43.6653502, -79.4882599),
+(10, 'North York', 'North York Weston', '2610 Weston Rd', '416-675-0728', 'M9N 2B1', 'ON', 43.7114079, -79.5377247),
+(11, 'Brampton', 'Brampton Fisherman Dr.', '2 Fisherman Dr. Unit 3', '905-456-8288', 'L7A 1B5', 'ON', 43.7147304, -79.8032623);
 
 -- --------------------------------------------------------
 
@@ -1957,7 +1970,7 @@ ALTER TABLE `cartypes`
 -- AUTO_INCREMENT for table `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1656;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1658;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -1975,7 +1988,7 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`

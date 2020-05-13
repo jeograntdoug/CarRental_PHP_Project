@@ -11,7 +11,6 @@
     $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
-
 // // Twig Setting
 // // Add Twig function
 // $errorMessageFunction = new \Twig\TwigFunction('getRegisterFieldError', function ($field) {

@@ -5,6 +5,9 @@
 {% endblock title %}
 
 {% block section %}
+
+
+
     <div class=" mx-auto w-3/5">
         <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
         <ul class="p-4 font-bold text-2xl text-green-900">
@@ -22,7 +25,7 @@
                     <p class="mb-2 font-bold">1. PICK-UP LOCATION (Postal Code, City)</p>
                     <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
                            name="pickupLocation" id="pickupSearchText" list="pickupLocationList"
-                           autocomplete="false"/><br>
+                           autocomplete="false"/>
                     <datalist id="pickupLocationList">
                     </datalist>
                 </div>
@@ -42,7 +45,7 @@
             </div>
 
 
-            <div id="googleMap"  class="my-5 w-3/4" style="height: 400px"></div>
+            <div id="googleMap" class="my-5 w-3/4" style="height: 400px"></div>
             <script>
                 function initMap() {
                     var location = {lat: 45.4560, lng: -73.8623};
@@ -68,9 +71,11 @@
                 }
             </script>
 
-            <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap"></script>
 
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
+
+            </script>
 
             <div class="mt-6">
                 <div class="flex inline-block">
@@ -80,7 +85,7 @@
 
                 <div class="">
                     <input class="w-1/5 font-bold text-center p-2 mr-5 h-10 border-2 border-gray-500" type="date"
-                           name="pickupDate" id="pickupDate" value="2012-1-2"/>
+                           name="pickupDate" id="pickupDate"/>
                     <input class="pickupTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500 mr-5"
                            value="09:00:00"
                            type="time"
@@ -140,7 +145,11 @@
         </form>
     </div>
 
+
+
     <script>
+
+        var defaultCoordinates = {lat: 45.4560, lng: -73.8623};
 
         function getTodayDate() {
             var today = new Date();
@@ -149,13 +158,11 @@
 
         function getNowTime() {
             var today = new Date();
-
             return ("0" + today.getHours()).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10).slice(-2);
         }
 
         function getReturnDate(days) {
             days = days > 0 ? days : 1;
-
             var today = new Date();
             var retDate = new Date(Number(today));
             retDate.setDate(today.getDate() + days);
@@ -178,7 +185,7 @@
                 }).done(function (cityList) {
                     $(listElement).empty();
                     $.each(cityList, function (i, item) {
-                        var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
+                        var option = new Option(item['name'] + " (" + item['postalCode'] + ")");
                         $(listElement).append(option);
                     });
 
@@ -188,15 +195,80 @@
             }
         }
 
+
+        function reloadMapCoordinate(element) {
+            var cityInfo = $(element).val();
+            var cityname = cityInfo.substr(0, cityInfo.length - 5);
+            alert(cityname);
+            $.ajax({
+                url: "/search/city/80",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(cityname),
+                error: function (jqxhr, status, errorThrown) {
+                    alert("AJAX error: " + jqxhr.responseText);
+                }
+            }).done(function (cityCoordinates) {
+                if (cityInfo.length === 0) {
+
+                } else {
+
+                }
+            }).always(function () {
+
+            })
+        }
+
+        function resetMapCenter(cityname) {
+            $.ajax({ // FIXME: escape special characters using urlencode
+                url: "/search/cityname",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(cityname),
+                error: function (jqxhr, status, errorThrown) {
+                    alert("AJAX error: " + jqxhr.responseText);
+                }
+            }).done(function (cityCoordinates) {
+                map.setCenter(cityCoordinates);
+
+            }).always(function () {
+
+            });
+        }
+
         $(document).ready(function () {
-            $("#pickupSearchText").on("keyup", function () {
+
+            $('form input').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+
+            $("#pickupSearchText").on("change", function () {
+                var input = $(this).val();
+                var options = document.getElementById("pickupLocationList").options;
+                alert(input);
+                alert(options.length);
+
+                for (let i = 0; i < options.length; i++) {
+                    var option = options[i];
+
+                    alert(`${option.innerText} : ${input} : ${option.innerText === input}`);
+
+
+                }
+            })
+
+
+            $("#pickupSearchText").keydown(function (e) {
                 searchCities(this, "#pickupLocationList");
             });
 
-            $("#returnSearchText").on("keyup", function () {
+            $("#returnSearchText").on("keypress", function () {
                 searchCities(this, "#returnLocationList");
             });
-
 
             $("#pickupDate").val(getTodayDate);
             $("#pickupTime").val(getNowTime);
@@ -232,6 +304,11 @@
             console.log("Ajax error occured on " + settings.url);
             alert("Ajax error occurred");
         });
+
+
     </script>
+
+
+
 
 {% endblock section %}
