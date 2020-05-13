@@ -37,14 +37,38 @@ class AuthMiddleware implements Middleware
     }
 
 
-    public static function mustBeLogin()
+    public static function mustBeLoginAsAdmin()
     {
-        return function (Request $request, RequestHandler $handler) {
-            $user = $request->getAttribute('user');
+        return function (Request $request, RequestHandler $handler)  {
+
+            $user = AuthMiddleware::getUserInCurrentSession(session_id());
+
             $response = $handler->handle($request);
 
             if(empty($user)){
-                return $response->withHeader('Location','/error/forbidden');
+                return $response->withHeader('Location','/errors/forbidden');
+            }
+
+            $role = DB::queryFirstField("SELECT role FROM users WHERE id=%s",$user['id']);
+
+            if($role != 'admin'){
+                return $response->withHeader('Location','/errors/forbidden');
+            }
+
+            return $response;
+        };
+    }
+
+
+    public static function mustBeLogin()
+    {
+        return function (Request $request, RequestHandler $handler) {
+            $user = AuthMiddleware::getUserInCurrentSession(session_id());
+
+            $response = $handler->handle($request);
+
+            if(empty($user)){
+                return $response->withHeader('Location','/errors/forbidden');
             }
 
             return $response;
@@ -55,7 +79,7 @@ class AuthMiddleware implements Middleware
     {
         return function (Request $request, RequestHandler $handler){
             
-            $user = $request->getAttribute('user');
+            $user = AuthMiddleware::getUserInCurrentSession(session_id());
 
             if(empty($user)){
                 $response = $handler->handle($request);
@@ -67,7 +91,7 @@ class AuthMiddleware implements Middleware
         };
     }
 
-    private function getUserInCurrentSession($sessionId){
+    public static function getUserInCurrentSession($sessionId){
         // 60 mins max
         $expiredTime = date('Y-m-d H:i:s',time() - 60 * 60);
 

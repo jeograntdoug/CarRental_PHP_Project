@@ -16,9 +16,12 @@
         // Routes
 
         $app->get('/', HomeController::class . ':home');
-        $app->get('/ajax/logout', HomeController::class . ':logout');
-        $app->get('/profile/{id:[0-9]+}', UserController::class . ':show');
-        $app->post('/profile/{id:[0-9]+}', UserController::class . ':update');
+
+        $app->group('', function (RouteCollectorProxy $group) {
+            $group->get('/ajax/logout', HomeController::class . ':logout');
+            $group->get('/profile/{id:[0-9]+}', UserController::class . ':show');
+            $group->post('/profile/{id:[0-9]+}', UserController::class . ':update');
+        })->add(AuthMiddleware::mustBeLogin());
 
 
         $app->group('', function (RouteCollectorProxy $group) {
@@ -41,7 +44,7 @@
             $group->post('/ajax/stores', AdminStoreController::class . ':create');
             $group->patch('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':edit');
             $group->delete('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':delete');
-        });
+        })->add(AuthMiddleware::mustBeLoginAsAdmin());
 
         //Routes for Errors Pages
         $app->group('/errors', function (RouteCollectorProxy $group) {

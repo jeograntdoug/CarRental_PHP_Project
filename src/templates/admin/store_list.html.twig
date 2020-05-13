@@ -8,15 +8,15 @@
 <div>
     <div class="flex">
         <input class="p-2 border-2 w-full h-full" type="text" name="searchKeyword" placeHolder="Search here..."/>
-        <button class="ml-2 px-4 rounded bg-gray-700 text-gray-300 border-3" >Search</button>
     </div>
 </div>
 
 <div>
-    <div id="editorDiv" class="hidden flex absolute z-20 top-0 items-center bg-gray-200 border-1 border-gray-800">
-        <input id="editorInput" class="text-center" type="text" value="" />
-        <button id="editorButton" class="bg-gray-500 font-bold text-sm rounded py-1 px-2">Edit</button>
-    </div>
+    <form id="editorDiv" class="hidden absolute z-20 top-0 items-center bg-gray-200 border-1 border-gray-800">
+        <div>
+            <input id="editorInput" class="text-center" type="text" value="" />
+        </div>
+    </form>
 
     <div>
     </div>
@@ -61,14 +61,16 @@
 
         let selStoreId = 1;
         let fieldIndex = 1;
+        let selElement = '';
 
+        // Show edit input
         $("table").on("click","tbody td.storeField",function () 
         {
-            event.stopPropagation();
-
+            selElement = this;
             selStoreId = $(this).parent().children(".storeId").html();
 
-            $("#editorDiv").addClass("flex");
+            $(this).removeClass("bg-green-200");
+            $("#editorDiv").addClass("block");
             $("#editorDiv").removeClass("hidden");
 
             fieldIndex = $(this).index();
@@ -78,17 +80,18 @@
             $("#editorDiv").offset($(this).position());
 
             let width = $(this).width();
-            $("#editorInput")
-                .width(width - 20)
-                .focus();
+            let height = $(this).height();
+            $("#editorInput").width(width + 5).height(height + 7).focus();
         });
 
-        $("#editorInput").click(function () {
-            event.stopImmediatePropagation();
+        $("#editorInput").focusout(function() {
+            $("#editorDiv").addClass("hidden");
         });
 
-        $("#editorButton").click(function () 
-        {
+
+        // Edit store field(patch) 
+        $("#editorDiv").submit(function( event ) {
+            event.preventDefault();
             event.stopImmediatePropagation();
 
             let value = $("#editorInput").val();
@@ -101,29 +104,53 @@
             $.ajax({
                 url: url,
                 type: "PATCH",
-                data: JSON.stringify(data),
-                datatype: 'json'
+                dataType: "json",
+                data: JSON.stringify(data)
             })
-            .done(function (storeList) {
-                reloadstoreList();
+            .done(function (result) {
+                if(result.errorList.length == 0){
+                    $(selElement).html(data.value);
+                }else{
+                    Object.keys(result.errorList).forEach(function (key) {
+                        $("#notificationTitle").html(`[${key}] is Invalid!!`);
+                        $("#notificationText").html(result.errorList[key]);
+                        $("#notificationDiv")
+                            .removeClass("bg-orange-500")
+                            .addClass("bg-red-700")
+                            .slideDown().delay(2000).fadeOut("slow");
+                    });
+                }
             }).fail(function () {
                 console.log("store deletion ajax fail!");
             });
 
-            $("#editorDiv").addClass("hidden");
-            $("#editorDiv").removeClass("flex");
+            $("#editorDiv").delay(1000).addClass("hidden");
         });
 
+        $("#editorInput").click(function () {
+            event.stopImmediatePropagation();
+        });
+
+        // Delete store
         $("table").on("click","tbody td span.btDelete",function () 
         {
             let storeId = $(this).parents("tr").children(".storeId").html();
             let url = "/admin/ajax/stores/" + storeId;
+            let location = $(this).parent().siblings().eq(2).html();
 
             $.ajax({
                 url: url,
                 type: "DELETE",
             })
             .done(function (storeList) {
+                $("#notificationTitle").html("Store Deleted!");
+                $("#notificationText").html("Location: " + location);
+                $("#notificationDiv")
+                    .removeClass("bg-red-700")
+                    .addClass("bg-orange-500")
+                    .slideDown().delay(2000).fadeOut("slow");
+
+                $("input[name=searchKeyword]").val("");
                 reloadstoreList();
             }).fail(function () {
                 console.log("store deletion ajax fail!");
@@ -132,7 +159,43 @@
 
         /** Gray Out control */
         $("#btAddNewStore").click(function () {
+            $("#addStoreDiv input").val("");
+            $("#addStoreDiv p").html("");
             $("#grayout").removeClass("hidden");
+        });
+
+        //** Search */
+        $("input[name=searchKeyword]").keyup(function () {
+            let keyword = ($(this).val()).toLowerCase();
+            if(keyword == ''){
+                // show all of store
+                $("tbody#tbodyStoreList")
+                    .children()
+                    .removeClass("hidden");
+                $("tbody#tbodyStoreList tr td").removeClass("bg-green-200");
+                
+            } else {
+                $("tbody#tbodyStoreList")
+                    .children()
+                    .removeClass("hidden")
+                    .each(function(){
+                        let hasRowKeyword = false;
+
+                        $(this).children().each(function () {
+                            let text = ($(this).text()).toLowerCase();
+                            if(text.includes(keyword) === true){
+                                hasRowKeyword = true;
+                                $(this).addClass("bg-green-200");
+                            } else {
+                                $(this).removeClass("bg-green-200");
+                            }
+                        });
+
+                        if(hasRowKeyword === false){
+                            $(this).addClass("hidden");
+                        }
+                    });
+            }
         });
 
     });

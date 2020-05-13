@@ -1,40 +1,43 @@
 {% extends "admin/grayout/grayout_layout.html.twig" %}
 
 {% block content%}
-<div class="p-4">
+<div id="addStoreDiv" class="p-4">
+    <div class="text-gray-800 text-2xl font-bold">
+        New Store
+    </div>
     <div class="flex justify-between mt-2">
         <label class="mr-3">Province</label>
         <div>
             <input class="w-56" type="text" name="province" required/>
-            <p class="text-xs text-red-400 h-3">errorMsg</p>
+            <p class="text-xs text-red-400 h-3"></p>
         </div>
     </div>
     <div class="flex justify-between mt-2">
         <label class="mr-3">City</label>
         <div>
             <input class="w-56" type="text" name="city" required/>
-            <p class="text-xs text-red-400 h-3">errorMsg</p>
+            <p class="text-xs text-red-400 h-3"></p>
         </div>
     </div>
     <div class="flex justify-between mt-2">
         <label class="mr-3">Postal Code</label>
         <div>
             <input class="w-56" type="text" name="postCode" required/>
-            <p class="text-xs text-red-400 h-3">errorMsg</p>
+            <p class="text-xs text-red-400 h-3"></p>
         </div>
     </div>
     <div class="flex justify-between mt-2">
         <label class="mr-3">Address</label>
         <div>
             <input class="w-56" type="text" name="address" required/>
-            <p class="text-xs text-red-400 h-3">errorMsg</p>
+            <p class="text-xs text-red-400 h-3"></p>
         </div>
     </div>
     <div class="flex justify-between mt-2">
         <label class="mr-3">Phone</label>
         <div>
             <input class="w-56" type="text" name="phone" required/>
-            <p class="text-xs text-red-400 h-3">errorMsg</p>
+            <p class="text-xs text-red-400 h-3"></p>
         </div>
     </div>
     <div class="flex justify-center mt-5">
@@ -45,22 +48,59 @@
 
 <script>
     $(document).ready(function () {
+        function reloadstoreList()
+        {
+            let url = "/admin/ajax/stores";
+            $.ajax({
+                url: url,
+                type: "GET",
+            }).done(function (storeList) {
+                $("#tbodyStoreList").html(storeList);
+            }).fail(function () {
+                console.log("store list ajax fail!");
+            });
+        }
+
         $("#btCancel").click(function () {
             $("#grayout").addClass("hidden");
         });
-
         $("#btAdd").click(function () {
+            let newStore = {
+                "province" : $("#addStoreDiv input[name=province]").val().toUpperCase(),
+                "city": $("#addStoreDiv input[name=city]").val(),
+                "postCode": $("#addStoreDiv input[name=postCode]").val().toUpperCase(),
+                "address": $("#addStoreDiv input[name=address]").val(),
+                "phone": $("#addStoreDiv input[name=phone]").val()
+            }
+            let url = "/admin/ajax/stores";
             $.ajax({
-                
-            }).done(function () {
-                $("#notificationTitle").html("New Store Added!");
-                $("#notificationDiv").show(300).delay(2000).hide(500);
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(newStore)
+            })
+            .done(function (result) {
+                if(result.errorList.length == 0){
+                    $("#grayout").addClass("hidden");
+                    $("#notificationTitle").html("New Store Added!");
+                    $("#notificationText").html("Location: " + newStore.postCode);
+                    $("#notificationDiv")
+                        .addClass("bg-orange-500")
+                        .removeClass("bg-red-700")
+                        .slideDown().delay(2000).fadeOut("slow");
+
+                    reloadstoreList();
+                } else {
+                    $("#addStoreDiv p").html("");
+                    Object.keys(result.errorList).forEach(function(key) {
+                        let element = `#addStoreDiv input[name=${key}]`;
+                        $(element).next().text(result.errorList[key]);
+                    });
+                }
             }).fail(function () {
-                console.log("Add new store ajax failed");
+                console.log("store deletion ajax fail!");
             });
 
-
-            $("#grayout").addClass("hidden");
         });
     });
 </script>

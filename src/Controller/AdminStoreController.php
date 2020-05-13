@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Validator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
@@ -26,9 +27,16 @@ class AdminStoreController
         $fieldList = ['province','city','postCode','address','phone'];
 
         $jsonData = json_decode($request->getBody(), true);
-        // TODO : validate $post
 
-        DB::insert('stores',$jsonData);
+        $errorList = Validator::store($jsonData);
+
+        if(empty($errorList)){
+            DB::insert('stores',$jsonData);
+        }
+
+        $response->getBody()->write(json_encode([
+            'errorList' => $errorList
+        ]));
 
         return $response;
     }
@@ -50,14 +58,20 @@ class AdminStoreController
         $storeId = $args['id'];
 
         $jsonData = json_decode($request->getBody(), true);
-        // TODO : validate $post
 
         $data = [
             $fieldList[$jsonData['fieldIndex']] => $jsonData['value']
         ];
 
-        DB::update('stores',$data,'id=%s',$storeId);
-        $response->getBody()->write(json_encode(DB::affectedRows()));
+        $errorList = Validator::store($data,false);
+
+        if(empty($errorList)){
+            DB::update('stores',$data,'id=%s',$storeId);
+        }
+
+        $response->getBody()->write(json_encode([
+            'errorList' => $errorList
+        ]));
 
         return $response;
     }

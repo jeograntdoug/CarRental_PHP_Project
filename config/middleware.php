@@ -20,8 +20,6 @@ return function (App $app,Twig $twig)
         }
     );
 
-
-
     // Add Twig-View Middleware
     $app->add(TwigMiddleware::create($app, $twig));
     $app->add(AuthMiddleware::class);
