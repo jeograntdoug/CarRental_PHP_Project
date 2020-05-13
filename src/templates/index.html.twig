@@ -185,7 +185,7 @@
                 }).done(function (cityList) {
                     $(listElement).empty();
                     $.each(cityList, function (i, item) {
-                        var option = new Option(item['name'] + "  (" + item['postalCode'] + ")");
+                        var option = new Option(item['name'] + " (" + item['postalCode'] + ")");
                         $(listElement).append(option);
                     });
 
@@ -194,6 +194,7 @@
                 });
             }
         }
+
 
         function reloadMapCoordinate(element) {
             var cityInfo = $(element).val();
@@ -244,14 +245,22 @@
                 }
             });
 
-            $("#pickupLocationList").on("change", function () {
 
-                alert("data list trigger");
+            $("#pickupSearchText").on("change", function () {
+                var input = $(this).val();
+                var options = document.getElementById("pickupLocationList").options;
+                alert(input);
+                alert(options.length);
 
-                var cityInfo = $("#pickupSearchText").val();
-                var cityName = cityInfo.substr(0, cityInfo.length - 5);
-                alert(cityName + "," + cityName.length);
+                for (let i = 0; i < options.length; i++) {
+                    var option = options[i];
+
+                    alert(`${option.innerText} : ${input} : ${option.innerText === input}`);
+
+
+                }
             })
+
 
             $("#pickupSearchText").keydown(function (e) {
                 searchCities(this, "#pickupLocationList");
@@ -266,7 +275,7 @@
             $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
             $("#returnTime").val(getNowTime);
 
-            $("#returnDate").on("input", function () {
+            $("#returnDate").on("change", function () {
                 var retDate = $(this).val();
                 var picDate = $("#pickupDate").val();
                 if (retDate <= picDate) {
