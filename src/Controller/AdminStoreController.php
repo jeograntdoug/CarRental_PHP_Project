@@ -24,8 +24,6 @@ class AdminStoreController
     public function create (Request $request, Response $response, array $args){
         // TODO : Authentication
         
-        $fieldList = ['province','city','postCode','address','phone'];
-
         $jsonData = json_decode($request->getBody(), true);
 
         $errorList = Validator::store($jsonData);
@@ -54,7 +52,7 @@ class AdminStoreController
     public function edit (Request $request, Response $response, array $args){
         // TODO : Authentication
         
-        $fieldList = ['id','province','city','postCode','address','phone'];
+        $fieldList = ['id','storeName','province','city','postCode','address','phone'];
         $storeId = $args['id'];
 
         $jsonData = json_decode($request->getBody(), true);

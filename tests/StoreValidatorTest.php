@@ -33,6 +33,7 @@ class StoreValidatorTest extends TestCase
         $isPut = true;
         $store = [
             'city' => "",
+            'storeName' => "",
             'address' => "",
             'phone' => "",
             'postCode' => "",
@@ -40,12 +41,12 @@ class StoreValidatorTest extends TestCase
         ];
 
         $errorList = Validator::store($store,$isPut);
-        $this->assertCount(5,$errorList);
+        $this->assertCount(6,$errorList);
 
         $store = [];
 
         $errorList = Validator::store($store,$isPut);
-        $this->assertCount(5,$errorList);
+        $this->assertCount(6,$errorList);
     }
 
     /** @test */
@@ -62,6 +63,30 @@ class StoreValidatorTest extends TestCase
             $errorList = Validator::store($store,$isPut);
             $this->assertCount(1,$errorList);
         }
+
+        // storeName
+        $storeList = [
+            ['storeName' => "CarRental montreal"],
+        ];
+
+        foreach($storeList as $store){
+            $errorList = Validator::store($store,$isPut);
+            $this->assertEmpty($errorList);
+        }
+
+        $storeList = [
+            ['storeName' => ""],
+            ['storeName' => null],
+            ['storeName' => 
+                "lllllllllllllllllllllllllllllllllllllllllllllllllll"
+                . "lllllllllllllllllllllllllllllllllllllllllllllllllll"],
+        ];
+
+        foreach($storeList as $store){
+            $errorList = Validator::store($store,$isPut);
+            $this->assertCount(1,$errorList);
+        }
+
 
         // address
         $storeList = [

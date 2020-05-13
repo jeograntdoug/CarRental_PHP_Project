@@ -1,11 +1,12 @@
 {% for store in storeList %}
     <tr> 
         <td class="storeId relative border-2 border-gray-500">{{ store.id }}</td> 
-        <td class="storeField relative border-2 border-gray-500 cursor-pointer">{{ store.province }}</td> 
-        <td class="storeField relative border-2 border-gray-500 cursor-pointer">{{ store.city }}</td>
-        <td class="storeField relative border-2 border-gray-500 cursor-pointer">{{ store.postCode }}</td>
-        <td class="storeField relative border-2 border-gray-500 cursor-pointer">{{ store.address }}</td>
-        <td class="storeField relative border-2 border-gray-500 cursor-pointer">{{ store.phone }}</td>
+        <td class="storeName storeField relative border-2 border-gray-500 cursor-pointer">{{ store.storeName }}</td>
+        <td class="storeProvince storeField relative border-2 border-gray-500 cursor-pointer">{{ store.province }}</td> 
+        <td class="storeCity storeField relative border-2 border-gray-500 cursor-pointer">{{ store.city }}</td>
+        <td class="storePostCode storeField relative border-2 border-gray-500 cursor-pointer">{{ store.postCode }}</td>
+        <td class="storeAddress storeField relative border-2 border-gray-500 cursor-pointer">{{ store.address }}</td>
+        <td class="storePhone storeField relative border-2 border-gray-500 cursor-pointer">{{ store.phone }}</td>
         <td class="border-none flex justify-center">
             <span class="material-icons btDelete cursor-pointer fill-current text-red-500">
                 delete 

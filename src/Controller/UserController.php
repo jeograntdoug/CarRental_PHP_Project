@@ -219,6 +219,6 @@ class UserController
                     AND updated_at > %s", 
                     session_id(), $expiredTime);
         
-        return $targetUserId === $userId;
+        return $targetUserId == $userId;
     }
 }

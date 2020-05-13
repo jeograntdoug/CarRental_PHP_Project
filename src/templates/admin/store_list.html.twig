@@ -22,12 +22,13 @@
     </div>
     <table class="w-full mt-2 border-2 border-collapse">
         <tr id="tableHeader" class="bg-gray-800 text-gray-200">
-            <th class="border-2 border-gray-200">ID</th>
-            <th class="border-2 border-gray-200">Province</th>
-            <th class="border-2 border-gray-200">City</th>
-            <th class="border-2 border-gray-200">Postal Code</th>
-            <th class="border-2 border-gray-200">Address</th>
-            <th class="border-2 border-gray-200">Phone</th>
+            <th class="storeId border-2 border-gray-200">ID</th>
+            <th class="storeName border-2 border-gray-200">Store Name</th>
+            <th class="storeProvince border-2 border-gray-200">Province</th>
+            <th class="storeCity border-2 border-gray-200">City</th>
+            <th class="storePostCode border-2 border-gray-200">Postal Code</th>
+            <th class="storeAddress border-2 border-gray-200">Address</th>
+            <th class="storePhone border-2 border-gray-200">Phone</th>
         </tr>
         <tbody id="tbodyStoreList" class="text-center">
             {% include 'admin/cards/store_card.html.twig' %}
@@ -40,7 +41,7 @@
 {% endblock section %}
 
 {% block grayout %}
-    {% include "admin/grayout/grayout_store_list.html.twig" %}
+    {% include "admin/grayout/grayout_add_store.html.twig" %}
 {% endblock grayout %}
 
 {% block scripts %}
@@ -136,7 +137,7 @@
         {
             let storeId = $(this).parents("tr").children(".storeId").html();
             let url = "/admin/ajax/stores/" + storeId;
-            let location = $(this).parent().siblings().eq(2).html();
+            let storeName = $(this).parent().children(".storeName").html();
 
             $.ajax({
                 url: url,
@@ -144,7 +145,7 @@
             })
             .done(function (storeList) {
                 $("#notificationTitle").html("Store Deleted!");
-                $("#notificationText").html("Location: " + location);
+                $("#notificationText").html("Store Name: " + storeName);
                 $("#notificationDiv")
                     .removeClass("bg-red-700")
                     .addClass("bg-orange-500")

@@ -6,6 +6,13 @@
         New Store
     </div>
     <div class="flex justify-between mt-2">
+        <label class="mr-3">Name</label>
+        <div>
+            <input class="w-56" type="text" name="storeName" required/>
+            <p class="text-xs text-red-400 h-3"></p>
+        </div>
+    </div>
+    <div class="flex justify-between mt-2">
         <label class="mr-3">Province</label>
         <div>
             <input class="w-56" type="text" name="province" required/>
@@ -66,6 +73,7 @@
         });
         $("#btAdd").click(function () {
             let newStore = {
+                "storeName" : $("#addStoreDiv input[name=storeName]").val(),
                 "province" : $("#addStoreDiv input[name=province]").val().toUpperCase(),
                 "city": $("#addStoreDiv input[name=city]").val(),
                 "postCode": $("#addStoreDiv input[name=postCode]").val().toUpperCase(),
