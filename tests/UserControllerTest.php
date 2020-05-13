@@ -217,12 +217,8 @@ class UserControllerTest extends TestCase
                         ? $user['email'] : $this->faker->email;
         $newUser['password'] = isset($user['password'])
                         ? $user['password'] : 'q1w2E3';
-        $newUser['confirm'] = isset($user['confirm'])
-                        ? $user['confirm'] : 'q1w2E3';
 
-        $response = $this->client->post('/register', [
-            'form_params' =>$newUser
-        ]);
+        DB::insert('users',$newUser);
     }
 
     private function getUserId($email){

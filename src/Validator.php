@@ -13,6 +13,7 @@ class Validator
         if (!v::notEmpty()->validate($store)) {
             $errorList = [
                 'city' => 'Must be 1~20 letters',
+                'storeName' => 'Must be 1~50 letters',
                 'address' => 'Must be 1~100 letters',
                 'phone' => 'Invalid Phone number',
                 'postCode' => 'Invalid Postal Code',
@@ -25,6 +26,11 @@ class Validator
         // city
         if (!v::key('city', v::stringVal()->length(1, 50), $isPut)->validate($store)) {
             $errorList['city'] = 'Must be 1~50 letters';
+        }
+
+        // storeName
+        if (!v::key('storeName', v::stringVal()->length(1, 50), $isPut)->validate($store)) {
+            $errorList['storeName'] = 'Must be 1~50 letters';
         }
 
         // address
