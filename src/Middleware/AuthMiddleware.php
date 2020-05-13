@@ -19,6 +19,7 @@ class AuthMiddleware implements Middleware
      */
     public function process(Request $request, RequestHandler $handler) : Response
     {
+
         session_start();
 
         $user = $this->getUserInCurrentSession(session_id());

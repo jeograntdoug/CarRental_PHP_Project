@@ -77,6 +77,14 @@
             $view = Twig::fromRequest($request);
             $dateLocateData = $request->getParsedBody();
 
+            $_SESSION['pickupLocation'] = $dateLocateData['pickupLocation'];
+            $_SESSION['isDiffLocation'] = isset($dateLocateData['isDiffLocation']);
+            $_SESSION['returnLocation'] = $dateLocateData['returnLocation'];
+            $_SESSION['pickupDate'] = $dateLocateData['pickupDate'];
+            $_SESSION['pickupTime'] = $dateLocateData['pickupTime'];
+            $_SESSION['returnDate'] = $dateLocateData['returnDate'];
+            $_SESSION['returnTime'] = $dateLocateData['returnTime'];
+
             $allVehicles = DB::query("SELECT * FROM cartypes");
             $carMinPrice = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
             $suvMinPrice = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
@@ -100,15 +108,14 @@
                 'suvMinPrice' => $suvMinPrice,
                 'vanMinPrice' => $vanMinPrice,
                 'truckMinPrice' => $truckMinPrice,
-                'pass2'=>$pass2,
-                'pass4'=>$pass4,
-                'pass5'=>$pass5,
-                'pass7'=>$pass7,
-                'bag3'=>$bag3,
-                'bag4'=>$bag4,
-                'bag5'=>$bag5,
-                'bag7'=>$bag7,
-                'dateLocationData'=>$dateLocateData
+                'pass2' => $pass2,
+                'pass4' => $pass4,
+                'pass5' => $pass5,
+                'pass7' => $pass7,
+                'bag3' => $bag3,
+                'bag4' => $bag4,
+                'bag5' => $bag5,
+                'bag7' => $bag7
             ]);
         });
 
@@ -120,24 +127,83 @@
             $selVehicle = DB::query("SELECT * FROM cartypes WHERE id = %s", $selId);
             $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
 
+            $dateLocationData = $_SESSION;
+
             return $view->render($response, 'review_reserve.html.twig', [
                 'selVehicle' => $selVehicle[0],
-                'userInfo'=>$userInfo
+                'userInfo' => $userInfo,
+                'dateLocationData' => $dateLocationData
+            ]);
+        });
+
+        $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+
+
+            return $view->render($response, 'reserve_success.html.twig', [
+
             ]);
         });
 
 
-        /*     $app->post('/review_reserve', function (Request $request, Response $response, array $args){
-                 $view = Twig::fromRequest($request);
+        $app->post('/search/city/{scale:[0-9]+}', function (Request $request, Response $response, array $args) {
+           // $view = Twig::fromRequest($request);
+            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
 
-             $jsonText = $request->getBody()->getContents();
+            $cityname = $request->getBody()->getContents();
 
-                // $data = json_decode($jsonText,true);
+            $scale = isset($args['scale']) == false ? 100: $args['scale'];
 
-                 $result = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = 2" );
-                 $jsonData = json_encode($result);
-                 return $response->getBody()->write($jsonData);
-             });*/
+            $cityCoorinates = DB::queryFirstRow("SELECT latitude, longitude FROM cities WHERE name = %s", json_decode($cityname));
+            $allStores = DB::query("SELECT * FROM stores");
+
+            $adjacentStores = array();
+
+            foreach ($allStores as $store) {
+                $distance = calDistance($cityCoorinates['latitude'], $cityCoorinates['longitude'], $store['latitude'], $store['longitude'], 'K');
+                if($distance <= $scale){
+                    array_push(store);
+                }
+            }
+
+            $response->getBody()->write(json_encode($adjacentStores));
+            return $response;
+        });
+
+        $app->post('/search/cityname', function (Request $request, Response $response, array $args) {
+            // $view = Twig::fromRequest($request);
+            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+
+            $cityname = $request->getBody()->getContents();
+
+            $cityCoorinates = DB::queryFirstRow("SELECT latitude, longitude FROM cities WHERE name = %s", json_decode($cityname));
+
+
+            $response->getBody()->write(json_encode($adjacentStores));
+            return $response;
+        });
 
 
     };
+
+    function calDistance($lat1, $lon1, $lat2, $lon2, $unit)
+    {
+        if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+            return 0;
+        } else {
+            $theta = $lon1 - $lon2;
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+            $unit = strtoupper($unit);
+
+            if ($unit == "K") {
+                return ($miles * 1.609344);
+            } else if ($unit == "N") {
+                return ($miles * 0.8684);
+            } else {
+                return $miles;
+            }
+        }
+    }

@@ -17,19 +17,18 @@
                     <ul>
                         <li class="flex my-3">
                             <span class="font-bold flex-1 text-lg ">DATES & TIMES</span>
-                            <span class="font-bold text-green-700  underline flex-1 text-center"><a
-                                        href="#">MODIFY</a></span>
+                            <span class="font-bold text-green-700  underline flex-1 text-center" onclick="modifyDateLocation();">MODIFY</span>
                         </li>
                         <li>
-                            <span>Mon, May 11, 2020 @ 12:00 PM</span><br>
-                            <span>Tue, May 12, 2020 @ 12:00 PM</span>
+                            <span>{{ dateLocationData.pickupDate|date('D j. F Y') }} @ {{ dateLocationData.pickupTime|date('H:i A') }}</span><br>
+                            <span>{{ dateLocationData.returnDate|date('D j. F Y') }} @ {{ dateLocationData.returnTime|date('H:i A') }}</span>
                         </li>
                     </ul>
                     <ul class="mt-5">
                         <li class="flex my-3">
                             <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
                             <span class="font-bold  text-center flex-1 text-green-700 underline"><a
-                                        href="#">MODIFY</a></span>
+                                        href="../../../..">MODIFY</a></span>
                         </li>
                         <li>
                             <span>Dollard-des-Ormeaux Boulevard Saint-Jean</span><br>
@@ -99,20 +98,23 @@
                     <span class="mb-3 px-5 block">* Required to complete your reservation</span>
                 </div>
                 <div class="block border border-black border-solid p-5">
-                    <form method="post" action="#">
+                    <form method="post" action="/reserve_submit">
                         <div class="flex flex-row pb-5 inline-block">
                             <div class="flex-1">
                                 <label for="firstName" class="pb-2 inline-block font-bold">First Name *</label><br>
-                                <input type="text" name="firstName" id="firstName" class="w-2/3" value={{ userInfo.firstname }}>
+                                <input type="text" name="firstName" id="firstName" class="w-2/3"
+                                       value={{ userInfo.firstname }}>
                             </div>
                             <div class="flex-1">
                                 <label for="lastname" class="pb-2 inline-block font-bold">Last Name *</label><br>
-                                <input type="text" name="lastName" id="lastname" class="w-2/3" value={{ userInfo.lastname }}>
+                                <input type="text" name="lastName" id="lastname" class="w-2/3"
+                                       value={{ userInfo.lastname }}>
                             </div>
                         </div>
                         <div class="pb-5 block">
                             <label for="phoneNumber" class="pb-2 inline-block font-bold">Phone Number *</label><br>
-                            <input name="phoneNumber" type="number" id="phoneNumber" class="w-2/5" value={{ userInfo.phone }}>
+                            <input name="phoneNumber" type="number" id="phoneNumber" class="w-2/5"
+                                   value={{ userInfo.phone }}>
                         </div>
                         <div class="pb-5 block">
                             <label for="email" class="pb-2 inline-block font-bold">Email Address *</label><br>
@@ -121,7 +123,8 @@
                         <div class="block pb-5">
                             <label for="drivingLicense" class="inline-block pb-2 font-bold">Driver's License *</label>
                             <br>
-                            <input type="text" name="drivingLicense" id="drivingLicense" class="w-1/2" value={{ userInfo.drivinglicense }}>
+                            <input type="text" name="drivingLicense" id="drivingLicense" class="w-1/2"
+                                   value={{ userInfo.drivinglicense }}>
                         </div>
                         <hr style="border: 1px solid grey; margin-bottom: 2em">
                         <div>
@@ -133,14 +136,24 @@
 
                         </div>
                         <div class="flex justify-center mt-10">
-                            <input type="submit" value="RESERVE ORDER" class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
+                            <input type="submit" value="RESERVE ORDER"
+                                   class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
 
     </div>
+    <script>
+
+        function modifyDateLocation(){
+
+        }
+
+        $(document).ready(function () {
+
+        })
+    </script>
 
 {% endblock section %}
