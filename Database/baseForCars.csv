@@ -1,0 +1,101 @@
+carTypeId,model,manufacturer,fuelType,photoPath,description
+5,Malibu,Chevrolet,gas,\resources\carimages\fullsize_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+10,Maxima,Nissan,gas,\resources\carimages\premium_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+7,Mustang,Ford,gas,\resources\carimages\convertible_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+1,Spark,Chevrolet,gas,\resources\carimages\economy_car.png,An economy car for driving in crowded
+14,Edge,Ford,gas,\resources\carimages\standard_suv.png,A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+6,Countryman,MINI,hybrid,\resources\carimages\sporty_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+16,Suburban,Chevrolet,gas,\resources\carimages\premium_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+7,Mustang,Ford,gas,\resources\carimages\convertible_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+13,Escape,Ford,gas,\resources\carimages\intermediate_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+3,Forte,Kia,gas,\resources\carimages\intermediate_car.png,An intermediate car rental provides some more room for passengers and luggage than most smaller cars.
+18,Durango,Dodge,gas,\resources\carimages\premium_crossover_suv.png,"""A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business"
+1,Spark,Chevrolet,gas,\resources\carimages\economy_car.png,"""An economy car for driving in crowded"
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+2,Accent,Hyundai,gas,\resources\carimages\compact_car.png,Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas. 
+23,Transit Cargo,Ford,diesel,\resources\carimages\cargo_van.png,Renting a cargo van is a great way to make small moves easy.
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+9,300S,Chrysler,gas,\resources\carimages\premium_special_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+9,300S,Chrysler,gas,\resources\carimages\premium_special_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+12,Qashqai,Nissan,gas,\resources\carimages\compact_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+1,Spark,Chevrolet,gas,\resources\carimages\economy_car.png,An economy car for driving in crowded
+8,3 series,BMW,gas,\resources\carimages\fullsize_elite_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+7,Mustang,Ford,gas,\resources\carimages\convertible_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+12,Qashqai,Nissan,gas,\resources\carimages\compact_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+3,Forte,Kia,gas,\resources\carimages\intermediate_car.png,An intermediate car rental provides some more room for passengers and luggage than most smaller cars.
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+15,Tahoe,Chevrolet,gas,\resources\carimages\fullsize_suv.png,A full-size SUV rental has room to seat up to seven people and offers a powerful engine. Full-size SUVs are great for weekend road trips and special occasions.
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+13,Escape,Ford,gas,\resources\carimages\intermediate_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+6,Countryman,MINI,hybrid,\resources\carimages\sporty_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+6,Countryman,MINI,hybrid,\resources\carimages\sporty_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+15,Tahoe,Chevrolet,gas,\resources\carimages\fullsize_suv.png,A full-size SUV rental has room to seat up to seven people and offers a powerful engine. Full-size SUVs are great for weekend road trips and special occasions.
+12,Qashqai,Nissan,gas,\resources\carimages\compact_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+7,Mustang,Ford,gas,\resources\carimages\convertible_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+13,Escape,Ford,gas,\resources\carimages\intermediate_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+15,Tahoe,Chevrolet,gas,\resources\carimages\fullsize_suv.png,A full-size SUV rental has room to seat up to seven people and offers a powerful engine. Full-size SUVs are great for weekend road trips and special occasions.
+5,Malibu,Chevrolet,gas,\resources\carimages\fullsize_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+2,Accent,Hyundai,gas,\resources\carimages\compact_car.png,Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.
+2,Accent,Hyundai,gas,\resources\carimages\compact_car.png,Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.
+2,Accent,Hyundai,gas,\resources\carimages\compact_car.png,Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+4,Jetta,Volkswagen,gas,\resources\carimages\standard_car.png,An intermediate car rental provides some more room for passengers and luggage than most smaller cars.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+16,Suburban,Chevrolet,gas,\resources\carimages\premium_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+2,Accent,Hyundai,gas,\resources\carimages\compact_car.png,Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+1,Spark,Chevrolet,gas,\resources\carimages\economy_car.png,An economy car for driving in crowded
+4,Jetta,Volkswagen,gas,\resources\carimages\standard_car.png,An intermediate car rental provides some more room for passengers and luggage than most smaller cars.
+18,Durango,Dodge,gas,\resources\carimages\premium_crossover_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+5,Malibu,Chevrolet,gas,\resources\carimages\fullsize_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+12,Qashqai,Nissan,gas,\resources\carimages\compact_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+18,Durango,Dodge,gas,\resources\carimages\premium_crossover_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+10,Maxima,Nissan,gas,\resources\carimages\premium_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+17,X1,BMW,gas,\resources\carimages\standard_elite_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+18,Durango,Dodge,gas,\resources\carimages\premium_crossover_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+10,Maxima,Nissan,gas,\resources\carimages\premium_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+21,F150 Super Crew,Ford,hybrid,\resources\carimages\pickup_truck.png,Need to haul or move something? A pickup truck rental has the space
+23,Transit Cargo,Ford,diesel,\resources\carimages\cargo_van.png,Renting a cargo van is a great way to make small moves easy.
+18,Durango,Dodge,gas,\resources\carimages\premium_crossover_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+19,Wrangler Unlimited,Jeep,diesel,\resources\carimages\jeep_4_door_suv.png,A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+1,Spark,Chevrolet,gas,\resources\carimages\economy_car.png,An economy car for driving in crowded
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+14,Edge,Ford,gas,\resources\carimages\standard_suv.png,A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+6,Countryman,MINI,hybrid,\resources\carimages\sporty_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+5,Malibu,Chevrolet,gas,\resources\carimages\fullsize_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+6,Countryman,MINI,hybrid,\resources\carimages\sporty_car.png,A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+14,Edge,Ford,gas,\resources\carimages\standard_suv.png,A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
+22,Grand Caravan,Dodge,hybrid,\resources\carimages\7_passenger_van.png,A minivan rental is perfect for long road trips and family vacations with room for 7 people.
+12,Qashqai,Nissan,gas,\resources\carimages\compact_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+13,Escape,Ford,gas,\resources\carimages\intermediate_suv.png,An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.
+10,Maxima,Nissan,gas,\resources\carimages\premium_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+8,3 series,BMW,gas,\resources\carimages\fullsize_elite_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+11,XTS,Cadillac,gas,\resources\carimages\luxury_car.png,Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats
+9,300S,Chrysler,gas,\resources\carimages\premium_special_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+20,Colorado,Chevy,diesel,\resources\carimages\small_pickup_truck.png,A small pickup truck rental is great for hauling smaller items that won't fit in your own car.
+8,3 series,BMW,gas,\resources\carimages\fullsize_elite_car.png,A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.
+14,Edge,Ford,gas,\resources\carimages\standard_suv.png,A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business
