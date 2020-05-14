@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: May 14, 2020 at 11:13 PM
+-- Generation Time: May 14, 2020 at 11:51 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -1917,6 +1917,13 @@ CREATE TABLE `reservations` (
   `returnStoreId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `createdTS`, `userId`, `carTypeId`, `startDateTime`, `returnDateTime`, `dailyPrice`, `netFees`, `tps`, `tvq`, `rentDays`, `rentStoreId`, `returnStoreId`) VALUES
+(9, '2020-05-14 21:40:26', 1, 7, '2020-05-14 16:20:00', '2020-05-16 16:20:00', 179.98, 359.96, 17.998, 35.888012, 2, 20, 20);
+
 -- --------------------------------------------------------
 
 --
@@ -2096,7 +2103,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `stores`

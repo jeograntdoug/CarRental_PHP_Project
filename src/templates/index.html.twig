@@ -57,7 +57,7 @@
                     <span class="mb-2 font-bold pl-10">RENT DAYS</span>
                 </div>
 
-                <div >
+                <div>
                     <input class="w-1/5 font-bold text-center p-2 mr-5 h-10 border-2 border-gray-500" type="date"
                            name="pickupDate" id="pickupDate"/>
                     <input class="pickupTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500 mr-5"
@@ -164,11 +164,11 @@
                 },
                 title: store.storeName,
                 animation: google.maps.Animation.DROP,
-                label:{
+                label: {
                     text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
-                    fontSize:"14px",
-                    fontWeight:"bold",
-                    color:"white"
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    color: "white"
                 }
             });
 
@@ -189,7 +189,7 @@
             })
 
             marker.addListener('click', function () {
-                if(store['avaCarNum'].carNum == 0){
+                if (store['avaCarNum'].carNum == 0) {
                     alert('No avaliable cars in the store, would you select a different location?');
                 }
 
@@ -285,9 +285,6 @@
                     alert("AJAX error: " + jqxhr.responseText);
                 }
             }).done(function (stores) {
-
-                deleteAllMarkers();
-
                 for (var i = 0; i < stores.length; i++) {
                     var store = stores[i];
                     var location = {lat: parseFloat(store.latitude), lng: parseFloat(store.longitude)};
@@ -300,6 +297,7 @@
         }
 
         function resetMapCenter(cityname) {
+            deleteAllMarkers();
             $.ajax({ // FIXME: escape special characters using urlencode
                 url: "/search/cityname",
                 type: "POST",
@@ -335,6 +333,9 @@
                     },
                 });
 
+                markers.push(marker);
+                showAllMarkers();
+
                 loadAdjacentStores(yourLocation);
 
             }).always(function () {
@@ -362,7 +363,7 @@
             })
 
 
-            $("#pickupSearchText").on('keypress',function (e) {
+            $("#pickupSearchText").on('keypress', function (e) {
                 searchCities(this, "#pickupLocationList");
             });
 
