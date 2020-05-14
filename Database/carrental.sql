@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: May 13, 2020 at 04:44 AM
+-- Generation Time: May 14, 2020 at 04:04 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -35,7 +35,6 @@ CREATE TABLE `cars` (
   `manufacturer` varchar(20) NOT NULL,
   `milleage` int(11) NOT NULL,
   `status` enum('avaliable','reserved','repair','renting') NOT NULL,
-  `dailyPrice` double NOT NULL,
   `storeId` int(11) NOT NULL,
   `description` varchar(500) DEFAULT NULL,
   `photoPath` varchar(100) DEFAULT NULL,
@@ -48,8 +47,11 @@ CREATE TABLE `cars` (
 -- Dumping data for table `cars`
 --
 
-INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `milleage`, `status`, `dailyPrice`, `storeId`, `description`, `photoPath`, `fuelType`, `latitude`, `longitude`) VALUES
-(2, 1, 'Spark', 2018, 'Chevrolet', 46580, 'avaliable', 39, 1, 'Economy car, best for single or couple travelling', NULL, 'gas', 45.456, -73.8623);
+INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `milleage`, `status`, `storeId`, `description`, `photoPath`, `fuelType`, `latitude`, `longitude`) VALUES
+(2, 1, 'Spark', 2018, 'Chevrolet', 46580, 'avaliable', 1, 'Economy car, best for single or couple travelling', NULL, 'gas', 45.456, -73.8623),
+(3, 1, 'Spark', 2016, 'Chevrolet', 87904, 'avaliable', 9, 'Economy car, best for single or couple travelling', NULL, 'gas', 43.6653502, -79.4882599),
+(4, 1, 'Spark', 2020, 'Chevrolet', 24500, 'avaliable', 5, 'Economy car, best for single or couple travelling', NULL, 'gas', 45.5896979, -73.731631),
+(5, 12, 'Qashqai', 2017, 'Nissan', 76789, 'avaliable', 1, 'Compact SUV, suitable for family travel', NULL, 'gas', 45.456, -73.8623);
 
 -- --------------------------------------------------------
 
@@ -80,11 +82,11 @@ INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`
 (5, 'Car', 'Full Size', 'Chevrolet Malibu or similar', 5, 4, 139.98, '\\resources\\carimages\\fullsize_car.png'),
 (6, 'Car', 'Sporty', 'MINI Countryman or similar', 5, 3, 159.98, '\\resources\\carimages\\sporty_car.png'),
 (7, 'Car', 'Convertible', 'Ford Mustang or similar', 4, 2, 179.98, '\\resources\\carimages\\convertible_car.png'),
-(8, 'Car', 'Full-Size Elite', 'BMW 3 series or similar\r\n\r\n', 5, 3, 209.98, '\\resources\\carimages\\fullsize_elite_car.png'),
+(8, 'Car', 'Full-Size Elite', 'BMW 3 series or similar', 5, 3, 209.98, '\\resources\\carimages\\fullsize_elite_car.png'),
 (9, 'Car', 'Premium Special', 'Chrysler 300S or similar', 5, 5, 269.98, '\\resources\\carimages\\premium_special_car.png'),
 (10, 'Car', 'Premium', 'Nissan Maxima or similar', 5, 4, 249.98, '\\resources\\carimages\\premium_car.png'),
 (11, 'Car', 'Luxury', 'Cadillac XTS or similar', 5, 4, 349.98, '\\resources\\carimages\\luxury_car.png'),
-(12, 'SUV', 'Compact SUV', 'Nissan Qashqai or similar\r\n\r\n', 5, 3, 138.98, '\\resources\\carimages\\compact_suv.png'),
+(12, 'SUV', 'Compact SUV', 'Nissan Qashqai or similar', 5, 3, 138.98, '\\resources\\carimages\\compact_suv.png'),
 (13, 'SUV', 'Intermediate SUV', 'Ford Escape or similar', 5, 4, 168.98, '\\resources\\carimages\\intermediate_suv.png'),
 (14, 'SUV', 'Standard SUV', 'Ford Edge or similar', 5, 5, 208.98, '\\resources\\carimages\\standard_suv.png'),
 (15, 'SUV', 'Full Size SUV', 'Chevrolet Tahoe or similar', 7, 3, 268.98, '\\resources\\carimages\\fullsize_suv.png'),
@@ -1788,6 +1790,7 @@ CREATE TABLE `orders` (
   `createdTS` timestamp NOT NULL DEFAULT current_timestamp(),
   `reservationId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
+  `carId` int(11) NOT NULL,
   `returnDateTime` datetime DEFAULT NULL,
   `startMillage` int(11) NOT NULL,
   `returnMillage` int(11) DEFAULT NULL,
@@ -1806,7 +1809,7 @@ CREATE TABLE `reservations` (
   `id` int(11) NOT NULL,
   `createdTS` timestamp NOT NULL DEFAULT current_timestamp(),
   `userId` int(11) NOT NULL,
-  `carId` int(11) NOT NULL,
+  `carTypeId` int(11) NOT NULL,
   `StartDateTime` datetime NOT NULL,
   `ReturnDateTime` datetime NOT NULL,
   `dailyPrice` int(11) NOT NULL,
@@ -1838,7 +1841,6 @@ CREATE TABLE `stores` (
 
 INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`, `province`, `latitude`, `longitude`) VALUES
 (1, 'Kirkland', 'Montreal West Island', '6755,Rue Brunswick', '514-879-7982', 'H9J 2K3', 'QC', 45.456, -73.8623),
-(2, 'Toronto', 'North Toronto Eglinton & Yonge', '2512 Yonge Street', '416-413-0725', 'M4P 2H7', 'ON', 43.7068, -79.3983),
 (3, 'Richmond', 'Vancouver International Airport', '3211 Grant Mcconachi', '833-619-3651', 'V7B 0A4', 'BC', 49.1967, 123.1815),
 (4, 'Montreal', 'Montreal Delta Hotel', '475 President Kennedy', '514-931-3722', 'H3A 1J7', 'QC', 45.5070645, -73.5682808),
 (5, 'Laval', 'Laval NCL Procolor', '1616 Desserte Sud Aut. 440 Est', '450-688-0414', 'H7M 5E5', 'QC', 45.5896979, -73.731631),
@@ -1847,7 +1849,16 @@ INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`,
 (8, 'Mississauga', 'Toronto Pearson International Airport', 'Pearson International Airport', '833-619-3659', 'L5P 1A2', 'ON', 43.6777215, -79.6270084),
 (9, 'Toronto', 'Toronto York-Crosstown Runnymede', '3441 Dundas St. West', '416-766-1307', 'M6S 2S5', 'ON', 43.6653502, -79.4882599),
 (10, 'North York', 'North York Weston', '2610 Weston Rd', '416-675-0728', 'M9N 2B1', 'ON', 43.7114079, -79.5377247),
-(11, 'Brampton', 'Brampton Fisherman Dr.', '2 Fisherman Dr. Unit 3', '905-456-8288', 'L7A 1B5', 'ON', 43.7147304, -79.8032623);
+(11, 'Brampton', 'Brampton Fisherman Dr.', '2 Fisherman Dr. Unit 3', '905-456-8288', 'L7A 1B5', 'ON', 43.7147304, -79.8032623),
+(12, 'Scarborough', 'Scarborough Sheppard & Warden', '3426 Sheppard Ave. E', '905-471-2335', 'M1T 3K4', 'ON', 43.7795002, -79.309002),
+(13, 'Thornhill', 'Yonge Steeles', '7200 Yonge St', '905-882-0400', 'L4J 1V8', 'ON', 43.8024045, -79.426192),
+(14, 'Concord', 'Vaughn City Center', '18 Doughton Rd', '905-850-2824', 'L4K 1R2', 'ON', 43.7938305, -79.5169511),
+(15, 'Brossard', 'Brossard', '8200 Boul Taschereau', '450-923-5400', 'J4X 2S6', 'QC', 45.448481, -73.4729835),
+(16, 'Anjou ', 'Montreal Anjou Fortier Ford', '7000 Boul. Louis-h. Lafontaine', '514-355-4028', 'H1M 2X3', 'QC', 45.5996667, -73.5590308),
+(17, 'Sainte-julie', 'Sainte-Julie', '1081 Rue Principale', '450-670-6700', 'J3E 0C1', 'QC', 45.6044119, -73.3229069),
+(18, 'Quebec', 'Québec City Delta Hotel', '690 Boul. Rene-levesque Est', '418-523-6661', 'G1R 5A8', 'QC', 46.8130945, -71.2360168),
+(19, 'Lévis', 'Lévis', '164 Rte Du President Kennedy', '418-838-3997', 'G6V 6E1', 'QC', 46.7774013, -71.1837802),
+(20, 'Scarborough', 'Scarborough Golden Mile Plaza', '1880 Eglinton Ave, E #35', '416-755-5010', 'M1L 2L1', 'ON', 43.7228203, -79.3062622);
 
 -- --------------------------------------------------------
 
@@ -1873,7 +1884,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`, `email`, `phone`, `role`, `idPhoto`, `password`) VALUES
-(1, 'Tom', 'Miller', 'G8394983', '6755,Rue Brunswick', 'Tmiller@gmail.com', '5148797982', 'user', NULL, 'Tmillier123');
+(1, 'Tom', 'Miller', 'G8394983', '6755,Rue Brunswick', 'Tmiller@gmail.com', '5148797982', 'user', NULL, 'Tom123'),
+(2, 'Jerry', 'Trump', 'JT4859403', '778 Boul. Rene-levesque Est', 'JTrump@gmail.com', '450-670-6798', 'user', NULL, 'Jerry123'),
+(3, 'Maria', 'Clinton', 'MC94058493', '859 Boul. Louis-h. Lafontaine', 'MClinton@gmail.com', '897-485-3984', 'user', NULL, 'Maria123');
 
 -- --------------------------------------------------------
 
@@ -1919,14 +1932,15 @@ ALTER TABLE `orders`
   ADD KEY `reservationId` (`reservationId`),
   ADD KEY `userId` (`userId`),
   ADD KEY `rentStoreId` (`rentStoreId`),
-  ADD KEY `returnStoreId` (`returnStoreId`);
+  ADD KEY `returnStoreId` (`returnStoreId`),
+  ADD KEY `carId` (`carId`);
 
 --
 -- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `carId` (`carId`),
+  ADD KEY `carId` (`carTypeId`),
   ADD KEY `userId` (`userId`),
   ADD KEY `rentStoreId` (`rentStoreId`),
   ADD KEY `returnStoreId` (`returnStoreId`);
@@ -1958,7 +1972,7 @@ ALTER TABLE `usersessions`
 -- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `cartypes`
@@ -1988,13 +2002,13 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -2014,16 +2028,17 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservations` (`id`),
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `orders_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`),
-  ADD CONSTRAINT `orders_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `orders_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `orders_ibfk_6` FOREIGN KEY (`carId`) REFERENCES `cars` (`id`);
 
 --
 -- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`carId`) REFERENCES `cars` (`id`),
   ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `reservations_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`),
-  ADD CONSTRAINT `reservations_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `reservations_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `reservations_ibfk_6` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
 
 --
 -- Constraints for table `usersessions`
