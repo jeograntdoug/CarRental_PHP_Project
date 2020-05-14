@@ -18,18 +18,17 @@ class AdminController
     public function storeList(Request $request, Response $response){
         $view = Twig::fromRequest($request);
 
-        $storeList = DB::query("SELECT * FROM stores");
+        $storeList = DB::query(
+            "SELECT id, storeName, province, city, postCode, address, phone
+             FROM stores"
+             );
 
         return $view->render($response, 'admin/store_list.html.twig',[
-            'storeList' => $storeList
+            'itemList' => $storeList,
+            'itemKeyList' => ['ID', 'Store Name', 'Province', 'City', 'Post Code', 'Address', 'Phone']
         ]);
     }
 
-
-    public function carTypeList(Request $request, Response $response){
-        $view = Twig::fromRequest($request);
-        return $view->render($response, 'admin/cartype_list.html.twig');
-    }
 
 
     public function carList(Request $request, Response $response){

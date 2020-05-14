@@ -1,0 +1,95 @@
+{% extends "admin/grayout/grayout_layout.html.twig" %}
+
+{% block content%}
+<div id="addItemDiv" class="p-4">
+    <div class="text-gray-800 text-2xl font-bold">
+        New {{ itemTitle }}
+    </div>
+    {% for key in itemKeyList %}
+        {% if key|lower != 'id' %}
+        <div class="flex justify-between mt-2">
+            <label class="mr-3">{{ key|upper }}</label>
+            <div>
+                <input class="w-56" type="text" name="{{ key }}" required/>
+                <p class="text-xs text-red-400 h-3"></p>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    <div class="flex justify-center mt-5">
+        <button id="btAdd" class="py-1 px-2 mr-3 bg-green-400 rounded">Add {{ itemTitle }}</button>
+        <button id="btCancel" class="py-1 px-2 bg-green-400 rounded" >Cancel</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let items = "{{ itemTitle|lower }}s";
+        let itemTitle = "{{ itemTitle }}";
+
+        function reloadItemList()
+        {
+            let url = `/admin/ajax/${items}`;
+            $.ajax({
+                url: url,
+                type: "GET",
+            }).done(function (itemList) {
+                $("#tbodyItemList").html(itemList);
+            }).fail(function () {
+                console.log(`${itemTitle} list ajax fail!`);
+            });
+        }
+
+        /** Gray Out control */
+        $("#btAddNewItem").click(function () {
+            $("#addItemDiv input").val("");
+            $("#addItemDiv p").html("");
+            $("#grayout").removeClass("hidden");
+        });
+
+
+        $("#btCancel").click(function () {
+            $("#grayout").addClass("hidden");
+        });
+        $("#btAdd").click(function () {
+            let newItem = {
+                {% for key in itemKeyList %}
+                    "{{key}}" : $("#addItemDiv input[name={{key}}]").val()
+                    {{ key == itemKeyList|last ? '' : ','}} 
+                {% endfor %}
+            }
+
+            let url = `/admin/ajax/${items}`;
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(newItem)
+            })
+            .done(function (result) {
+                if(result.errorList.length == 0){
+                    $("#grayout").addClass("hidden");
+                    $("#notificationTitle").html("New {{itemTitle}} Added!");
+                    $("#notificationText").html(""); // FIXME : use result from server
+                    $("#notificationDiv")
+                        .addClass("bg-orange-500")
+                        .removeClass("bg-red-700")
+                        .slideDown().delay(2000).fadeOut("slow");
+
+                    reloadItemList();
+                } else {
+                    $("#addItemDiv p").html("");
+                    Object.keys(result.errorList).forEach(function(key) {
+                        let element = `#addItemDiv input[name=${key}]`;
+                        $(element).next().text(result.errorList[key]);
+                    });
+                }
+            }).fail(function () {
+                console.log(`${itemTitle} Addtion ajax fail!`);
+            });
+
+        });
+    });
+</script>
+
+{% endblock content%}

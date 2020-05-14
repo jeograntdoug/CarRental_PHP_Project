@@ -1,74 +1,80 @@
 {% extends "admin/layouts/layout.html.twig" %}
 
 {% block title %}
-    Store List
+    {{ itemTitle }} List
 {% endblock title %}
 
 {% block section %}
+<!-- Start Search Bar -->
 <div>
     <div class="flex">
         <input class="p-2 border-2 w-full h-full" type="text" name="searchKeyword" placeHolder="Search here..."/>
     </div>
 </div>
+<!-- End Search Bar -->
 
 <div>
+<!-- Start EditorDiv Input to edit single field -->
     <form id="editorDiv" class="hidden absolute z-20 top-0 items-center bg-gray-200 border-1 border-gray-800">
-        <div>
-            <input id="editorInput" class="text-center" type="text" value="" />
-        </div>
+        <input id="editorInput" class="text-center" type="text" value="" />
     </form>
+<!-- End EditorDiv Input to edit single field -->
 
-    <div>
-    </div>
+<!-- Start Item List Table -->
     <table class="w-full mt-2 border-2 border-collapse">
         <tr id="tableHeader" class="bg-gray-800 text-gray-200">
-            <th class="storeId border-2 border-gray-200">ID</th>
-            <th class="storeName border-2 border-gray-200">Store Name</th>
-            <th class="storeProvince border-2 border-gray-200">Province</th>
-            <th class="storeCity border-2 border-gray-200">City</th>
-            <th class="storePostCode border-2 border-gray-200">Postal Code</th>
-            <th class="storeAddress border-2 border-gray-200">Address</th>
-            <th class="storePhone border-2 border-gray-200">Phone</th>
+            {% for key in itemKeyList %}
+                <th class="{{ key|lower == 'id' ? 'itemId' :''}} border-2 border-gray-200">{{ key }}</th>
+            {% endfor %}
         </tr>
-        <tbody id="tbodyStoreList" class="text-center">
-            {% include 'admin/cards/store_card.html.twig' %}
+        <tbody id="tbodyItemList" class="text-center">
+            {% include 'admin/cards/item_card.html.twig' %}
         </tbody>
     </table>
+<!-- End Item List Table -->
+
+    <!-- Add Item Button -->
     <div class="text-right">
-        <button id="btAddNewStore" class="mt-3 px-3 py-1 rounded bg-green-400">Add new store</button>
+        <button id="btAddNewItem" class="mt-3 px-3 py-1 rounded bg-green-400">Add new {{ itemTitle }}</button>
     </div>
+
 </div>
 {% endblock section %}
 
 {% block grayout %}
-    {% include "admin/grayout/grayout_add_store.html.twig" %}
+    <!-- Grayout pop up box for adding item -->
+    {% include "admin/grayout/grayout_add_item.html.twig" %}
 {% endblock grayout %}
 
 {% block scripts %}
 <script>
     $(document).ready(function () {
-        function reloadstoreList()
+        
+        let items = "{{ itemTitle|lower }}s";
+        let itemTitle = "{{ itemTitle }}";
+
+        function reloadItemList()
         {
-            let url = "/admin/ajax/stores";
+            let url = "/admin/ajax/" + items;
             $.ajax({
                 url: url,
                 type: "GET",
-            }).done(function (storeList) {
-                $("#tbodyStoreList").html(storeList);
+            }).done(function (itemList) {
+                $("#tbodyItemList").html(itemList);
             }).fail(function () {
-                console.log("store list ajax fail!");
+                console.log(`${itemTitle} list ajax fail!`);
             });
         }
 
-        let selStoreId = 1;
+        let selItemId = 1;
         let fieldIndex = 1;
         let selElement = '';
 
         // Show edit input
-        $("table").on("click","tbody td.storeField",function () 
+        $("table").on("click","tbody td.itemField",function () 
         {
             selElement = this;
-            selStoreId = $(this).parent().children(".storeId").html();
+            selItemId = $(this).parent().children(".itemId").html();
 
             $(this).removeClass("bg-green-200");
             $("#editorDiv").addClass("block");
@@ -90,7 +96,7 @@
         });
 
 
-        // Edit store field(patch) 
+        // Edit Item field(patch) 
         $("#editorDiv").submit(function( event ) {
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -100,7 +106,7 @@
                 "fieldIndex" : fieldIndex,
                 "value" : value
             };
-            let url = "/admin/ajax/stores/" + selStoreId;
+            let url = `/admin/ajax/${items}/${selItemId}`;
 
             $.ajax({
                 url: url,
@@ -122,7 +128,7 @@
                     });
                 }
             }).fail(function () {
-                console.log("store deletion ajax fail!");
+                console.log(`${itemTitle} deletion ajax fail!`);
             });
 
             $("#editorDiv").delay(1000).addClass("hidden");
@@ -132,51 +138,43 @@
             event.stopImmediatePropagation();
         });
 
-        // Delete store
+        // Delete Item
         $("table").on("click","tbody td span.btDelete",function () 
         {
-            let storeId = $(this).parents("tr").children(".storeId").html();
-            let url = "/admin/ajax/stores/" + storeId;
-            let storeName = $(this).parent().children(".storeName").html();
+            let itemId = $(this).parents("tr").children(".itemId").html();
+            let url = `/admin/ajax/${items}/${itemId}`;
 
             $.ajax({
                 url: url,
                 type: "DELETE",
             })
-            .done(function (storeList) {
-                $("#notificationTitle").html("Store Deleted!");
-                $("#notificationText").html("Store Name: " + storeName);
+            .done(function () {
+                $("#notificationTitle").html(`${itemTitle} Deleted!`);
+                $("#notificationText").html("");
                 $("#notificationDiv")
                     .removeClass("bg-red-700")
                     .addClass("bg-orange-500")
                     .slideDown().delay(2000).fadeOut("slow");
 
                 $("input[name=searchKeyword]").val("");
-                reloadstoreList();
+                reloadItemList();
             }).fail(function () {
-                console.log("store deletion ajax fail!");
+                console.log(`${itemTitle} deletion ajax fail!`);
             });
-        });
-
-        /** Gray Out control */
-        $("#btAddNewStore").click(function () {
-            $("#addStoreDiv input").val("");
-            $("#addStoreDiv p").html("");
-            $("#grayout").removeClass("hidden");
         });
 
         //** Search */
         $("input[name=searchKeyword]").keyup(function () {
             let keyword = ($(this).val()).toLowerCase();
             if(keyword == ''){
-                // show all of store
-                $("tbody#tbodyStoreList")
+                // show all of item
+                $("tbody#tbodyItemList")
                     .children()
                     .removeClass("hidden");
-                $("tbody#tbodyStoreList tr td").removeClass("bg-green-200");
+                $("tbody#tbodyItemList tr td").removeClass("bg-green-200");
                 
             } else {
-                $("tbody#tbodyStoreList")
+                $("tbody#tbodyItemList")
                     .children()
                     .removeClass("hidden")
                     .each(function(){
