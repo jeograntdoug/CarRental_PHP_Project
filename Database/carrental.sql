@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3333
--- Generation Time: May 14, 2020 at 10:53 PM
+-- Generation Time: May 14, 2020 at 11:13 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.30
 
@@ -1888,8 +1888,8 @@ CREATE TABLE `orders` (
   `userId` int(11) NOT NULL,
   `carId` int(11) NOT NULL,
   `returnDateTime` datetime DEFAULT NULL,
-  `startMilage` int(11) NOT NULL,
-  `returnMilage` int(11) DEFAULT NULL,
+  `startMileage` int(11) NOT NULL,
+  `returnMileage` int(11) DEFAULT NULL,
   `totalPrice` double DEFAULT NULL,
   `rentStoreId` int(11) NOT NULL,
   `returnStoreId` int(11) DEFAULT NULL
@@ -1908,10 +1908,10 @@ CREATE TABLE `reservations` (
   `carTypeId` int(11) NOT NULL,
   `startDateTime` datetime NOT NULL,
   `returnDateTime` datetime NOT NULL,
-  `dailyPrice` int(11) NOT NULL,
+  `dailyPrice` double NOT NULL,
   `netFees` double NOT NULL,
   `tps` double NOT NULL,
-  `tvq` int(11) NOT NULL,
+  `tvq` double NOT NULL,
   `rentDays` int(11) NOT NULL,
   `rentStoreId` int(11) NOT NULL,
   `returnStoreId` int(11) NOT NULL
@@ -2096,7 +2096,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `stores`
