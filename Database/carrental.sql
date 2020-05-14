@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- 主机： localhost:3306
--- 生成日期： 2020-05-14 06:14:12
--- 服务器版本： 10.3.23-MariaDB-log
--- PHP 版本： 7.3.6
+-- Host: 127.0.0.1:3333
+-- Generation Time: May 14, 2020 at 10:53 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库： `cp4966_carrental`
+-- Database: `carrental`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cars`
+-- Table structure for table `cars`
 --
 
 CREATE TABLE `cars` (
@@ -34,7 +33,7 @@ CREATE TABLE `cars` (
   `model` varchar(20) NOT NULL,
   `year` int(11) NOT NULL,
   `manufacturer` varchar(20) NOT NULL,
-  `milleage` int(11) NOT NULL,
+  `mileage` int(11) NOT NULL,
   `status` enum('avaliable','reserved','repair','renting') NOT NULL,
   `storeId` int(11) NOT NULL,
   `description` varchar(500) DEFAULT NULL,
@@ -45,19 +44,115 @@ CREATE TABLE `cars` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `cars`
+-- Dumping data for table `cars`
 --
 
-INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `milleage`, `status`, `storeId`, `description`, `photoPath`, `fuelType`, `latitude`, `longitude`) VALUES
+INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `mileage`, `status`, `storeId`, `description`, `photoPath`, `fuelType`, `latitude`, `longitude`) VALUES
+(1, 5, 'Malibu', 1962, 'Chevrolet', 69015, 'reserved', 10, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\fullsize_car.png', 'gas', 43.7114079, -79.5377247),
 (2, 1, 'Spark', 2018, 'Chevrolet', 46580, 'avaliable', 1, 'Economy car, best for single or couple travelling', NULL, 'gas', 45.456, -73.8623),
 (3, 1, 'Spark', 2016, 'Chevrolet', 87904, 'avaliable', 9, 'Economy car, best for single or couple travelling', NULL, 'gas', 43.6653502, -79.4882599),
 (4, 1, 'Spark', 2020, 'Chevrolet', 24500, 'avaliable', 5, 'Economy car, best for single or couple travelling', NULL, 'gas', 45.5896979, -73.731631),
-(5, 12, 'Qashqai', 2017, 'Nissan', 76789, 'avaliable', 1, 'Compact SUV, suitable for family travel', NULL, 'gas', 45.456, -73.8623);
+(5, 12, 'Qashqai', 2017, 'Nissan', 76789, 'avaliable', 1, 'Compact SUV, suitable for family travel', NULL, 'gas', 45.456, -73.8623),
+(6, 20, 'Colorado', 1990, 'Chevy', 92507, 'renting', 3, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 49.1967, 123.1815),
+(7, 7, 'Mustang', 1980, 'Ford', 26494, 'repair', 3, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\convertible_car.png', 'gas', 49.1967, 123.1815),
+(8, 1, 'Spark', 1908, 'Chevrolet', 43659, 'reserved', 20, 'An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 43.7228203, -79.3062622),
+(9, 14, 'Edge', 1955, 'Ford', 75278, 'avaliable', 7, 'A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\standard_suv.png', 'gas', 45.4884633, -73.6432817),
+(10, 19, 'Wrangler Unlimited', 2013, 'Jeep', 67230, 'repair', 9, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 43.6653502, -79.4882599),
+(11, 6, 'Countryman', 1992, 'MINI', 40187, 'renting', 16, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\sporty_car.png', 'hybrid', 45.5996667, -73.5590308),
+(12, 21, 'F150 Super Crew', 1920, 'Ford', 86758, 'avaliable', 15, 'Need to haul or move something? A pickup truck rental has the space', '\\resources\\carimages\\pickup_truck.png', 'hybrid', 45.448481, -73.4729835),
+(13, 16, 'Suburban', 1982, 'Chevrolet', 81115, 'repair', 18, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_suv.png', 'gas', 46.8130945, -71.2360168),
+(14, 7, 'Mustang', 1951, 'Ford', 59240, 'repair', 8, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\convertible_car.png', 'gas', 43.6777215, -79.6270084),
+(15, 13, 'Escape', 2013, 'Ford', 36672, 'reserved', 13, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\intermediate_suv.png', 'gas', 43.8024045, -79.426192),
+(16, 3, 'Forte', 1960, 'Kia', 28246, 'avaliable', 20, 'An intermediate car rental provides some more room for passengers and luggage than most smaller cars.', '\\resources\\carimages\\intermediate_car.png', 'gas', 43.7228203, -79.3062622),
+(17, 18, 'Durango', 1917, 'Dodge', 89862, 'repair', 13, '\"A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_crossover_suv.png', 'gas', 43.8024045, -79.426192),
+(18, 1, 'Spark', 2003, 'Chevrolet', 76140, 'reserved', 6, '\"An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 45.3629762, -73.8148386),
+(19, 20, 'Colorado', 1944, 'Chevy', 75279, 'avaliable', 15, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 45.448481, -73.4729835),
+(20, 2, 'Accent', 1981, 'Hyundai', 87465, 'avaliable', 11, 'Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas. ', '\\resources\\carimages\\compact_car.png', 'gas', 43.7147304, -79.8032623),
+(21, 23, 'Transit Cargo', 1941, 'Ford', 60452, 'renting', 9, 'Renting a cargo van is a great way to make small moves easy.', '\\resources\\carimages\\cargo_van.png', 'diesel', 43.6653502, -79.4882599),
+(22, 21, 'F150 Super Crew', 1986, 'Ford', 27761, 'reserved', 7, 'Need to haul or move something? A pickup truck rental has the space', '\\resources\\carimages\\pickup_truck.png', 'hybrid', 45.4884633, -73.6432817),
+(23, 19, 'Wrangler Unlimited', 1967, 'Jeep', 85443, 'avaliable', 16, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 45.5996667, -73.5590308),
+(24, 9, '300S', 1939, 'Chrysler', 29064, 'avaliable', 15, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_special_car.png', 'gas', 45.448481, -73.4729835),
+(25, 21, 'F150 Super Crew', 1941, 'Ford', 30536, 'repair', 6, 'Need to haul or move something? A pickup truck rental has the space', '\\resources\\carimages\\pickup_truck.png', 'hybrid', 45.3629762, -73.8148386),
+(26, 9, '300S', 1919, 'Chrysler', 98498, 'avaliable', 15, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_special_car.png', 'gas', 45.448481, -73.4729835),
+(27, 12, 'Qashqai', 1938, 'Nissan', 26642, 'renting', 4, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 45.5070645, -73.5682808),
+(28, 22, 'Grand Caravan', 1927, 'Dodge', 50196, 'avaliable', 11, 'A minivan rental is perfect for long road trips and family vacations with room for 7 people.', '\\resources\\carimages\\7_passenger_van.png', 'hybrid', 43.7147304, -79.8032623),
+(29, 11, 'XTS', 1931, 'Cadillac', 24298, 'repair', 19, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 46.7774013, -71.1837802),
+(30, 1, 'Spark', 1957, 'Chevrolet', 60343, 'reserved', 1, 'An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 45.456, -73.8623),
+(31, 8, '3 series', 1948, 'BMW', 76765, 'reserved', 12, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\fullsize_elite_car.png', 'gas', 43.7795002, -79.309002),
+(32, 7, 'Mustang', 1981, 'Ford', 41163, 'avaliable', 14, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\convertible_car.png', 'gas', 43.7938305, -79.5169511),
+(33, 12, 'Qashqai', 1921, 'Nissan', 22496, 'renting', 16, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 45.5996667, -73.5590308),
+(34, 3, 'Forte', 1916, 'Kia', 91912, 'renting', 19, 'An intermediate car rental provides some more room for passengers and luggage than most smaller cars.', '\\resources\\carimages\\intermediate_car.png', 'gas', 46.7774013, -71.1837802),
+(35, 22, 'Grand Caravan', 1968, 'Dodge', 67501, 'reserved', 8, 'A minivan rental is perfect for long road trips and family vacations with room for 7 people.', '\\resources\\carimages\\7_passenger_van.png', 'hybrid', 43.6777215, -79.6270084),
+(36, 15, 'Tahoe', 1915, 'Chevrolet', 49223, 'avaliable', 20, 'A full-size SUV rental has room to seat up to seven people and offers a powerful engine. Full-size SUVs are great for weekend road trips and special occasions.', '\\resources\\carimages\\fullsize_suv.png', 'gas', 43.7228203, -79.3062622),
+(37, 21, 'F150 Super Crew', 1996, 'Ford', 95008, 'reserved', 8, 'Need to haul or move something? A pickup truck rental has the space', '\\resources\\carimages\\pickup_truck.png', 'hybrid', 43.6777215, -79.6270084),
+(38, 13, 'Escape', 2001, 'Ford', 88198, 'avaliable', 19, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\intermediate_suv.png', 'gas', 46.7774013, -71.1837802),
+(39, 6, 'Countryman', 1930, 'MINI', 45070, 'renting', 5, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\sporty_car.png', 'hybrid', 45.5896979, -73.731631),
+(40, 19, 'Wrangler Unlimited', 1963, 'Jeep', 51771, 'renting', 9, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 43.6653502, -79.4882599),
+(41, 6, 'Countryman', 1901, 'MINI', 73909, 'reserved', 4, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\sporty_car.png', 'hybrid', 45.5070645, -73.5682808),
+(42, 15, 'Tahoe', 1904, 'Chevrolet', 54974, 'repair', 10, 'A full-size SUV rental has room to seat up to seven people and offers a powerful engine. Full-size SUVs are great for weekend road trips and special occasions.', '\\resources\\carimages\\fullsize_suv.png', 'gas', 43.7114079, -79.5377247),
+(43, 12, 'Qashqai', 1941, 'Nissan', 63753, 'repair', 16, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 45.5996667, -73.5590308),
+(44, 7, 'Mustang', 1900, 'Ford', 48291, 'avaliable', 15, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\convertible_car.png', 'gas', 45.448481, -73.4729835),
+(45, 13, 'Escape', 2020, 'Ford', 32358, 'renting', 4, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\intermediate_suv.png', 'gas', 45.5070645, -73.5682808),
+(46, 15, 'Tahoe', 1923, 'Chevrolet', 29990, 'renting', 3, 'A full-size SUV rental has room to seat up to seven people and offers a powerful engine. Full-size SUVs are great for weekend road trips and special occasions.', '\\resources\\carimages\\fullsize_suv.png', 'gas', 49.1967, 123.1815),
+(47, 5, 'Malibu', 2020, 'Chevrolet', 30426, 'renting', 14, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\fullsize_car.png', 'gas', 43.7938305, -79.5169511),
+(48, 2, 'Accent', 1997, 'Hyundai', 91160, 'repair', 9, 'Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.', '\\resources\\carimages\\compact_car.png', 'gas', 43.6653502, -79.4882599),
+(49, 2, 'Accent', 1958, 'Hyundai', 32097, 'renting', 5, 'Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.', '\\resources\\carimages\\compact_car.png', 'gas', 45.5896979, -73.731631),
+(50, 2, 'Accent', 1914, 'Hyundai', 43775, 'avaliable', 14, 'Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.', '\\resources\\carimages\\compact_car.png', 'gas', 43.7938305, -79.5169511),
+(51, 19, 'Wrangler Unlimited', 1914, 'Jeep', 99830, 'reserved', 9, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 43.6653502, -79.4882599),
+(52, 4, 'Jetta', 1945, 'Volkswagen', 22349, 'repair', 12, 'An intermediate car rental provides some more room for passengers and luggage than most smaller cars.', '\\resources\\carimages\\standard_car.png', 'gas', 43.7795002, -79.309002),
+(53, 11, 'XTS', 1963, 'Cadillac', 94986, 'renting', 1, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 45.456, -73.8623),
+(54, 16, 'Suburban', 2001, 'Chevrolet', 38402, 'renting', 12, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_suv.png', 'gas', 43.7795002, -79.309002),
+(55, 2, 'Accent', 1945, 'Hyundai', 23865, 'avaliable', 8, 'Compact cars offer great gas mileage and the ease of driving and parking in high traffic areas.', '\\resources\\carimages\\compact_car.png', 'gas', 43.6777215, -79.6270084),
+(56, 22, 'Grand Caravan', 1968, 'Dodge', 98382, 'renting', 10, 'A minivan rental is perfect for long road trips and family vacations with room for 7 people.', '\\resources\\carimages\\7_passenger_van.png', 'hybrid', 43.7114079, -79.5377247),
+(57, 11, 'XTS', 1979, 'Cadillac', 56191, 'reserved', 20, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 43.7228203, -79.3062622),
+(58, 1, 'Spark', 1952, 'Chevrolet', 50061, 'avaliable', 5, 'An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 45.5896979, -73.731631),
+(59, 4, 'Jetta', 1964, 'Volkswagen', 78194, 'renting', 9, 'An intermediate car rental provides some more room for passengers and luggage than most smaller cars.', '\\resources\\carimages\\standard_car.png', 'gas', 43.6653502, -79.4882599),
+(60, 18, 'Durango', 1934, 'Dodge', 91122, 'reserved', 3, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_crossover_suv.png', 'gas', 49.1967, 123.1815),
+(61, 19, 'Wrangler Unlimited', 1904, 'Jeep', 96208, 'renting', 13, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 43.8024045, -79.426192),
+(62, 19, 'Wrangler Unlimited', 1907, 'Jeep', 36295, 'renting', 4, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 45.5070645, -73.5682808),
+(63, 20, 'Colorado', 1983, 'Chevy', 72061, 'reserved', 6, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 45.3629762, -73.8148386),
+(64, 5, 'Malibu', 1987, 'Chevrolet', 40395, 'avaliable', 8, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\fullsize_car.png', 'gas', 43.6777215, -79.6270084),
+(65, 22, 'Grand Caravan', 1999, 'Dodge', 97112, 'avaliable', 12, 'A minivan rental is perfect for long road trips and family vacations with room for 7 people.', '\\resources\\carimages\\7_passenger_van.png', 'hybrid', 43.7795002, -79.309002),
+(66, 12, 'Qashqai', 1981, 'Nissan', 78560, 'reserved', 9, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 43.6653502, -79.4882599),
+(67, 11, 'XTS', 1930, 'Cadillac', 82561, 'renting', 1, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 45.456, -73.8623),
+(68, 18, 'Durango', 1937, 'Dodge', 94863, 'renting', 7, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_crossover_suv.png', 'gas', 45.4884633, -73.6432817),
+(69, 21, 'F150 Super Crew', 1920, 'Ford', 50391, 'repair', 3, 'Need to haul or move something? A pickup truck rental has the space', '\\resources\\carimages\\pickup_truck.png', 'hybrid', 49.1967, 123.1815),
+(70, 10, 'Maxima', 1948, 'Nissan', 43075, 'repair', 8, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_car.png', 'gas', 43.6777215, -79.6270084),
+(71, 11, 'XTS', 1942, 'Cadillac', 26597, 'repair', 7, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 45.4884633, -73.6432817),
+(72, 17, 'X1', 1929, 'BMW', 72808, 'repair', 15, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\standard_elite_suv.png', 'gas', 45.448481, -73.4729835),
+(73, 19, 'Wrangler Unlimited', 1940, 'Jeep', 68963, 'avaliable', 20, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 43.7228203, -79.3062622),
+(74, 18, 'Durango', 1981, 'Dodge', 57232, 'repair', 6, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_crossover_suv.png', 'gas', 45.3629762, -73.8148386),
+(75, 10, 'Maxima', 1960, 'Nissan', 72006, 'repair', 15, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_car.png', 'gas', 45.448481, -73.4729835),
+(76, 21, 'F150 Super Crew', 1945, 'Ford', 45917, 'avaliable', 6, 'Need to haul or move something? A pickup truck rental has the space', '\\resources\\carimages\\pickup_truck.png', 'hybrid', 45.3629762, -73.8148386),
+(77, 23, 'Transit Cargo', 1999, 'Ford', 27345, 'repair', 14, 'Renting a cargo van is a great way to make small moves easy.', '\\resources\\carimages\\cargo_van.png', 'diesel', 43.7938305, -79.5169511),
+(78, 18, 'Durango', 1978, 'Dodge', 21227, 'reserved', 16, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\premium_crossover_suv.png', 'gas', 45.5996667, -73.5590308),
+(79, 19, 'Wrangler Unlimited', 1946, 'Jeep', 27692, 'avaliable', 12, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 43.7795002, -79.309002),
+(80, 1, 'Spark', 1906, 'Chevrolet', 58650, 'renting', 4, 'An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 45.5070645, -73.5682808),
+(81, 11, 'XTS', 1906, 'Cadillac', 90343, 'avaliable', 6, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 45.3629762, -73.8148386),
+(82, 14, 'Edge', 1979, 'Ford', 83517, 'avaliable', 16, 'A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\standard_suv.png', 'gas', 45.5996667, -73.5590308),
+(83, 6, 'Countryman', 1949, 'MINI', 65025, 'avaliable', 16, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\sporty_car.png', 'hybrid', 45.5996667, -73.5590308),
+(84, 5, 'Malibu', 2000, 'Chevrolet', 68789, 'repair', 5, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\fullsize_car.png', 'gas', 45.5896979, -73.731631),
+(85, 20, 'Colorado', 1957, 'Chevy', 33655, 'avaliable', 16, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 45.5996667, -73.5590308),
+(86, 6, 'Countryman', 2010, 'MINI', 32846, 'renting', 19, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\sporty_car.png', 'hybrid', 46.7774013, -71.1837802),
+(87, 11, 'XTS', 2013, 'Cadillac', 87438, 'renting', 15, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 45.448481, -73.4729835),
+(88, 14, 'Edge', 2011, 'Ford', 71000, 'renting', 4, 'A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\standard_suv.png', 'gas', 45.5070645, -73.5682808),
+(89, 22, 'Grand Caravan', 1975, 'Dodge', 46712, 'avaliable', 13, 'A minivan rental is perfect for long road trips and family vacations with room for 7 people.', '\\resources\\carimages\\7_passenger_van.png', 'hybrid', 43.8024045, -79.426192),
+(90, 12, 'Qashqai', 1961, 'Nissan', 69104, 'avaliable', 20, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 43.7228203, -79.3062622),
+(91, 13, 'Escape', 2001, 'Ford', 21748, 'avaliable', 9, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\intermediate_suv.png', 'gas', 43.6653502, -79.4882599),
+(92, 10, 'Maxima', 1937, 'Nissan', 82952, 'repair', 3, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_car.png', 'gas', 49.1967, 123.1815),
+(93, 20, 'Colorado', 1928, 'Chevy', 51029, 'reserved', 9, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 43.6653502, -79.4882599),
+(94, 8, '3 series', 1991, 'BMW', 68074, 'renting', 9, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\fullsize_elite_car.png', 'gas', 43.6653502, -79.4882599),
+(95, 11, 'XTS', 1923, 'Cadillac', 89625, 'repair', 16, 'Relax on the road with a luxury rental car from Enterprise Rent-A-Car. Luxury car rentals include leather seats', '\\resources\\carimages\\luxury_car.png', 'gas', 45.5996667, -73.5590308),
+(96, 9, '300S', 2012, 'Chrysler', 27805, 'renting', 18, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_special_car.png', 'gas', 46.8130945, -71.2360168),
+(97, 20, 'Colorado', 1989, 'Chevy', 62229, 'avaliable', 3, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 49.1967, 123.1815),
+(98, 20, 'Colorado', 1903, 'Chevy', 40561, 'reserved', 7, 'A small pickup truck rental is great for hauling smaller items that won\'t fit in your own car.', '\\resources\\carimages\\small_pickup_truck.png', 'diesel', 45.4884633, -73.6432817),
+(99, 8, '3 series', 1905, 'BMW', 89392, 'reserved', 1, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\fullsize_elite_car.png', 'gas', 45.456, -73.8623),
+(100, 14, 'Edge', 1903, 'Ford', 28616, 'repair', 11, 'A standard SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\standard_suv.png', 'gas', 43.7147304, -79.8032623);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cartypes`
+-- Table structure for table `cartypes`
 --
 
 CREATE TABLE `cartypes` (
@@ -72,7 +167,7 @@ CREATE TABLE `cartypes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `cartypes`
+-- Dumping data for table `cartypes`
 --
 
 INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`, `bags`, `dailyPrice`, `photoPath`) VALUES
@@ -103,7 +198,7 @@ INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cities`
+-- Table structure for table `cities`
 --
 
 CREATE TABLE `cities` (
@@ -116,7 +211,7 @@ CREATE TABLE `cities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `cities`
+-- Dumping data for table `cities`
 --
 
 INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `longitude`) VALUES
@@ -1783,7 +1878,7 @@ INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `l
 -- --------------------------------------------------------
 
 --
--- 表的结构 `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -1793,8 +1888,8 @@ CREATE TABLE `orders` (
   `userId` int(11) NOT NULL,
   `carId` int(11) NOT NULL,
   `returnDateTime` datetime DEFAULT NULL,
-  `startMillage` int(11) NOT NULL,
-  `returnMillage` int(11) DEFAULT NULL,
+  `startMilage` int(11) NOT NULL,
+  `returnMilage` int(11) DEFAULT NULL,
   `totalPrice` double DEFAULT NULL,
   `rentStoreId` int(11) NOT NULL,
   `returnStoreId` int(11) DEFAULT NULL
@@ -1803,7 +1898,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `reservations`
+-- Table structure for table `reservations`
 --
 
 CREATE TABLE `reservations` (
@@ -1811,10 +1906,10 @@ CREATE TABLE `reservations` (
   `createdTS` timestamp NOT NULL DEFAULT current_timestamp(),
   `userId` int(11) NOT NULL,
   `carTypeId` int(11) NOT NULL,
-  `StartDateTime` datetime NOT NULL,
-  `ReturnDateTime` datetime NOT NULL,
+  `startDateTime` datetime NOT NULL,
+  `returnDateTime` datetime NOT NULL,
   `dailyPrice` int(11) NOT NULL,
-  `calFees` double NOT NULL,
+  `netFees` double NOT NULL,
   `tps` double NOT NULL,
   `tvq` int(11) NOT NULL,
   `rentDays` int(11) NOT NULL,
@@ -1825,7 +1920,7 @@ CREATE TABLE `reservations` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `stores`
+-- Table structure for table `stores`
 --
 
 CREATE TABLE `stores` (
@@ -1841,7 +1936,7 @@ CREATE TABLE `stores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `stores`
+-- Dumping data for table `stores`
 --
 
 INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`, `province`, `latitude`, `longitude`) VALUES
@@ -1868,7 +1963,7 @@ INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -1885,7 +1980,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`, `email`, `phone`, `role`, `idPhoto`, `password`) VALUES
@@ -1896,7 +1991,7 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `usersessions`
+-- Table structure for table `usersessions`
 --
 
 CREATE TABLE `usersessions` (
@@ -1906,11 +2001,11 @@ CREATE TABLE `usersessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转储表的索引
+-- Indexes for dumped tables
 --
 
 --
--- 表的索引 `cars`
+-- Indexes for table `cars`
 --
 ALTER TABLE `cars`
   ADD PRIMARY KEY (`id`),
@@ -1918,19 +2013,19 @@ ALTER TABLE `cars`
   ADD KEY `carTypeId` (`carTypeId`);
 
 --
--- 表的索引 `cartypes`
+-- Indexes for table `cartypes`
 --
 ALTER TABLE `cartypes`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `cities`
+-- Indexes for table `cities`
 --
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
@@ -1941,7 +2036,7 @@ ALTER TABLE `orders`
   ADD KEY `carId` (`carId`);
 
 --
--- 表的索引 `reservations`
+-- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id`),
@@ -1951,83 +2046,83 @@ ALTER TABLE `reservations`
   ADD KEY `returnStoreId` (`returnStoreId`);
 
 --
--- 表的索引 `stores`
+-- Indexes for table `stores`
 --
 ALTER TABLE `stores`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `usersessions`
+-- Indexes for table `usersessions`
 --
 ALTER TABLE `usersessions`
   ADD PRIMARY KEY (`sessionId`) USING BTREE,
   ADD KEY `userId` (`userId`);
 
 --
--- 在导出的表使用AUTO_INCREMENT
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- 使用表AUTO_INCREMENT `cars`
+-- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
--- 使用表AUTO_INCREMENT `cartypes`
+-- AUTO_INCREMENT for table `cartypes`
 --
 ALTER TABLE `cartypes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- 使用表AUTO_INCREMENT `cities`
+-- AUTO_INCREMENT for table `cities`
 --
 ALTER TABLE `cities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1658;
 
 --
--- 使用表AUTO_INCREMENT `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `reservations`
+-- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `stores`
+-- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- 使用表AUTO_INCREMENT `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 限制导出的表
+-- Constraints for dumped tables
 --
 
 --
--- 限制表 `cars`
+-- Constraints for table `cars`
 --
 ALTER TABLE `cars`
   ADD CONSTRAINT `cars_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `cars_ibfk_2` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
 
 --
--- 限制表 `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservations` (`id`),
@@ -2037,7 +2132,7 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_6` FOREIGN KEY (`carId`) REFERENCES `cars` (`id`);
 
 --
--- 限制表 `reservations`
+-- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
@@ -2046,7 +2141,7 @@ ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_6` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
 
 --
--- 限制表 `usersessions`
+-- Constraints for table `usersessions`
 --
 ALTER TABLE `usersessions`
   ADD CONSTRAINT `fk_users_userSessions` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
