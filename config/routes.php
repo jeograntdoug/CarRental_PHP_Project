@@ -133,7 +133,7 @@
         $app->post('/review_reserve/{id:[0-9]+}', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
-            $selId = isset($args['id']);
+            $selId = $args['id'];
 
             $_SESSION['selVehicleTypeId'] = $selId;
             $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
@@ -211,6 +211,32 @@
             $view = Twig::fromRequest($request);
             return $view->render($response, 'modify_locations.html.twig', [
 
+            ]);
+        });
+
+        $app->get('/modify_car_selection', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+
+            $allVehicles = DB::query("SELECT * FROM cartypes");
+            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
+            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
+            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
+            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
+
+            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 2")[0]['min'];
+            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 4")[0]['min'];
+            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 5")[0]['min'];
+            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 7")[0]['min'];
+
+            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
+            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
+            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
+            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
+            $vehiclesInfo = $_SESSION;
+
+            return $view->render($response, 'car_selection.html.twig', [
+                'allVehicles' => $allVehicles,
+                'vehiclesInfo' => $vehiclesInfo
             ]);
         });
 

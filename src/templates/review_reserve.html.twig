@@ -29,7 +29,8 @@
                         <li class="flex my-3">
                             <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
                             <div class="font-bold inline-block underline flex-1 text-center"><a
-                                        class="cursor-pointer text-green-700 " href="../modify_locations">MODIFY</a></div>
+                                        class="cursor-pointer text-green-700 " href="../modify_locations">MODIFY</a>
+                            </div>
                         </li>
                         <li>
                             <span>{{ dateLocationData.pickupStoreName }}</span><br>
@@ -54,12 +55,15 @@
                         <ul>
                             <li class="flex mb-3">
                                 <span class="font-bold text-lg flex-1">VEHICLE</span>
-                                <div class="font-bold inline-block underline flex-1 text-center"><span
-                                            class="cursor-pointer text-green-700 ">MODIFY</span></div>
+                                <div class="font-bold inline-block underline flex-1 text-center"><a
+                                            class="cursor-pointer text-green-700 "
+                                            href="../modify_car_selection">MODIFY</a></div>
                             </li>
                             <li class="flex">
-                                <span class="flex-1">Time And Distance 1 Day(s) @ CAD {{ selVehicle.dailyPrice }} / Day</span><br>
-                                <span class="flex-1 text-center">CAD 19.99</span>
+                                <span class="flex-1">Time And Distance 1 Day(s) @ CAD <b>{{ selVehicle.dailyPrice }}</b> / Day</span><br>
+                                {% set difference = date(dateLocationData.returnDate).diff(date(dateLocationData.pickupDate)) %}
+                                {% set calFees = difference.days *  selVehicle.dailyPrice %}
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ calFees }}</b></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">Unlimited Kilometres</span>
@@ -74,11 +78,13 @@
                             </li>
                             <li class="flex">
                                 <span class="flex-1">TPS / GST (5.0%)</span>
-                                <span class="flex-1 text-center">CAD 1.23</span>
+                                {% set tps = calFees * 0.05 %}
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tps|number_format(2,'.',',') }}</b></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">TVQ / QST (9.975%)</span>
-                                <span class="flex-1 text-center">CAD 2.45</span>
+                                {% set tvq = calFees * 0.0997 %}
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tvq|number_format(2,'.',',') }}</b></span>
                             </li>
                         </ul>
                     </div>
@@ -87,8 +93,10 @@
                         <span class="font-bold text-xl flex-1">ESTIMATED TOTAL</span>
                         <div class="flex-1 text-center">
                             <sup>CAD</sup>
-                            <span class="text-lg">28</span>
-                            <sup>.22</sup>
+                            {% set totalFees = calFees + tps + tvq %}
+
+                            <span class="text-lg"><b>{{ totalFees|round(0,'floor') }}</b></span>
+                            <sup><b>.{{ totalFees * 100 % 100 > 50 ? totalFees * 100 % 100 + 1 : totalFees * 100 % 100 }}</b></sup>
                         </div>
 
                     </div>
@@ -132,7 +140,9 @@
                             <span class="font-bold text-lg text-underline">Complete Your Booking</span><br>
                             <span>You will be charged when you pick up your rental.</span>
                             <div class="float-right">
-                                <sup>CAD</sup><span class="font-bold">28</span><sup class="font-bold">.22</sup>
+                                <sup>CAD </sup><span
+                                        class="font-bold text-xl">{{ totalFees|round(0,'floor') }}</span><sup
+                                        class="font-bold text-base">.{{ totalFees * 100 % 100 > 50 ? totalFees * 100 % 100 + 1 : totalFees * 100 % 100 }}</sup>
                             </div>
 
                         </div>

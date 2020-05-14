@@ -266,26 +266,7 @@
                     $(".vehicles").sort(sortFeatured).appendTo($("#vehicleList"));
                 }
             })
-            /*
-                        $(".btSelect").on("click", function () {
-                            //alert($(this).parent().parent().parent().parent().attr("class"));
-                            var parentElement = $(this).parent().parent().parent().parent();
-                            var vehicleId = $(parentElement).find(".vehicleIndex").text();
-                            //alert(vehicleId);
-                            var vehiclesArray = {{ allVehicles|json_encode|raw }};
-                var selVehicle = vehiclesArray[vehicleId];
-                alert(JSON.stringify(selVehicle));
 
-                $.ajax({ // FIXME: escape special characters using urlencode
-                    url: "/review_reserve",
-                    type: "POST",
-                    dataType: "json",
-                    data: selVehicle,
-                    error: function (jqxhr, status, errorThrown) {
-                        alert("AJAX error: " + jqxhr.responseText);
-                    }
-                })
-            })*/
 
 
         })
