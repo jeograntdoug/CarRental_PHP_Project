@@ -1,0 +1,12 @@
+{% for item in itemList %}
+    <tr> 
+        {% for key in item|keys %}
+            <td class="{{ key == 'id' ? 'itemId' : 'itemField cursor-pointer' }} relative border-2 border-gray-500">{{ item[key]}}</td>
+        {% endfor %}
+        <td class="border-none flex justify-center">
+            <span class="material-icons btDelete cursor-pointer fill-current text-red-500">
+                delete 
+            </span>
+        </td>
+    </tr>
+{% endfor %}

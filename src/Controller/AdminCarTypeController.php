@@ -8,21 +8,22 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
 use DB;
 
-class AdminStoreController
+class AdminCarTypeController
 {
     public function index (Request $request, Response $response)
     {
         $view = Twig::fromRequest($request);
 
-        $storeList = DB::query(
-            "SELECT id, storeName, province, city, postCode, address, phone
-             FROM stores"
+        $carTypeList = DB::query(
+            "SELECT id, category, subtype, 
+                    description, passengers, bags, dailyPrice
+            FROM carTypes"
              );
 
         return $view->render($response, 'admin/item_list.html.twig',[
-            'itemTitle' => 'Store',
-            'itemList' => $storeList,
-            'itemKeyList' => ['id', 'storeName', 'province', 'city', 'postCode', 'address', 'phone']
+            'itemTitle' => 'CarType',
+            'itemList' => $carTypeList,
+            'itemKeyList' => ['id', 'category', 'subtype', 'description', 'passengers', 'bags', 'dailyPrice']
         ]);
     }
 
@@ -30,24 +31,26 @@ class AdminStoreController
     {
         $view = Twig::fromRequest($request);
 
-        $storeList = DB::query(
-            "SELECT id, storeName, province, city, postCode, address, phone
-             FROM stores"
+        $carTypeList = DB::query(
+            "SELECT id, category, subtype, 
+                    description, passengers, bags, dailyPrice
+            FROM carTypes"
              );
 
         return $view->render($response, 'admin/cards/item_card.html.twig', [
-            'itemList' => $storeList
+            'itemList' => $carTypeList
         ]);
     }
 
+    //WIP
     public function create (Request $request, Response $response, array $args)
     {
         $jsonData = json_decode($request->getBody(), true);
 
-        $errorList = Validator::store($jsonData);
+        $errorList = Validator::carType($jsonData);
 
         if(empty($errorList)){
-            DB::insert('stores',$jsonData);
+            DB::insert('carTypes',$jsonData);
         }
 
         $response->getBody()->write(json_encode([
@@ -59,9 +62,9 @@ class AdminStoreController
 
     public function delete (Request $request, Response $response, array $args)
     {
-        $storeId = $args['id'];
+        $carTypeId = $args['id'];
 
-        DB::delete('stores','id=%i',$storeId);
+        DB::delete('carTypes','id=%i', $carTypeId);
         $response->getBody()->write(json_encode(DB::affectedRows()));
 
         return $response;
@@ -69,8 +72,8 @@ class AdminStoreController
 
     public function edit (Request $request, Response $response, array $args)
     {
-        $fieldList = ['id','storeName','province','city','postCode','address','phone'];
-        $storeId = $args['id'];
+        $fieldList = ['id', 'category', 'subtype', 'description', 'passengers', 'bags', 'dailyPrice'];
+        $carTypeId = $args['id'];
 
         $jsonData = json_decode($request->getBody(), true);
 
@@ -78,10 +81,10 @@ class AdminStoreController
             $fieldList[$jsonData['fieldIndex']] => $jsonData['value']
         ];
 
-        $errorList = Validator::store($data,false);
+        $errorList = Validator::carType($jsonData, false);
 
         if(empty($errorList)){
-            DB::update('stores',$data,'id=%s',$storeId);
+            DB::update('carTypes',$data,'id=%s',$carTypeId);
         }
 
         $response->getBody()->write(json_encode([

@@ -12,7 +12,6 @@
     use Slim\Routing\RouteCollectorProxy;
     use Slim\Views\Twig;
 
-
     return function (App $app) {
         // Routes
 
@@ -36,16 +35,27 @@
 
         $app->group('/admin', function (RouteCollectorProxy $group) {
             $group->get('', AdminController::class . ':home');
-            $group->get('/stores', AdminController::class . ':storeList');
-            $group->get('/cartypes', AdminController::class . ':carTypeList');
-            $group->get('/cars', AdminController::class . ':carList');
             $group->get('/reservations', AdminController::class . ':reservationList');
 
-            $group->get('/ajax/stores', AdminStoreController::class . ':index');
+            $group->get('/stores', AdminStoreController::class . ':index');
+            $group->get('/ajax/stores', AdminStoreController::class . ':showAll');
             $group->post('/ajax/stores', AdminStoreController::class . ':create');
             $group->patch('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':edit');
             $group->delete('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':delete');
-        })->add(AuthMiddleware::mustBeLoginAsAdmin());
+
+            $group->get('/cars', AdminCarController::class . ':index');
+            $group->get('/ajax/cars', AdminCarController::class . ':showAll');
+            $group->post('/ajax/cars', AdminCarController::class . ':create');
+            $group->patch('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':edit');
+            $group->delete('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':delete');
+
+            $group->get('/cartypes', AdminCarTypeController::class . ':index');
+            $group->get('/ajax/cartypes', AdminCarTypeController::class . ':showAll');
+            $group->post('/ajax/cartypes', AdminCarTypeController::class . ':create');
+            $group->patch('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':edit');
+            $group->delete('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':delete');
+        });
+        //->add(AuthMiddleware::mustBeLoginAsAdmin());
 
         //Routes for Errors Pages
         $app->group('/errors', function (RouteCollectorProxy $group) {
