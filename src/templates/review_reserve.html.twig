@@ -17,7 +17,8 @@
                     <ul>
                         <li class="flex my-3">
                             <span class="font-bold flex-1 text-lg ">DATES & TIMES</span>
-                            <div class="font-bold inline-block underline flex-1 text-center"><a class="cursor-pointer text-green-700" href="../modify_datetime">MODIFY</a></div>
+                            <div class="font-bold inline-block underline flex-1 text-center"><a
+                                        class="cursor-pointer text-green-700" href="../modify_datetime">MODIFY</a></div>
                         </li>
                         <li>
                             <span>{{ dateLocationData.pickupDate|date('D j. F Y') }} @ {{ dateLocationData.pickupTime|date('H:i A') }}</span><br>
@@ -27,7 +28,8 @@
                     <ul class="mt-5">
                         <li class="flex my-3">
                             <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
-                            <div class="font-bold inline-block underline flex-1 text-center"><span class="cursor-pointer text-green-700 ">MODIFY</span></div>
+                            <div class="font-bold inline-block underline flex-1 text-center"><a
+                                        class="cursor-pointer text-green-700 " href="../modify_locations">MODIFY</a></div>
                         </li>
                         <li>
                             <span>{{ dateLocationData.pickupStoreName }}</span><br>
@@ -52,7 +54,8 @@
                         <ul>
                             <li class="flex mb-3">
                                 <span class="font-bold text-lg flex-1">VEHICLE</span>
-                                <div class="font-bold inline-block underline flex-1 text-center"><span class="cursor-pointer text-green-700 ">MODIFY</span></div>
+                                <div class="font-bold inline-block underline flex-1 text-center"><span
+                                            class="cursor-pointer text-green-700 ">MODIFY</span></div>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">Time And Distance 1 Day(s) @ CAD {{ selVehicle.dailyPrice }} / Day</span><br>

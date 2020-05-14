@@ -98,7 +98,7 @@
             $_SESSION['returnDate'] = $dateLocateData['returnDate'];
             $_SESSION['returnTime'] = $dateLocateData['returnTime'];
 
-            $pickupStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s",$dateLocateData['pickupStoreId']);
+            $pickupStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s", $dateLocateData['pickupStoreId']);
             $_SESSION['pickupStoreId'] = $pickupStore['id'];
             $_SESSION['pickupAddress'] = $pickupStore['address'];
             $_SESSION['pickupStoreName'] = $pickupStore['storeName'];
@@ -125,29 +125,19 @@
 
             return $view->render($response, 'car_selection.html.twig', [
                 'allVehicles' => $allVehicles,
-                'vehiclesInfo'=>$vehiclesInfo
+                'vehiclesInfo' => $vehiclesInfo
             ]);
         });
 
 
-
-        $app->post('/review_reserve[/{id:[0-9]+}]', function (Request $request, Response $response, array $args) {
+        $app->post('/review_reserve/{id:[0-9]+}', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
             $selId = isset($args['id']);
 
-            if($selId) {
-                $_SESSION['selVehicleTypeId'] = $selId;
-                $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
-                $_SESSION['selVehicle'] = $selVehicle;
-            }else{
-                $selVehicle = $_SESSION['selVehicle'];
-                $modifiedDateTime = $request->getParsedBody();
-                $_SESSION['pickupDate'] = $modifiedDateTime['pickupDate'];
-                $_SESSION['pickupTime'] = $modifiedDateTime['pickupTime'];
-                $_SESSION['returnDate'] = $modifiedDateTime['returnDate'];
-                $_SESSION['returnTime'] = $modifiedDateTime['returnTime'];
-            }
+            $_SESSION['selVehicleTypeId'] = $selId;
+            $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
+            $_SESSION['selVehicle'] = $selVehicle;
 
             $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
 
@@ -158,9 +148,51 @@
             ]);
         });
 
-        $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
+        $app->post('/modified_datetime', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
+            $selVehicle = $_SESSION['selVehicle'];
+            $modifiedDateTime = $request->getParsedBody();
+            $_SESSION['pickupDate'] = $modifiedDateTime['pickupDate'];
+            $_SESSION['pickupTime'] = $modifiedDateTime['pickupTime'];
+            $_SESSION['returnDate'] = $modifiedDateTime['returnDate'];
+            $_SESSION['returnTime'] = $modifiedDateTime['returnTime'];
+
+            $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
+
+            return $view->render($response, 'review_reserve.html.twig', [
+                'selVehicle' => $selVehicle,
+                'userInfo' => $userInfo,
+                'dateLocationData' => $_SESSION
+            ]);
+        });
+
+        $app->post('/modified_locations', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+
+            $selVehicle = $_SESSION['selVehicle'];
+            $modifiedLocationData = $request->getParsedBody();
+
+            $pickupStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s", $modifiedLocationData['pickupStoreId']);
+            $_SESSION['pickupStoreId'] = $pickupStore['id'];
+            $_SESSION['pickupAddress'] = $pickupStore['address'];
+            $_SESSION['pickupStoreName'] = $pickupStore['storeName'];
+            $_SESSION['pickupCity'] = $pickupStore['city'];
+            $_SESSION['pickupProvince'] = $pickupStore['province'];
+            $_SESSION['pickupPostCode'] = $pickupStore['postCode'];
+
+            $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
+
+            return $view->render($response, 'review_reserve.html.twig', [
+                'selVehicle' => $selVehicle,
+                'userInfo' => $userInfo,
+                'dateLocationData' => $_SESSION
+            ]);
+        });
+
+
+        $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
 
 
             return $view->render($response, 'reserve_success.html.twig', [
@@ -171,6 +203,13 @@
         $app->get('/modify_datetime', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
             return $view->render($response, 'modify_datetime.html.twig', [
+
+            ]);
+        });
+
+        $app->get('/modify_locations', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'modify_locations.html.twig', [
 
             ]);
         });
