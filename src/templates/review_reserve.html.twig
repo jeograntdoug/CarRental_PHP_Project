@@ -63,7 +63,7 @@
                                 <span class="flex-1">Time And Distance 1 Day(s) @ CAD <b>{{ selVehicle.dailyPrice }}</b> / Day</span><br>
                                 {% set difference = date(dateLocationData.returnDate).diff(date(dateLocationData.pickupDate)) %}
                                 {% set calFees = difference.days *  selVehicle.dailyPrice %}
-                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ calFees }}</b></span>
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ calFees|number_format(2,'.',',') }}</b></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">Unlimited Kilometres</span>
@@ -79,12 +79,12 @@
                             <li class="flex">
                                 <span class="flex-1">TPS / GST (5.0%)</span>
                                 {% set tps = calFees * 0.05 %}
-                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tps|number_format(2,'.',',') }}</b></span>
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tps|number_format(3,'.',',') }}</b></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">TVQ / QST (9.975%)</span>
                                 {% set tvq = calFees * 0.0997 %}
-                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tvq|number_format(2,'.',',') }}</b></span>
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tvq|number_format(3,'.',',') }}</b></span>
                             </li>
                         </ul>
                     </div>
@@ -96,7 +96,7 @@
                             {% set totalFees = calFees + tps + tvq %}
 
                             <span class="text-lg"><b>{{ totalFees|round(0,'floor') }}</b></span>
-                            <sup><b>.{{ totalFees * 100 % 100 > 50 ? totalFees * 100 % 100 + 1 : totalFees * 100 % 100 }}</b></sup>
+                            <sup><b>.{{ totalFees * 1000 % 10 >= 5  ? totalFees * 100  % 100 + 1: totalFees * 100 % 100 }}</b></sup>
                         </div>
 
                     </div>

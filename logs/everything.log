@@ -30,3 +30,5 @@
 [2020-05-13T20:39:12.773216-04:00] main.ERROR: Database error[Query]: INSERT INTO `cars` (`carTypeId`,`model`,`year`,`manufacturer`,`milleage`,`status`,`dailyPrice`,`storeId`,`description`,`fuelType`) VALUES ('', '', '', '', '', '', '', '', '', '') [] []
 [2020-05-13T20:39:15.706154-04:00] main.ERROR: Database erorr[Connection]: Cannot add or update a child row: a foreign key constraint fails (`carrental`.`cars`, CONSTRAINT `cars_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `stores` (`id`)) [] []
 [2020-05-13T20:39:15.707957-04:00] main.ERROR: Database error[Query]: INSERT INTO `cars` (`carTypeId`,`model`,`year`,`manufacturer`,`milleage`,`status`,`dailyPrice`,`storeId`,`description`,`fuelType`) VALUES ('', '', '', '', '', '', '', '', '', '') [] []
+[2020-05-14T05:35:27.233116+02:00] main.ERROR: Database erorr[Connection]: Unknown column 'dailyPrice' in 'field list' [] []
+[2020-05-14T05:35:27.241779+02:00] main.ERROR: Database error[Query]: SELECT id, carTypeId, model, year, manufacturer, milleage, status, dailyPrice, storeId, description, fuelType             FROM cars [] []

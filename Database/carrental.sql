@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3333
--- Generation Time: May 14, 2020 at 04:04 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.30
+-- 主机： localhost:3306
+-- 生成日期： 2020-05-14 06:14:12
+-- 服务器版本： 10.3.23-MariaDB-log
+-- PHP 版本： 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `carrental`
+-- 数据库： `cp4966_carrental`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cars`
+-- 表的结构 `cars`
 --
 
 CREATE TABLE `cars` (
@@ -44,7 +45,7 @@ CREATE TABLE `cars` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `cars`
+-- 转存表中的数据 `cars`
 --
 
 INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `milleage`, `status`, `storeId`, `description`, `photoPath`, `fuelType`, `latitude`, `longitude`) VALUES
@@ -56,7 +57,7 @@ INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `milleag
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cartypes`
+-- 表的结构 `cartypes`
 --
 
 CREATE TABLE `cartypes` (
@@ -71,7 +72,7 @@ CREATE TABLE `cartypes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `cartypes`
+-- 转存表中的数据 `cartypes`
 --
 
 INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`, `bags`, `dailyPrice`, `photoPath`) VALUES
@@ -102,7 +103,7 @@ INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cities`
+-- 表的结构 `cities`
 --
 
 CREATE TABLE `cities` (
@@ -115,7 +116,7 @@ CREATE TABLE `cities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cities`
+-- 转存表中的数据 `cities`
 --
 
 INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `longitude`) VALUES
@@ -1782,7 +1783,7 @@ INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `l
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- 表的结构 `orders`
 --
 
 CREATE TABLE `orders` (
@@ -1802,7 +1803,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reservations`
+-- 表的结构 `reservations`
 --
 
 CREATE TABLE `reservations` (
@@ -1813,6 +1814,10 @@ CREATE TABLE `reservations` (
   `StartDateTime` datetime NOT NULL,
   `ReturnDateTime` datetime NOT NULL,
   `dailyPrice` int(11) NOT NULL,
+  `calFees` double NOT NULL,
+  `tps` double NOT NULL,
+  `tvq` int(11) NOT NULL,
+  `rentDays` int(11) NOT NULL,
   `rentStoreId` int(11) NOT NULL,
   `returnStoreId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1820,7 +1825,7 @@ CREATE TABLE `reservations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stores`
+-- 表的结构 `stores`
 --
 
 CREATE TABLE `stores` (
@@ -1836,7 +1841,7 @@ CREATE TABLE `stores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `stores`
+-- 转存表中的数据 `stores`
 --
 
 INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`, `province`, `latitude`, `longitude`) VALUES
@@ -1863,7 +1868,7 @@ INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- 表的结构 `users`
 --
 
 CREATE TABLE `users` (
@@ -1880,7 +1885,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `users`
+-- 转存表中的数据 `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`, `email`, `phone`, `role`, `idPhoto`, `password`) VALUES
@@ -1891,7 +1896,7 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usersessions`
+-- 表的结构 `usersessions`
 --
 
 CREATE TABLE `usersessions` (
@@ -1901,11 +1906,11 @@ CREATE TABLE `usersessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- 转储表的索引
 --
 
 --
--- Indexes for table `cars`
+-- 表的索引 `cars`
 --
 ALTER TABLE `cars`
   ADD PRIMARY KEY (`id`),
@@ -1913,19 +1918,19 @@ ALTER TABLE `cars`
   ADD KEY `carTypeId` (`carTypeId`);
 
 --
--- Indexes for table `cartypes`
+-- 表的索引 `cartypes`
 --
 ALTER TABLE `cartypes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cities`
+-- 表的索引 `cities`
 --
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orders`
+-- 表的索引 `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
@@ -1936,7 +1941,7 @@ ALTER TABLE `orders`
   ADD KEY `carId` (`carId`);
 
 --
--- Indexes for table `reservations`
+-- 表的索引 `reservations`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id`),
@@ -1946,83 +1951,83 @@ ALTER TABLE `reservations`
   ADD KEY `returnStoreId` (`returnStoreId`);
 
 --
--- Indexes for table `stores`
+-- 表的索引 `stores`
 --
 ALTER TABLE `stores`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- 表的索引 `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usersessions`
+-- 表的索引 `usersessions`
 --
 ALTER TABLE `usersessions`
   ADD PRIMARY KEY (`sessionId`) USING BTREE,
   ADD KEY `userId` (`userId`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- 在导出的表使用AUTO_INCREMENT
 --
 
 --
--- AUTO_INCREMENT for table `cars`
+-- 使用表AUTO_INCREMENT `cars`
 --
 ALTER TABLE `cars`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `cartypes`
+-- 使用表AUTO_INCREMENT `cartypes`
 --
 ALTER TABLE `cartypes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT for table `cities`
+-- 使用表AUTO_INCREMENT `cities`
 --
 ALTER TABLE `cities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1658;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- 使用表AUTO_INCREMENT `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `reservations`
+-- 使用表AUTO_INCREMENT `reservations`
 --
 ALTER TABLE `reservations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `stores`
+-- 使用表AUTO_INCREMENT `stores`
 --
 ALTER TABLE `stores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT for table `users`
+-- 使用表AUTO_INCREMENT `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for dumped tables
+-- 限制导出的表
 --
 
 --
--- Constraints for table `cars`
+-- 限制表 `cars`
 --
 ALTER TABLE `cars`
   ADD CONSTRAINT `cars_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `cars_ibfk_2` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
 
 --
--- Constraints for table `orders`
+-- 限制表 `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservations` (`id`),
@@ -2032,7 +2037,7 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_6` FOREIGN KEY (`carId`) REFERENCES `cars` (`id`);
 
 --
--- Constraints for table `reservations`
+-- 限制表 `reservations`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
@@ -2041,7 +2046,7 @@ ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_6` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
 
 --
--- Constraints for table `usersessions`
+-- 限制表 `usersessions`
 --
 ALTER TABLE `usersessions`
   ADD CONSTRAINT `fk_users_userSessions` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -366,3 +366,31 @@ in this middleware
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/14 Wang Wei
+1. Done since last scrum:
+- add function: show adjacent stores after user select a city
+- add function: user can click marker to select a store
+- user can modify datetime, location and car types in review_reserve page.
+
+
+2. To do until next Scrum:
+- add modification to different pickup-return locations.
+- save review_reserve info to database.
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/14 Donghyeok Seo
+1. Done since last scrum
+- Crud for store page
+- Validation for store page
+
+2. To do until next Scrum:
+- Crud for other admin pages
+- Validation for other admin pages
+
+3. Need assistance / figure things out
+
+**************************************************
