@@ -1,0 +1,114 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% block title %}
+    Login page
+{% endblock title %}
+
+{% block section %}
+    <form method="post" action="/review_reserve" class="w-3/5 mx-auto">
+        <div class="mx-12 mt-6">
+            <div class="flex inline-block">
+                <span class="mb-2 font-bold w-5/12 ">PICK-UP TIME</span>
+                <span class="mb-2 font-bold pl-10">RENT DAYS</span>
+            </div>
+
+            <div >
+                <input class="w-1/5 font-bold text-center p-2 mr-5 h-10 border-2 border-gray-500" type="date"
+                       name="pickupDate" id="pickupDate"/>
+                <input class="pickupTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500 mr-5"
+                       value="09:00:00"
+                       type="time"
+                       list="pickupTimeList"
+                       step="600" name="pickupTime" id="pickupTime">
+                <datalist id="pickupTimeList">
+                    <option value="08:00"/>
+                    <option value="09:00"/>
+                    <option value="10:00"/>
+                    <option value="11:00"/>
+                    <option value="12:00"/>
+                    <option value="13:00"/>
+                    <option value="14:00"/>
+                    <option value="15:00"/>
+                    <option value="16:00"/>
+                    <option value="17:00"/>
+                    <option value="18:00"/>
+                    <option value="19:00"/>
+                    <option value="20:00"/>
+                </datalist>
+                <input class="w-1/6 text-center font-bold p-2 h-10 border-2 border-gray-500" type="number" min="1"
+                       value="1"
+                       id="rentDays"/>
+            </div>
+        </div>
+        <div class="mx-12 mt-6">
+            <p class="mb-2 font-bold">RETURN TIME</p>
+            <div class="flex">
+                <input class="returnDate font-bold w-1/5 text-center p-2 mr-5 h-10 border-2 border-gray-500"
+                       type="date"
+                       name="returnDate" id="returnDate"/>
+                <input class="returnTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500"
+                       value="09:00:00"
+                       type="time" step="600"
+                       list="returnTimeList" name="returnTime" id="returnTime">
+                <datalist id="returnTimeList">
+                    <option value="08:00"/>
+                    <option value="09:00"/>
+                    <option value="10:00"/>
+                    <option value="11:00"/>
+                    <option value="12:00"/>
+                    <option value="13:00"/>
+                    <option value="14:00"/>
+                    <option value="15:00"/>
+                    <option value="16:00"/>
+                    <option value="17:00"/>
+                    <option value="18:00"/>
+                    <option value="19:00"/>
+                    <option value="20:00"/>
+                </datalist>
+            </div>
+        </div>
+
+        <div class="my-6 mr-20 text-right">
+            <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
+        </div>
+    </form>
+
+    <script>
+        function getTodayDate() {
+            var today = new Date();
+            return today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+        }
+
+        function getNowTime() {
+            var today = new Date();
+            if (Math.ceil(today.getMinutes() / 10) * 10 >= 60) {
+                return ("0" + (today.getHours() + 1)).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10 % 60).slice(-2);
+            } else {
+                return ("0" + today.getHours()).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10).slice(-2);
+            }
+        }
+
+        function getReturnDate(days) {
+            days = days > 0 ? days : 1;
+            var today = new Date();
+            var retDate = new Date(Number(today));
+            retDate.setDate(today.getDate() + days);
+            return retDate.getFullYear() + "-" + ("0" + (retDate.getMonth() + 1)).slice(-2) + "-" + ("0" + retDate.getDate()).slice(-2);
+        }
+
+
+        $(document).ready(function () {
+
+            $("#pickupDate").val(getTodayDate);
+            $("#pickupTime").val(getNowTime);
+            $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
+            $("#returnTime").val(getNowTime);
+
+            $("#rentDays").on("change", function () {
+                var days = $(this).val() > 0 ? $("#rentDays").val() : 1;
+                $(this).val(days);
+                $("#returnDate").val(getReturnDate(Number(days)));
+            })
+        })
+    </script>
+{% endblock section %}

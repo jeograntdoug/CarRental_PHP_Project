@@ -7,7 +7,6 @@
 {% block section %}
 
 
-
     <div class=" mx-auto w-3/5">
         <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
         <ul class="p-4 font-bold text-2xl text-green-900">
@@ -28,6 +27,7 @@
                            autocomplete="false"/>
                     <datalist id="pickupLocationList">
                     </datalist>
+                    <input type="text" class="hidden" id="pickupStoreId" name="pickupStoreId"/>
                 </div>
 
                 <div class="mt-2">
@@ -41,6 +41,7 @@
                            autocomplete="false"/><br>
                     <datalist id="returnLocationList">
                     </datalist>
+                    <input type="text" class="hidden" id="returnStoreId" name="returnStoreId"/>
                 </div>
             </div>
 
@@ -56,7 +57,7 @@
                     <span class="mb-2 font-bold pl-10">RENT DAYS</span>
                 </div>
 
-                <div class="">
+                <div >
                     <input class="w-1/5 font-bold text-center p-2 mr-5 h-10 border-2 border-gray-500" type="date"
                            name="pickupDate" id="pickupDate"/>
                     <input class="pickupTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500 mr-5"
@@ -121,9 +122,8 @@
 
 
     <script>
-
+        var curLocationElement = $("#pickupSearchText");
         var defaultLocation = {lat: 45.5017, lng: -73.5673};
-
         var map;
         var markers = [];
 
@@ -168,14 +168,23 @@
             var storeInfo = formatStoreInfo(store);
 
             var infoWindow = new google.maps.InfoWindow({
-                content: storeInfo //`<b>${store.storeName}</b><br>${store.address}<br>${store.phone}`
+                content: storeInfo
             })
 
-            google.maps.event.addListener(marker, 'click', function () {
+            marker.addListener('mouseover', function () {
+                infoWindow.open(map, marker);
+            })
+            marker.addListener('mouseout', function () {
                 infoWindow.open(map, marker);
                 setTimeout(function () {
                     infoWindow.close()
-                },2000);
+                }, 500);
+            })
+
+            marker.addListener('click', function () {
+                curLocationElement.val(`${store.storeName}  (${store.address} ${store.postCode})`);
+                curLocationElement.next().next().val(store.id);
+                //alert(store.id);
             })
 
             markers.push(marker);
@@ -200,7 +209,7 @@
 
         google.maps.event.addDomListener(window, 'load', initMap);
 
-        function formatStoreInfo(store){
+        function formatStoreInfo(store) {
             return `<p class="font-bold text-base">${store.storeName}</p>
                     <p class="text-sm">${store.address}</p>
                     <p class="text-sm">${store.phone}</p>`;
@@ -213,7 +222,11 @@
 
         function getNowTime() {
             var today = new Date();
-            return ("0" + today.getHours()).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10).slice(-2);
+            if (Math.ceil(today.getMinutes() / 10) * 10 >= 60) {
+                return ("0" + (today.getHours() + 1)).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10 % 60).slice(-2);
+            } else {
+                return ("0" + today.getHours()).slice(-2) + ":" + ("0" + Math.ceil(today.getMinutes() / 10) * 10).slice(-2);
+            }
         }
 
         function getReturnDate(days) {
@@ -270,8 +283,6 @@
 
                     addMarker(location, store);
                 }
-
-
             }).always(function () {
 
             })
@@ -287,7 +298,13 @@
                     alert("AJAX error: " + jqxhr.responseText);
                 }
             }).done(function (cityCoordinates) {
-                var yourLocation = {lat: Number(cityCoordinates.lat), lng: Number(cityCoordinates.lng)}
+                var yourLocation;
+                if (cityCoordinates === null) {
+                    yourLocation = defaultLocation;
+                } else {
+                    yourLocation = {lat: Number(cityCoordinates.lat), lng: Number(cityCoordinates.lng)}
+                }
+
                 newLocation(Number(cityCoordinates.lat), Number(cityCoordinates.lng));
                 var marker = new google.maps.Marker({
                     position: yourLocation,
@@ -315,38 +332,26 @@
         }
 
         $(document).ready(function () {
-            loadAdjacentStores(defaultLocation);
 
-            /*
-                        $('form input').keydown(function (e) {
-                            if (e.keyCode == 13) {
-                                e.preventDefault();
-                                return false;
-                            }
-                        });*/
-
+            $('form input').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
 
             $("#pickupSearchText").on("change", function () {
                 var input = $(this).val();
-                var options = document.getElementById("pickupLocationList").options;
-                alert(input);
-                //alert(options.length);
+                resetMapCenter(input.substr(0, input.length - 6));
+            })
 
-                for (let i = 0; i < options.length; i++) {
-                    var option = options[i];
-                    if (option.innerText === input) {
-                        //alert(`${option.innerText} : ${input} : ${option.innerText === input}`);
-                        var cityname = option.innerText.substr(0, option.innerText.length - 6);
-                        resetMapCenter(cityname);
-                        break;
-                    }
-
-
-                }
+            $("#returnSearchText").on("change", function () {
+                var input = $(this).val();
+                resetMapCenter(input.substr(0, input.length - 6));
             })
 
 
-            $("#pickupSearchText").keydown(function (e) {
+            $("#pickupSearchText").on('keypress',function (e) {
                 searchCities(this, "#pickupLocationList");
             });
 
@@ -375,11 +380,20 @@
 
             $("input[name=isDiffLocation]").on("click", function () {
                 if ($(this).prop("checked")) {
-                    //alert("selected");
+                    curLocationElement = $("#returnSearchText");
                     $("#returnLocation").show();
                 } else {
+                    curLocationElement = $("#pickupSearchText");
                     $("#returnLocation").hide();
                 }
+            })
+
+            $("#pickupSearchText").on('focus', function () {
+                curLocationElement = $("#pickupSearchText");
+            })
+
+            $("#returnSearchText").on("focus", function () {
+                curLocationElement = $("#returnSearchText");
             })
 
 

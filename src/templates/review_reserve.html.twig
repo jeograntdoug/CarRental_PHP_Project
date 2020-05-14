@@ -17,7 +17,7 @@
                     <ul>
                         <li class="flex my-3">
                             <span class="font-bold flex-1 text-lg ">DATES & TIMES</span>
-                            <span class="font-bold text-green-700  underline flex-1 text-center" onclick="modifyDateLocation();">MODIFY</span>
+                            <div class="font-bold inline-block underline flex-1 text-center"><a class="cursor-pointer text-green-700" href="../modify_datetime">MODIFY</a></div>
                         </li>
                         <li>
                             <span>{{ dateLocationData.pickupDate|date('D j. F Y') }} @ {{ dateLocationData.pickupTime|date('H:i A') }}</span><br>
@@ -27,13 +27,13 @@
                     <ul class="mt-5">
                         <li class="flex my-3">
                             <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
-                            <span class="font-bold  text-center flex-1 text-green-700 underline"><a
-                                        href="../../../..">MODIFY</a></span>
+                            <div class="font-bold inline-block underline flex-1 text-center"><span class="cursor-pointer text-green-700 ">MODIFY</span></div>
                         </li>
                         <li>
-                            <span>Dollard-des-Ormeaux Boulevard Saint-Jean</span><br>
-                            <span>4655 Boul Saint-Jean Ste D</span><br>
-                            <span>Dollard-Des-Ormeaux, QC H9H 2A7</span>
+                            <span>{{ dateLocationData.pickupStoreName }}</span><br>
+                            <span>{{ dateLocationData.pickupAddress }}</span><br>
+                            <span>{{ dateLocationData.pickupCity }}, {{ dateLocationData.pickupProvince }} {{ dateLocationData.pickupPostCode }}</span><br>
+                            <span>{{ dateLocationData.pickupPhone }}</span>
                         </li>
                     </ul>
                 </div>
@@ -52,8 +52,7 @@
                         <ul>
                             <li class="flex mb-3">
                                 <span class="font-bold text-lg flex-1">VEHICLE</span>
-                                <span class="font-bold text-green-700 underline flex-1 text-center"><a
-                                            href="#">MODIFY</a></span>
+                                <div class="font-bold inline-block underline flex-1 text-center"><span class="cursor-pointer text-green-700 ">MODIFY</span></div>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">Time And Distance 1 Day(s) @ CAD {{ selVehicle.dailyPrice }} / Day</span><br>
@@ -69,7 +68,6 @@
                         <ul>
                             <li class="flex">
                                 <span class="font-bold text-lg flex-1">TAXES & FEES</span>
-                                <span class="font-bold text-green-700 underline flex-1 text-center"><a href="#">LEARN MORE</a></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">TPS / GST (5.0%)</span>
@@ -147,11 +145,8 @@
     </div>
     <script>
 
-        function modifyDateLocation(){
-
-        }
-
         $(document).ready(function () {
+
 
         })
     </script>

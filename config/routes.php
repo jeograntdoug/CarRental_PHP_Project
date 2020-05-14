@@ -81,62 +81,70 @@
             $view = Twig::fromRequest($request);
             $dateLocateData = $request->getParsedBody();
 
-            $_SESSION['pickupLocation'] = $dateLocateData['pickupLocation'];
             $_SESSION['isDiffLocation'] = isset($dateLocateData['isDiffLocation']);
-            $_SESSION['returnLocation'] = $dateLocateData['returnLocation'];
+            $_SESSION['returnStoreId'] = $dateLocateData['returnStoreId'];
             $_SESSION['pickupDate'] = $dateLocateData['pickupDate'];
             $_SESSION['pickupTime'] = $dateLocateData['pickupTime'];
             $_SESSION['returnDate'] = $dateLocateData['returnDate'];
             $_SESSION['returnTime'] = $dateLocateData['returnTime'];
 
+            $pickupStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s",$dateLocateData['pickupStoreId']);
+            $_SESSION['pickupStoreId'] = $pickupStore['id'];
+            $_SESSION['pickupAddress'] = $pickupStore['address'];
+            $_SESSION['pickupStoreName'] = $pickupStore['storeName'];
+            $_SESSION['pickupCity'] = $pickupStore['city'];
+            $_SESSION['pickupProvince'] = $pickupStore['province'];
+            $_SESSION['pickupPostCode'] = $pickupStore['postCode'];
+
             $allVehicles = DB::query("SELECT * FROM cartypes");
-            $carMinPrice = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
-            $suvMinPrice = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
-            $vanMinPrice = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
-            $truckMinPrice = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
+            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
+            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
+            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
+            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
 
-            $pass2 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 2")[0]['min'];
-            $pass4 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 4")[0]['min'];
-            $pass5 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 5")[0]['min'];
-            $pass7 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 7")[0]['min'];
+            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 2")[0]['min'];
+            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 4")[0]['min'];
+            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 5")[0]['min'];
+            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 7")[0]['min'];
 
-            $bag3 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
-            $bag4 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
-            $bag5 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
-            $bag7 = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
-
+            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
+            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
+            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
+            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
+            $vehiclesInfo = $_SESSION;
 
             return $view->render($response, 'car_selection.html.twig', [
                 'allVehicles' => $allVehicles,
-                'carMinPrice' => $carMinPrice,
-                'suvMinPrice' => $suvMinPrice,
-                'vanMinPrice' => $vanMinPrice,
-                'truckMinPrice' => $truckMinPrice,
-                'pass2' => $pass2,
-                'pass4' => $pass4,
-                'pass5' => $pass5,
-                'pass7' => $pass7,
-                'bag3' => $bag3,
-                'bag4' => $bag4,
-                'bag5' => $bag5,
-                'bag7' => $bag7
+                'vehiclesInfo'=>$vehiclesInfo
             ]);
         });
 
 
-        $app->post('/review_reserve/{id:[0-9]+}', function (Request $request, Response $response, array $args) {
-            $view = Twig::fromRequest($request);
-            $selId = $args['id'];
 
-            $selVehicle = DB::query("SELECT * FROM cartypes WHERE id = %s", $selId);
+        $app->post('/review_reserve[/{id:[0-9]+}]', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+
+            $selId = isset($args['id']);
+
+            if($selId) {
+                $_SESSION['selVehicleTypeId'] = $selId;
+                $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
+                $_SESSION['selVehicle'] = $selVehicle;
+            }else{
+                $selVehicle = $_SESSION['selVehicle'];
+                $modifiedDateTime = $request->getParsedBody();
+                $_SESSION['pickupDate'] = $modifiedDateTime['pickupDate'];
+                $_SESSION['pickupTime'] = $modifiedDateTime['pickupTime'];
+                $_SESSION['returnDate'] = $modifiedDateTime['returnDate'];
+                $_SESSION['returnTime'] = $modifiedDateTime['returnTime'];
+            }
+
             $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
 
-            $dateLocationData = $_SESSION;
-
             return $view->render($response, 'review_reserve.html.twig', [
-                'selVehicle' => $selVehicle[0],
+                'selVehicle' => $selVehicle,
                 'userInfo' => $userInfo,
-                'dateLocationData' => $dateLocationData
+                'dateLocationData' => $_SESSION
             ]);
         });
 
@@ -144,7 +152,15 @@
             $view = Twig::fromRequest($request);
 
 
+
             return $view->render($response, 'reserve_success.html.twig', [
+
+            ]);
+        });
+
+        $app->get('/modify_datetime', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'modify_datetime.html.twig', [
 
             ]);
         });
@@ -183,7 +199,6 @@
             $cityname = $request->getBody()->getContents();
 
             $cityCoorinates = DB::queryFirstRow("SELECT latitude as 'lat', longitude as 'lng' FROM cities WHERE name = %s", json_decode($cityname));
-
 
             $response->getBody()->write(json_encode($cityCoorinates));
             return $response;
