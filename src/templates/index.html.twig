@@ -157,12 +157,19 @@
                 map: map,
                 icon: {
                     url: "../../resources/companyimages/enterprise_icon.jpg",
-                    scaledSize: new google.maps.Size(40, 40),
+                    scaledSize: new google.maps.Size(45, 45),
                     origin: new google.maps.Point(0, 0),
                     anchor: new google.maps.Point(10, 10),
-                    labelOrigin: {x: 15, y: -8}
+                    labelOrigin: {x: 23, y: 10},
                 },
                 title: store.storeName,
+                animation: google.maps.Animation.DROP,
+                label:{
+                    text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
+                    fontSize:"14px",
+                    fontWeight:"bold",
+                    color:"white"
+                }
             });
 
             var storeInfo = formatStoreInfo(store);
@@ -182,9 +189,13 @@
             })
 
             marker.addListener('click', function () {
+                if(store['avaCarNum'].carNum == 0){
+                    alert('No avaliable cars in the store, would you select a different location?');
+                }
+
                 curLocationElement.val(`${store.storeName}  (${store.address} ${store.postCode})`);
                 curLocationElement.next().next().val(store.id);
-                //alert(store.id);
+
             })
 
             markers.push(marker);

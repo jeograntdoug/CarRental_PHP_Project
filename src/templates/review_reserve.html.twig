@@ -18,7 +18,8 @@
                         <li class="flex my-3">
                             <span class="font-bold flex-1 text-lg ">DATES & TIMES</span>
                             <div class="font-bold inline-block underline flex-1 text-center"><a
-                                        class="cursor-pointer text-green-700" href="../modify_datetime">MODIFY</a></div>
+                                        class="cursor-pointer text-green-700" href="../modify_datetime">MODIFY</a>
+                            </div>
                         </li>
                         <li>
                             <span>{{ dateLocationData.pickupDate|date('D j. F Y') }} @ {{ dateLocationData.pickupTime|date('H:i A') }}</span><br>
@@ -62,8 +63,8 @@
                             <li class="flex">
                                 <span class="flex-1">Time And Distance 1 Day(s) @ CAD <b>{{ selVehicle.dailyPrice }}</b> / Day</span><br>
                                 {% set difference = date(dateLocationData.returnDate).diff(date(dateLocationData.pickupDate)) %}
-                                {% set calFees = difference.days *  selVehicle.dailyPrice %}
-                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ calFees|number_format(2,'.',',') }}</b></span>
+                                {% set netFees = difference.days *  selVehicle.dailyPrice %}
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ netFees|number_format(2,'.',',') }}</b></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">Unlimited Kilometres</span>
@@ -78,13 +79,13 @@
                             </li>
                             <li class="flex">
                                 <span class="flex-1">TPS / GST (5.0%)</span>
-                                {% set tps = calFees * 0.05 %}
-                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tps|number_format(3,'.',',') }}</b></span>
+                                {% set tps = netFees * 0.05 %}
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tps|number_format(2,'.',',') }}</b></span>
                             </li>
                             <li class="flex">
                                 <span class="flex-1">TVQ / QST (9.975%)</span>
-                                {% set tvq = calFees * 0.0997 %}
-                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tvq|number_format(3,'.',',') }}</b></span>
+                                {% set tvq = netFees * 0.0997 %}
+                                <span class="flex-1 text-center"><sup>CAD</sup> <b>{{ tvq|number_format(2,'.',',') }}</b></span>
                             </li>
                         </ul>
                     </div>
@@ -93,7 +94,7 @@
                         <span class="font-bold text-xl flex-1">ESTIMATED TOTAL</span>
                         <div class="flex-1 text-center">
                             <sup>CAD</sup>
-                            {% set totalFees = calFees + tps + tvq %}
+                            {% set totalFees = netFees + tps + tvq %}
 
                             <span class="text-lg"><b>{{ totalFees|round(0,'floor') }}</b></span>
                             <sup><b>.{{ totalFees * 1000 % 10 >= 5  ? totalFees * 100  % 100 + 1: totalFees * 100 % 100 }}</b></sup>
@@ -115,8 +116,8 @@
                                        value={{ userInfo.firstname }}>
                             </div>
                             <div class="flex-1">
-                                <label for="lastname" class="pb-2 inline-block font-bold">Last Name *</label><br>
-                                <input type="text" name="lastName" id="lastname" class="w-2/3"
+                                <label for="lastName" class="pb-2 inline-block font-bold">Last Name *</label><br>
+                                <input type="text" name="lastName" id="lastName" class="w-2/3"
                                        value={{ userInfo.lastname }}>
                             </div>
                         </div>
@@ -130,7 +131,8 @@
                             <input type="email" name="email" id="email" class="w-1/2" value={{ userInfo.email }}>
                         </div>
                         <div class="block pb-5">
-                            <label for="drivingLicense" class="inline-block pb-2 font-bold">Driver's License *</label>
+                            <label for="drivingLicense" class="inline-block pb-2 font-bold">Driver's License
+                                *</label>
                             <br>
                             <input type="text" name="drivingLicense" id="drivingLicense" class="w-1/2"
                                    value={{ userInfo.drivinglicense }}>
@@ -142,24 +144,51 @@
                             <div class="float-right">
                                 <sup>CAD </sup><span
                                         class="font-bold text-xl">{{ totalFees|round(0,'floor') }}</span><sup
-                                        class="font-bold text-base">.{{ totalFees * 100 % 100 > 50 ? totalFees * 100 % 100 + 1 : totalFees * 100 % 100 }}</sup>
+                                        class="font-bold text-base">
+                                    .{{ totalFees * 1000 % 10 >= 5  ? totalFees * 100  % 100 + 1: totalFees * 100 % 100 }}</sup>
                             </div>
 
                         </div>
                         <div class="flex justify-center mt-10">
-                            <input type="submit" value="RESERVE ORDER"
-                                   class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
+                            <button type="submit" id="btSubmit"
+                                    class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
+                                RESERVE ORDER
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
     <script>
 
         $(document).ready(function () {
+            $("#btSubmit").on('click', function () {
+                $dataString = {
+                    "dailyPirce": {{ selVehicle.dailyPrice }},
+                    "netFees" : {{ netFees }},
+                    "tps":{{ tps }},
+                    "tvq":{{ tvq }},
+                    "totalFees":{{ totalFees }},
+                    "rentDays":{{ difference.days }}
+                };
 
+
+                $.ajax({
+                    url: "/reserve_submit",
+                    type: "POST",
+                    dataType: "json",
+                    data: dataString,
+                    error: function (jqxhr, status, errorThrown) {
+                        alert("AJAX error: " + jqxhr.responseText);
+                    }
+                }).done(function (cityList) {
+                   alert("add reservation successfully!");
+
+                }).always(function () {
+
+                });
+            })
 
         })
     </script>

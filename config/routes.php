@@ -193,7 +193,22 @@
 
         $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
+            $reservationData = $request->getParsedBody();
+            $json = array(
+                "userId" => 1,
+                "carTypeId" => $_SESSION['selVehicleTypeId'],
+                "startDateTime" => strtotime($_SESSION['pickupDate'] ." ". $_SESSION['pickupTime']),
+                "returnDateTime" => strtotime($_SESSION['returnDate'] ." ". $_SESSION['returnTime']),
+                "dailyPrice" => $reservationData['dailyPrice'],
+                "netFees" => $reservationData['netFees'],
+                "tps" => $reservationData['tps'],
+                "tvq" => $reservationData['tvq'],
+                "rentDays" => $reservationData['rentDays'],
+                "rentStoreId" => $_SESSION['pickupStoreId'],
+                "returnStoreId" => $_SESSION['pickupStoreId'], //FIXME when return store is implemented!!!
+            );
 
+            DB::insert("reservations", $json);
 
             return $view->render($response, 'reserve_success.html.twig', [
 
@@ -253,12 +268,16 @@
 
             $adjacentStores = array();
 
-            $lat = $yourLocation['lat'];
-
             foreach ($allStores as $store) {
                 $distance = calDistance($yourLocation['lat'], $yourLocation['lng'],
                     floatval($store['latitude']), floatval($store['longitude']), 'K');
                 if ($distance <= $scale) {
+                    $carNum = DB::queryFirstRow("SELECT COUNT(*) as 'carNum' FROM cars as c WHERE storeId=%s", $store['id']);
+                    $avaCarNum = DB::queryFirstRow("SELECT COUNT(*) as 'carNum' FROM cars as c WHERE c.status='avaliable' 
+                                             AND storeId=%s", $store['id']);
+                    $store['carNum'] = $carNum;
+                    $store['avaCarNum'] = $avaCarNum;
+
                     array_push($adjacentStores, $store);
                 }
             }
