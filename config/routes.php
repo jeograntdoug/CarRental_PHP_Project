@@ -5,6 +5,7 @@
 
     use App\Middleware\AuthMiddleware;
     use DB;
+    use Respect\Validation\Rules\Number;
     use Slim\App;
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
@@ -159,23 +160,25 @@
         });
 
 
-        $app->post('/search/city/{scale:[0-9]+}', function (Request $request, Response $response, array $args) {
-           // $view = Twig::fromRequest($request);
+        $app->post('/map/location/{scale:[0-9]+}', function (Request $request, Response $response, array $args) {
+            // $view = Twig::fromRequest($request);
             $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
 
-            $cityname = $request->getBody()->getContents();
+            $yourLocation = json_decode($request->getBody()->getContents(), true);
 
-            $scale = isset($args['scale']) == false ? 100: $args['scale'];
+            $scale = isset($args['scale']) == false ? 100 : $args['scale'];
 
-            $cityCoorinates = DB::queryFirstRow("SELECT latitude, longitude FROM cities WHERE name = %s", json_decode($cityname));
             $allStores = DB::query("SELECT * FROM stores");
 
             $adjacentStores = array();
 
+            $lat = $yourLocation['lat'];
+
             foreach ($allStores as $store) {
-                $distance = calDistance($cityCoorinates['latitude'], $cityCoorinates['longitude'], $store['latitude'], $store['longitude'], 'K');
-                if($distance <= $scale){
-                    array_push(store);
+                $distance = calDistance($yourLocation['lat'], $yourLocation['lng'],
+                    floatval($store['latitude']), floatval($store['longitude']), 'K');
+                if ($distance <= $scale) {
+                    array_push($adjacentStores, $store);
                 }
             }
 
@@ -189,10 +192,10 @@
 
             $cityname = $request->getBody()->getContents();
 
-            $cityCoorinates = DB::queryFirstRow("SELECT latitude, longitude FROM cities WHERE name = %s", json_decode($cityname));
+            $cityCoorinates = DB::queryFirstRow("SELECT latitude as 'lat', longitude as 'lng' FROM cities WHERE name = %s", json_decode($cityname));
 
 
-            $response->getBody()->write(json_encode($adjacentStores));
+            $response->getBody()->write(json_encode($cityCoorinates));
             return $response;
         });
 
@@ -201,7 +204,8 @@
 
     function calDistance($lat1, $lon1, $lat2, $lon2, $unit)
     {
-        if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+        $accuracy = 0.0001;
+        if ((abs($lat1 - $lat2) < $accuracy) && (abs($lon1 == $lon2) < $accuracy)) {
             return 0;
         } else {
             $theta = $lon1 - $lon2;
