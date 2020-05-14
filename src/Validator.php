@@ -160,12 +160,12 @@ class Validator
         }
 
         // year
-        if (!v::key('year', v::intVal()->length(1900, $currentYear), $isPut)->validate($car)) {
+        if (!v::key('year', v::intVal()->between(1900, $currentYear), $isPut)->validate($car)) {
             $errorList['year'] = 'Must be 1900 ~ ' . $currentYear;
         }
                 
         // manufacturer
-        if (!v::key('manufacturer', v::stringVal()->between(1,20), $isPut)->validate($car)) {
+        if (!v::key('manufacturer', v::stringVal()->length(1,20), $isPut)->validate($car)) {
             $errorList['manufacturer'] = 'Must be 1~20 letters';
         }
 
