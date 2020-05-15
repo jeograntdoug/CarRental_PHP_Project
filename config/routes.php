@@ -193,12 +193,20 @@
 
         $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
-            $reservationData = $request->getParsedBody();
+
+            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+
+            $jsonText = $request->getBody()->getContents();
+
+            $reservationData = json_decode($jsonText, true);
+
+            $datetime = $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime'];
+
             $json = array(
                 "userId" => 1,
                 "carTypeId" => $_SESSION['selVehicleTypeId'],
-                "startDateTime" => strtotime($_SESSION['pickupDate'] ." ". $_SESSION['pickupTime']),
-                "returnDateTime" => strtotime($_SESSION['returnDate'] ." ". $_SESSION['returnTime']),
+                "startDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime']),
+                "returnDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['returnDate'] . " " . $_SESSION['returnTime']),
                 "dailyPrice" => $reservationData['dailyPrice'],
                 "netFees" => $reservationData['netFees'],
                 "tps" => $reservationData['tps'],
@@ -208,11 +216,17 @@
                 "returnStoreId" => $_SESSION['pickupStoreId'], //FIXME when return store is implemented!!!
             );
 
-            DB::insert("reservations", $json);
+            $result = DB::insert("reservations", $json);
 
-            return $view->render($response, 'reserve_success.html.twig', [
+            if ($result) {
+                $result = array(
+                    "url" => "../"
+                );
+            }
 
-            ]);
+            $response->getBody()->write(json_encode($result));
+
+            return $response;
         });
 
         $app->get('/modify_datetime', function (Request $request, Response $response, array $args) {

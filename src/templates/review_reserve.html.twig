@@ -108,54 +108,54 @@
                     <span class="mb-3 px-5 block">* Required to complete your reservation</span>
                 </div>
                 <div class="block border border-black border-solid p-5">
-                    <form method="post" action="/reserve_submit">
-                        <div class="flex flex-row pb-5 inline-block">
-                            <div class="flex-1">
-                                <label for="firstName" class="pb-2 inline-block font-bold">First Name *</label><br>
-                                <input type="text" name="firstName" id="firstName" class="w-2/3"
-                                       value={{ userInfo.firstname }}>
-                            </div>
-                            <div class="flex-1">
-                                <label for="lastName" class="pb-2 inline-block font-bold">Last Name *</label><br>
-                                <input type="text" name="lastName" id="lastName" class="w-2/3"
-                                       value={{ userInfo.lastname }}>
-                            </div>
-                        </div>
-                        <div class="pb-5 block">
-                            <label for="phoneNumber" class="pb-2 inline-block font-bold">Phone Number *</label><br>
-                            <input name="phoneNumber" type="number" id="phoneNumber" class="w-2/5"
-                                   value={{ userInfo.phone }}>
-                        </div>
-                        <div class="pb-5 block">
-                            <label for="email" class="pb-2 inline-block font-bold">Email Address *</label><br>
-                            <input type="email" name="email" id="email" class="w-1/2" value={{ userInfo.email }}>
-                        </div>
-                        <div class="block pb-5">
-                            <label for="drivingLicense" class="inline-block pb-2 font-bold">Driver's License
-                                *</label>
-                            <br>
-                            <input type="text" name="drivingLicense" id="drivingLicense" class="w-1/2"
-                                   value={{ userInfo.drivinglicense }}>
-                        </div>
-                        <hr style="border: 1px solid grey; margin-bottom: 2em">
-                        <div>
-                            <span class="font-bold text-lg text-underline">Complete Your Booking</span><br>
-                            <span>You will be charged when you pick up your rental.</span>
-                            <div class="float-right">
-                                <sup>CAD </sup><span
-                                        class="font-bold text-xl">{{ totalFees|round(0,'floor') }}</span><sup
-                                        class="font-bold text-base">
-                                    .{{ totalFees * 1000 % 10 >= 5  ? totalFees * 100  % 100 + 1: totalFees * 100 % 100 }}</sup>
-                            </div>
 
+                    <div class="flex flex-row pb-5 inline-block">
+                        <div class="flex-1">
+                            <label for="firstName" class="pb-2 inline-block font-bold">First Name *</label><br>
+                            <input type="text" name="firstName" id="firstName" class="w-2/3"
+                                   value={{ userInfo.firstname }}>
                         </div>
-                        <div class="flex justify-center mt-10">
-                            <button type="submit" id="btSubmit"
-                                    class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
-                                RESERVE ORDER
-                            </button>
+                        <div class="flex-1">
+                            <label for="lastName" class="pb-2 inline-block font-bold">Last Name *</label><br>
+                            <input type="text" name="lastName" id="lastName" class="w-2/3"
+                                   value={{ userInfo.lastname }}>
                         </div>
-                    </form>
+                    </div>
+                    <div class="pb-5 block">
+                        <label for="phoneNumber" class="pb-2 inline-block font-bold">Phone Number *</label><br>
+                        <input name="phoneNumber" type="number" id="phoneNumber" class="w-2/5"
+                               value={{ userInfo.phone }}>
+                    </div>
+                    <div class="pb-5 block">
+                        <label for="email" class="pb-2 inline-block font-bold">Email Address *</label><br>
+                        <input type="email" name="email" id="email" class="w-1/2" value={{ userInfo.email }}>
+                    </div>
+                    <div class="block pb-5">
+                        <label for="drivingLicense" class="inline-block pb-2 font-bold">Driver's License
+                            *</label>
+                        <br>
+                        <input type="text" name="drivingLicense" id="drivingLicense" class="w-1/2"
+                               value={{ userInfo.drivinglicense }}>
+                    </div>
+                    <hr style="border: 1px solid grey; margin-bottom: 2em">
+                    <div>
+                        <span class="font-bold text-lg text-underline">Complete Your Booking</span><br>
+                        <span>You will be charged when you pick up your rental.</span>
+                        <div class="float-right">
+                            <sup>CAD </sup><span
+                                    class="font-bold text-xl">{{ totalFees|round(0,'floor') }}</span><sup
+                                    class="font-bold text-base">
+                                .{{ totalFees * 1000 % 10 >= 5  ? totalFees * 100  % 100 + 1: totalFees * 100 % 100 }}</sup>
+                        </div>
+
+                    </div>
+                    <div class="flex justify-center mt-10">
+                        <button  id="btSubmit"
+                                class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
+                            RESERVE ORDER
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -164,26 +164,27 @@
 
         $(document).ready(function () {
             $("#btSubmit").on('click', function () {
-                $dataString = {
-                    "dailyPirce": {{ selVehicle.dailyPrice }},
-                    "netFees" : {{ netFees }},
+               // alert("submit click");
+                var dataString = {
+                    "dailyPrice": {{ selVehicle.dailyPrice }},
+                    "netFees": {{ netFees }},
                     "tps":{{ tps }},
                     "tvq":{{ tvq }},
                     "totalFees":{{ totalFees }},
                     "rentDays":{{ difference.days }}
                 };
 
-
                 $.ajax({
                     url: "/reserve_submit",
                     type: "POST",
                     dataType: "json",
-                    data: dataString,
+                    data: JSON.stringify(dataString),
                     error: function (jqxhr, status, errorThrown) {
                         alert("AJAX error: " + jqxhr.responseText);
                     }
-                }).done(function (cityList) {
-                   alert("add reservation successfully!");
+                }).done(function (response) {
+                    alert("add reservation successfully!");
+                    window.location.href = response.url;
 
                 }).always(function () {
 
