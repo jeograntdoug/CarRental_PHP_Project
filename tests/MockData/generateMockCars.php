@@ -31,10 +31,10 @@ while($line = fgets($csvFile)){
 fclose($csvFile);
 
 $storeIdList = DB::query('SELECT id, latitude, longitude FROM stores');
-$statusList = ['avaliable', 'reserved', 'repair', 'renting'];
+$statusList = ['avaliable', 'avaliable', 'avaliable', 'avaliable', 'reserved', 'repair', 'renting'];
 
 $carList = [];
-for( $i = 0 ; $i < 100 ; $i++)
+for( $i = 0 ; $i < 200 ; $i++)
 {
     $randCarBase = $carBaseList[rand(0, count($carBaseList) - 1)];
     $randYear = rand(1900,date("Y"));

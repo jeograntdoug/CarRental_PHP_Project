@@ -10,20 +10,13 @@ DB::$dbName = 'carrental';
 DB::$port = 3333;
 DB::$encoding = 'utf8'; // defaults to latin1 if omitted
 
-const TEN_YEARS = 60*60*24*365*10;
+const AN_YEAR = 60*60*24*365;
 const A_DAY = 60*60*24;
 const AN_HOUR = 60*60;
 
 $faker = Factory::create();
 
-/** 
- *  1.Reservation
- * - choose store location
- * - show only avaliable cars
- * - choose car
- * - Change status of car
- * */ 
-  
+
 /**
  *  2.Order
  * - Pick up car ( reservation -> order )
@@ -40,53 +33,96 @@ $faker = Factory::create();
 
 
 
-$storeIdList = DB::query('SELECT id FROM stores');
-$userIdList = DB::query('SELECT id FROM users');
-$carTypeIdList = DB::query('SELECT id FROM carTypes');
+$storeIdList = DB::queryFirstColumn('SELECT id FROM stores');
+$userIdList = DB::queryFirstColumn('SELECT id FROM users');
+// $carTypeIdList = DB::query('SELECT id FROM carTypes');
 
-$carList = [];
-for( $i = 0 ; $i < 100 ; $i++)
+$resvList= [];
+for( $i = 0 ; $i < 200 ; $i++)
 {
-    $randCreatedTS = rand(time() - TEN_YEARS ,time() - 15 * A_DAY);
+/** 
+ *  1.Reservation
+ * - choose a user
+ * - choose a store location
+ * - show only avaliable cars
+ * - choose car
+ * - Change status of car
+ * */ 
+
+    // offset: 45 days
+
+    $randCreatedTS = rand(time() - 5 * AN_YEAR, time());
+
+    $randTimeBegin = $randCreatedTS + rand(AN_HOUR, 30 * A_DAY); 
+    $randTimeEnd = $randTimeBegin + rand(A_DAY, 60 * A_DAY);
+
+    $rentDays = ceil(($randTimeEnd - $randTimeBegin) / A_DAY);
+    if($rentDays == 0){
+        var_dump("hello");
+    }
+
+    // TODO : check if user has reservation in this period
     $randUserId = $userIdList[rand(0, count($userIdList) - 1)];
+    $randStoreId = $storeIdList[rand(0, count($storeIdList) - 1)];
+
+    $randCreatedTS = date("Y-m-d H:i:s",$randCreatedTS);
+    $randTimeBegin = date("Y-m-d H:i:s",$randTimeBegin);
+    $randTimeEnd = date("Y-m-d H:i:s",$randTimeEnd);
+
+    // $carTypeIdList = DB::queryFirstColumn(
+    //     "SELECT DISTINCT carTypeId FROM cars
+    //     WHERE storeId = %s
+    //     AND status = 'avaliable'", 
+    //     $randStoreId
+    // );
+
+    $carTypeIdList = DB::queryFirstColumn(
+        "SELECT DISTINCT c.carTypeId 
+        FROM cars AS c
+        LEFT JOIN reservations AS r
+        ON r.carTypeId = c.carTypeId
+        WHERE c.storeId = %s
+        AND (
+            startDateTime IS NULL 
+            OR startDateTime > %s
+            OR returnDateTime < %s
+        )",
+        $randStoreId,
+        $randTimeEnd,
+        $randTimeBegin
+    );
+
+
+
+    if(empty($carTypeIdList)){
+        continue;
+    }
     $randCarTypeId = $carTypeIdList[rand(0, count($carTypeIdList) - 1)];
 
-    $timeBegin = $randCreatedTS + rand(AN_HOUR, 15 * A_DAY); 
-    $timeEnd = $timeBegin + rand();
 
-    $randStartTime = rand( $timeBegin, $timeEnd );
-    $randStartTime = rand(
-        $randCreatedTS + rand(0, AN_HOUR), 
-        $randCreatedTS + rand(A_DAY/2, 30 * A_DAY) 
-    );
-    $randStore = $storeIdList[rand(0, count($storeIdList) - 1)];
+    $dailyPrice = DB::queryFirstField(
+        "SELECT dailyPrice 
+        FROM carTypes 
+        WHERE id =%s", $randCarTypeId );
 
-    $car = [
-        'carTypeId' => $randCarBase['carTypeId'],
-        'model' => $randCarBase['model'],
-        'year' => $randYear,
-        'manufacturer' => $randCarBase['manufacturer'],
-        'milleage' => $randMilleage,
-        'status' => $randStatus,
-        'storeId' =>$randStore['id'],
-        'description' => $randCarBase['description'],
-        'photoPath' => $randCarBase['photoPath'],
-        'fuelType' => $randCarBase['fuelType'],
-        'latitude' => $randStore['latitude'],
-        'longitude' => $randStore['longitude'],
+    $netFees = $rentDays * $dailyPrice;
+    $tps = $netFees * 0.10;
+    $tvq = $netFees * 0.05;
+
+    $reservation = [
+        'createdTS' => $randCreatedTS,
+        'userId' => $randUserId,
+        'carTypeId' => $randCarTypeId,
+        'startDateTime' => $randTimeBegin,
+        'returnDateTime' => $randTimeEnd,
+        'dailyPrice' => $dailyPrice,
+        'netFees' => $netFees,
+        'tps' => $tps,
+        'tvq' => $tvq,
+        'rentDays' => $rentDays,
+        'rentStoreId' => $randStoreId,
+        'returnStoreId' => $randStoreId,
     ];
-    array_push($carList,$car);
+
+    DB::insert("reservations",$reservation);
 }
-
-
-$csvFile = fopen(__DIR__ . "/../../Database/mockCars.csv","w");
-$titleLine = 'id,'. implode(",", array_keys($carList[0])). "\n";
-
-fputs($csvFile,$titleLine);
-$id = 1;
-foreach($carList as $car)
-{
-    $line = '"' . $id++ . '",' . implode(",", $car). "\n";
-    fputs($csvFile, $line);
-}
-fclose($csvFile);
