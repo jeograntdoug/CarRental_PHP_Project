@@ -15,14 +15,14 @@ class AdminCarController
         $view = Twig::fromRequest($request);
 
         $carList = DB::query(
-            "SELECT id, carTypeId, model, year, manufacturer, milleage, status, dailyPrice, storeId, description, fuelType
+            "SELECT id, carTypeId, model, year, manufacturer, mileage, status, storeId, description, fuelType
             FROM cars"
              );
 
         return $view->render($response, 'admin/item_list.html.twig',[
             'itemTitle' => 'Car',
             'itemList' => $carList,
-            'itemKeyList' =>  ['id', 'carTypeId', 'model', 'year', 'manufacturer', 'milleage', 'status', 'dailyPrice', 'storeId', 'description', 'fuelType']
+            'itemKeyList' =>  ['id', 'carTypeId', 'model', 'year', 'manufacturer', 'mileage', 'status', 'storeId', 'description', 'fuelType']
         ]);
     }
 
@@ -31,7 +31,7 @@ class AdminCarController
         $view = Twig::fromRequest($request);
 
         $carList = DB::query(
-            "SELECT id, carTypeId, model, year, manufacturer, milleage, status, dailyPrice, storeId, description, fuelType
+            "SELECT id, carTypeId, model, year, manufacturer, mileage, status, storeId, description, fuelType
             FROM cars"
              );
 
@@ -70,7 +70,7 @@ class AdminCarController
 
     public function edit (Request $request, Response $response, array $args)
     {
-        $fieldList = ['id', 'carTypeId', 'model', 'year', 'manufacturer', 'milleage', 'status', 'dailyPrice', 'storeId', 'description'];
+        $fieldList = ['id', 'carTypeId', 'model', 'year', 'manufacturer', 'mileage', 'status', 'storeId', 'description'];
         $carId = $args['id'];
 
         $jsonData = json_decode($request->getBody(), true);

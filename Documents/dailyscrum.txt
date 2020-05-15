@@ -384,12 +384,11 @@ in this middleware
 
 2020/05/14 Donghyeok Seo
 1. Done since last scrum
-- Crud for store page
-- Validation for store page
+- Crud for other admin pages (cars, carTypes)
+- Validation for admin pages
 
 2. To do until next Scrum:
-- Crud for other admin pages
-- Validation for other admin pages
+- Generate Mock Data for users, cars, reservations
 
 3. Need assistance / figure things out
 
