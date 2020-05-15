@@ -65,5 +65,6 @@
     <orderEntry type="library" name="@types/google-maps" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="@types/bootstrap" level="application" />
+    <orderEntry type="library" name="material-components-web" level="application" />
   </component>
 </module>

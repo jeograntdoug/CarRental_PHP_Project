@@ -78,7 +78,7 @@
                 map: map,
                 icon: {
                     url: "../../resources/companyimages/enterprise_icon.jpg",
-                    scaledSize: new google.maps.Size(45, 45),
+                    scaledSize: new google.maps.Size(46, 46),
                     origin: new google.maps.Point(0, 0),
                     anchor: new google.maps.Point(10, 10),
                     labelOrigin: {x: 23, y: 10},
@@ -86,7 +86,7 @@
                 title: store.storeName,
                 animation: google.maps.Animation.DROP,
                 label:{
-                    text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
+                    text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
                     fontSize:"14px",
                     fontWeight:"bold",
                     color:"white"
@@ -225,7 +225,7 @@
                     label: {
                         color: 'red',
                         fontWeight: 'bold',
-                        fontSize: '16px',
+                        fontSize: '18px',
                         text: 'You are here'
                     },
                 });
@@ -246,12 +246,12 @@
                 }
             });
 
-            $("#pickupSearchText").on("change", function () {
+            $("#pickupSearchText").on("change keypress paste", function () {
                 var input = $(this).val();
                 resetMapCenter(input.substr(0, input.length - 6));
             })
 
-            $("#returnSearchText").on("change", function () {
+            $("#returnSearchText").on("change keypress paste", function () {
                 var input = $(this).val();
                 resetMapCenter(input.substr(0, input.length - 6));
             })
