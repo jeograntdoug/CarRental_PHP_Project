@@ -416,3 +416,26 @@ in this middleware
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/1 Wang Wei
+1. Done since last scrum:
+- add function: diaplay number of total cars and avaliable cars on each marker of stores.
+
+2. To do until next Scrum:
+- add user summary page for displaying history records, user profile etc.
+
+3. Need assistance / figure things out
+- reCaptucha function
+
+
+2020/05/16 Donghyeok Seo
+1. Done since last scrum
+- Crud for other admin pages (cars, carTypes)
+- Validation for admin pages
+
+2. To do until next Scrum:
+- Generate Mock Data for users, cars, reservations
+
+3. Need assistance / figure things out
+
+**************************************************
