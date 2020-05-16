@@ -35,7 +35,6 @@
 
         $app->group('/admin', function (RouteCollectorProxy $group) {
             $group->get('', AdminController::class . ':home');
-            $group->get('/reservations', AdminController::class . ':reservationList');
 
             $group->get('/stores', AdminStoreController::class . ':index');
             $group->get('/ajax/stores', AdminStoreController::class . ':showAll');
@@ -54,6 +53,18 @@
             $group->post('/ajax/cartypes', AdminCarTypeController::class . ':create');
             $group->patch('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':edit');
             $group->delete('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':delete');
+
+            $group->get('/reservations', AdminReservationController::class . ':index');
+            $group->get('/ajax/reservations', AdminReservationController::class . ':showAll');
+            $group->post('/ajax/reservations', AdminReservationController::class . ':create');
+            $group->patch('/ajax/reservations/{id:[0-9]+}', AdminReservationController::class . ':edit');
+            $group->delete('/ajax/reservations/{id:[0-9]+}', AdminReservationController::class . ':delete');
+
+            $group->get('/orders', AdminOrderController::class . ':index');
+            $group->get('/ajax/orders', AdminOrderController::class . ':showAll');
+            $group->post('/ajax/orders', AdminOrderController::class . ':create');
+            $group->patch('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':edit');
+            $group->delete('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':delete');
         });
         //->add(AuthMiddleware::mustBeLoginAsAdmin());
 

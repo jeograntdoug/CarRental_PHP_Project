@@ -202,4 +202,9 @@ class Validator
     
         return $errorList;
     }
+
+    //TODO : reservation validation
+    //TODO : order validation
+
+
 }

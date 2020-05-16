@@ -16,18 +16,18 @@ const AN_HOUR = 60*60;
 
 $faker = Factory::create();
 
-// /**
-//  * Start Generating fields in orders table
-//  */
-// $carList = DB::query("SELECT id, year FROM cars");
+/**
+ * Start Generating fields in orders table
+ */
+$carList = DB::query("SELECT id, year FROM cars");
 
-// foreach($carList as $car){
-//     $baseMileage = 0;
-//     for($i = 0 ; $i < date("Y") - $car['year'] ; $i++){
-//         $baseMileage += rand(2000,10000);
-//     }  
-//     DB::update('cars',[ 'mileage' => $baseMileage], "id=%s", $car['id']);
-// }
+foreach($carList as $car){
+    $baseMileage = 0;
+    for($i = 0 ; $i < date("Y") - $car['year'] ; $i++){
+        $baseMileage += rand(2000,10000);
+    }  
+    DB::update('cars',[ 'mileage' => $baseMileage], "id=%s", $car['id']);
+}
 
 
 $storeIdList = DB::queryFirstColumn('SELECT id FROM stores');
@@ -61,12 +61,14 @@ for( $i = 0 ; $i < 2000 ; $i++)
         LEFT JOIN orders AS o
         ON o.carId = c.id
         WHERE c.storeId = %s
+        AND c.year < %s
         AND (
             createdTS IS NULL 
             OR createdTS > %s
             OR returnDateTime < %s
         )",
         $randStoreId,
+        date('Y',strtotime($randCreatedTS)),
         $randReturnTime,
         $randCreatedTS
     );
