@@ -24,6 +24,8 @@ class AuthController
                 'sessionId' => session_id(),
                 'updated_at' => date('Y-m-d H:i:s',time())
             ]);
+
+            $_SESSION['userId'] = $user['id'];
             return $response->withHeader('Location','/');
         }
 

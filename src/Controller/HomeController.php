@@ -30,6 +30,8 @@
 
             DB::delete('userSessions','sessionId=%s',session_id());
 
+            unset($_SESSION['userId']);
+
             $response->getBody()->write($html);
 
             return $response;

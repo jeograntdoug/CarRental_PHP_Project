@@ -98,6 +98,11 @@
             return $response;
         });
 
+/*
+        $app->group('', function (RouteCollectorProxy $group) {
+            $group->post('/car_selection', UserReservationController::class . ':selectCarType');
+        });*/
+
         $app->post('/car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
             $dateLocateData = $request->getParsedBody();
@@ -134,6 +139,7 @@
             $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
             $vehiclesInfo = $_SESSION;
 
+
             return $view->render($response, 'car_selection.html.twig', [
                 'allVehicles' => $allVehicles,
                 'vehiclesInfo' => $vehiclesInfo
@@ -149,9 +155,11 @@
             $_SESSION['selVehicleTypeId'] = $selId;
             $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
             $_SESSION['selVehicle'] = $selVehicle;
-
-            $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
-
+            if(isset($_SESSION['userId'])){
+                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
+            }else{
+                $userInfo = false;
+            }
             return $view->render($response, 'review_reserve.html.twig', [
                 'selVehicle' => $selVehicle,
                 'userInfo' => $userInfo,
@@ -214,7 +222,7 @@
             $datetime = $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime'];
 
             $json = array(
-                "userId" => 1,
+                "userId" => $_SESSION['userId'],
                 "carTypeId" => $_SESSION['selVehicleTypeId'],
                 "startDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime']),
                 "returnDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['returnDate'] . " " . $_SESSION['returnTime']),
