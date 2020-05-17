@@ -417,12 +417,12 @@ in this middleware
 
 **************************************************
 
-2020/05/1 Wang Wei
+2020/05/16 Wang Wei
 1. Done since last scrum:
-- add function: diaplay number of total cars and avaliable cars on each marker of stores.
+- add validation before user place reservation
 
 2. To do until next Scrum:
-- add user summary page for displaying history records, user profile etc.
+- add summary pages for displaying user profile, orders
 
 3. Need assistance / figure things out
 - reCaptucha function

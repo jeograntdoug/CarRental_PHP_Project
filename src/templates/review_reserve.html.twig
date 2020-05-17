@@ -188,6 +188,22 @@
     <script>
 
         $(document).ready(function () {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "4000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
 
             $("#btSubmit").on('click', function () {
@@ -210,7 +226,8 @@
                         alert("AJAX error: " + jqxhr.responseText);
                     }
                 }).done(function (response) {
-                    alert("add reservation successfully!");
+                    toastr.success("Your reservation has been saved!","Reservation success");
+
                     window.location.href = response.url;
 
                 }).always(function () {

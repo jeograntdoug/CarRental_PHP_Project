@@ -67,5 +67,6 @@
     <orderEntry type="library" name="material-components-web" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="toastr.js" level="application" />
+    <orderEntry type="library" name="canvasjs" level="application" />
   </component>
 </module>
