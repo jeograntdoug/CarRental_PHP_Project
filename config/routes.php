@@ -239,7 +239,7 @@
 
             if ($result) {
                 $result = array(
-                    "url" => "../user_summary"
+                    "url" => "../summary/profile"
                 );
             }
 
@@ -301,7 +301,7 @@
             $view = Twig::fromRequest($request);
             if (isset($_SESSION['userId'])) {
                 $userId = $_SESSION['userId'];
-                $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
+                // $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
                 $monthlyMileage = DB::query("SELECT monthname(createdTS) as 'Month', 
                                         year(createdTS) as 'Year',                                        
                                         SUM(returnMileage-startMileage) as 'Mileage'
@@ -313,15 +313,35 @@
 
 
                 return $view->render($response, 'summary_map.html.twig', [
-                    'orders' => $orders,
+                    // 'orders' => $orders,
                     'keyList' => [
-                        'Year','Month','Mileage'
+                        'Year', 'Month', 'Mileage','Count'
                     ],
                     'monthlyMileage' => $monthlyMileage
                 ]);
             } else {
                 return $view->render($response, 'login.html.twig', []);
             }
+        });
+
+        $app->post('/summary/map', function (Request $request, Response $response, array $args) {
+            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+            $selPeriod = json_decode($request->getBody()->getContents(), true);
+            $userId = $_SESSION['userId'];
+            $orders = DB::query("SELECT id, createdTS FROM orders WHERE year(createdTS) = %s AND monthname(createdTS)=%s AND userId=%s",
+                                $selPeriod['year'], $selPeriod['month'], $userId);
+            $result = [];
+            foreach ($orders as $order) {
+                $origin = DB::queryFirstRow("SELECT s.storeName as 'name', s.latitude as 'lat', s.longitude as 'lng' FROM orders o, stores s 
+                                             WHERE o.rentStoreId=s.id AND o.id = %s", $order['id']);
+                $destination = DB::queryFirstRow("SELECT s.storeName as 'name', s.latitude as 'lat', s.longitude as 'lng' FROM orders o, stores s 
+                                             WHERE o.returnStoreId=s.id AND o.id = %s", $order['id']);
+                $mileage = DB::queryFirstRow("SELECT (returnMileage-startMileage) as 'mileage' FROM orders WHERE id=%s", $order['id']);
+                array_push($result, array('id' => $order['id'], 'origin' => $origin, 'destination' => $destination, 'mileage' => $mileage));
+            }
+
+            $response->getBody()->write(json_encode($result, JSON_PRETTY_PRINT));
+            return $response;
         });
 
         $app->get('/modify_datetime', function (Request $request, Response $response, array $args) {
