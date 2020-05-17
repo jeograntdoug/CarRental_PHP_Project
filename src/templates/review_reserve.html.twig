@@ -111,12 +111,22 @@
 
                 <div class="block border border-black border-solid p-5 bg-gray-400">
                     {% if  userInfo == false %}
-                        <div class="text-center">
-                            <p class="text-lg font-bold">Please
-                                <a class="underline text-xl hover:text-red-900" href="/login">Login</a>
-                                or
-                                <a class="underline text-xl hover:text-red-900" href="/register">Register</a>
-                                first</p>
+                        <div class="text-center flex flex-row">
+                            <p class="text-lg font-bold">You have NOT sign in, please</p>&nbsp;
+                            <form method="get" action="/login">
+                                <input class="hidden" name="url" value="review_reserve.html.twig">
+                                <button class="underline text-lg hover:text-red-900 cursor-pointer outline-none border-none">
+                                    Login
+                                </button>
+                            </form>
+                            &nbsp;<p class="text-lg font-bold">or</p>&nbsp;
+                            <form method="post" action="/register">
+                                <input class="hidden" name="url" value="/review_reserve">
+                                <button class="underline text-lg hover:text-red-900 cursor-pointer outline-none border-none">
+                                    Register
+                                </button>
+                            </form>
+
                         </div>
 
                     {% else %}
@@ -207,6 +217,7 @@
 
                 });
             })
+
 
         })
     </script>

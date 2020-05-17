@@ -262,6 +262,13 @@
             ]);
         });
 
+        $app->get('/modal_login', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'modal_login.html.twig', [
+
+            ]);
+        });
+
         $app->get('/modify_car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
