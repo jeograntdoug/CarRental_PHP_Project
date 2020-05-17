@@ -5,10 +5,48 @@
 {% endblock title %}
 
 {% block userContent %}
+    <div class="flex-row flex">
+        <div class="mx-auto my-5 text-center flex flex-row">
+            <table class="inline-block mx-auto border-solid border border-black">
+                <tr>
+                    {% for key in keyList %}
+                        <th class="text-center border-solid border border-black">{{ key }}</th>
+                    {% endfor %}
+                </tr>
+                {% for record in monthlyMileage %}
+                    <tr class="dataRow">
+                        <td class="p-1 border border-solid border-gray-500">{{ record.Year }}</td>
+                        <td class="p-1 border border-solid border-gray-500">{{ record.Month }}</td>
+                        <td class="p-1 border border-solid border-gray-500 text-right">{{ record.Mileage }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
 
+        <div id="googleMap" class="my-5 w-3/4 mx-auto" style="height: 600px"></div>
+
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
+        </script>
+
+    </div>
 
 
     <script>
+        var curLocationElement = $("#pickupSearchText");
+        var defaultLocation = {lat: 45.5017, lng: -73.5673};
+        var map;
+        var markers = [];
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('googleMap'), {
+                center: defaultLocation,
+                zoom: 10,
+                draggable: true
+            });
+        }
+
+         //google.maps.event.addDomListener(window, 'load', initMap);
+
         $(document).ready(function () {
             $(".dataRow").on('mouseover', function () {
                 $(this).addClass("bg-green-400");
