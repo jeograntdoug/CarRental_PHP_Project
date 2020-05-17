@@ -6,24 +6,25 @@
 
 {% block userContent %}
     <div class="flex-row flex">
-        <div class="mx-auto my-5 text-center flex flex-row">
+        <div class="my-5 text-center mx-auto">
             <table class="inline-block mx-auto border-solid border border-black">
                 <tr>
                     {% for key in keyList %}
-                        <th class="text-center border-solid border border-black">{{ key }}</th>
+                        <th class="text-center border-solid border border-black px-3">{{ key }}</th>
                     {% endfor %}
                 </tr>
                 {% for record in monthlyMileage %}
                     <tr class="dataRow">
-                        <td class="p-1 border border-solid border-gray-500">{{ record.Year }}</td>
-                        <td class="p-1 border border-solid border-gray-500">{{ record.Month }}</td>
-                        <td class="p-1 border border-solid border-gray-500 text-right">{{ record.Mileage }}</td>
+                        <td class="p-1  border border-solid border-gray-500">{{ record.Year }}</td>
+                        <td class="p-1  border border-solid border-gray-500">{{ record.Month }}</td>
+                        <td class="p-1  border border-solid border-gray-500 text-right">{{ record.Mileage }}</td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
 
         <div id="googleMap" class="my-5 w-3/4 mx-auto" style="height: 600px"></div>
+
 
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
@@ -33,27 +34,169 @@
 
 
     <script>
-        var curLocationElement = $("#pickupSearchText");
+
         var defaultLocation = {lat: 45.5017, lng: -73.5673};
         var map;
-        var markers = [];
+        var directionsService;
+        var directionsDisplay = [];
+        var bounds;
+        var southWestLat = 0;
+        var southWestLng = 0;
+        var northEastLat = 0;
+        var northEastLng = 0;
+
         function initMap() {
-            map = new google.maps.Map(document.getElementById('googleMap'), {
-                center: defaultLocation,
-                zoom: 10,
-                draggable: true
+            directionsService = new google.maps.DirectionsService();
+
+            var mapOptions = {
+                zoom: 8,
+                center: defaultLocation
+            }
+            map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
+            bounds = new google.maps.LatLngBounds();
+
+        }
+
+
+  /*      function resizeBounds(mapOrigin, mapDestination){
+            var tmpLat = mapOrigin.lat > mapDestination.lat ? mapOrigin.lat : mapDestination.lat;
+            var tmpLng = mapOrigin.lng > mapDestination.lng ? mapOrigin.lng : mapDestination.lng;
+            northEastLat = northEastLat > Math.abs(tmpLat) ? northEastLat : tmpLat;
+            northEastLng = northEastLng > Math.abs(tmpLng) ? northEastLng : tmpLng;
+
+            tmpLat = mapOrigin.lat < mapDestination.lat ? mapOrigin.lat : mapDestination.lat;
+            tmpLng = mapOrigin.lng < mapDestination.lng ? mapOrigin.lng : mapDestination.lng;
+            southWestLat = southWestLat < tmpLat ? southWestLat : tmpLat;
+            southWestLng = southWestLng < tmpLng ? southWestLng : tmpLng;
+
+            var curSW = new google.maps.LatLng(southWestLat, southWestLng);
+            var curNE = new google.maps.LatLng(northEastLat, northEastLng);
+            bounds = new google.maps.LatLngBounds(curSW, curNE);
+            map.fitBounds(bounds);
+        }*/
+
+        function calculateRoute(mapOrigin, mapDestination, index) {
+
+            directionsDisplay[index] = new google.maps.DirectionsRenderer({
+                map: map
+            });
+
+            var request = {
+                origin: mapOrigin,
+                destination: mapDestination,
+                travelMode: 'DRIVING'
+            };
+
+            directionsService.route(request, function (result, status) {
+                if (status === "OK") {
+                    //alert("response ok");
+                    //directionsDisplay[index].setMap(map);
+                    directionsDisplay[index].setDirections(result);
+                   // resizeBounds(mapOrigin, mapDestination);
+
+                    /* bounds.extend(mapOrigin);
+                     bounds.extend(mapDestination);*/
+                    bounds.union(result.routes[0].bounds);
+                    map.fitBounds(bounds);
+                }
             });
         }
 
-         //google.maps.event.addDomListener(window, 'load', initMap);
+        function clearRoutes() {
+            for (let i = 0; i < directionsDisplay.length; i++) {
+                var route = directionsDisplay[i];
+                if (route != null) {
+                    route.setMap(null);
+                }
 
+            }
+            directionsDisplay = [];
+        }
+
+
+        //google.maps.event.addDomListener(window, 'load', initMap);
+
+
+        var hasSelection = false;
         $(document).ready(function () {
+            initMap();
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "4000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+
             $(".dataRow").on('mouseover', function () {
                 $(this).addClass("bg-green-400");
             })
 
             $(".dataRow").on('mouseout', function () {
-                $(this).removeClass("bg-green-400");
+                if (!$(this).hasClass("border-2")) {
+                    $(this).removeClass("bg-green-400");
+                }
+            })
+
+            $(".dataRow").on('click', function () {
+                if (!hasSelection) {
+                    $(this).addClass("border-2 border-solid border-green-400 bg-green-400 font-bold");
+                    hasSelection = true;
+
+                    $year = $(this).children('td').slice(0, 1).html();
+                    $month = $(this).children('td').slice(1, 2).html();
+
+                    $dataString = JSON.stringify({'year': $year, 'month': $month});
+                    $.ajax({
+                        url: "/summary/map",
+                        type: "POST",
+                        dataType: "json",
+                        data: $dataString,
+                        error: function (jqxhr, status, errorThrown) {
+                            alert("AJAX error: " + jqxhr.responseText);
+                        }
+                    }).done(function (trips) {
+                        let counter = 0;
+
+                        for (var i = 0; i < trips.length; i++) {
+                            var trip = trips[i];
+                            if (trip['origin'].name !== trip['destination'].name) {
+                                var originCoor = {lat: Number(trip['origin'].lat), lng: Number(trip['origin'].lng)};
+                                var destCoor = {
+                                    lat: Number(trip['destination'].lat),
+                                    lng: Number(trip['destination'].lng)
+                                };
+                                counter++;
+                                toastr.info(`${counter}: from ${trip['origin'].name} to ${trip['destination'].name}`);
+                                calculateRoute(originCoor, destCoor, i);
+                            }
+                        }
+
+                    }).always(function () {
+                        map.fitBounds(bounds);
+                    })
+
+                } else {
+                    if ($(this).hasClass("border-2")) {
+                        clearRoutes();
+                        $(this).removeClass('border-2 border-solid border-green-400 bg-green-400 font-bold');
+                        hasSelection = false;
+
+                    }
+                }
+
+
             })
         })
     </script>
