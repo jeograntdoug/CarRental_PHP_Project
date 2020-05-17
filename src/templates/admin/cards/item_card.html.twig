@@ -27,7 +27,7 @@
             <span> ... </span>
         {% elseif currentPage > totalPage - 5 %}
             <span> ... </span>
-            {% for page in totalPage - 9 .. totalPage %}
+            {% for page in totalPage - 8 .. totalPage %}
                 {% if page == currentPage %}
                     <span class="text-2xl font-semibold">{{ page }}</span>
                 {% else %}

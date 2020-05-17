@@ -5,6 +5,7 @@ namespace App\Controller;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
+use App\Validator;
 use DB;
 
 
@@ -17,6 +18,8 @@ class AdminManuController
     protected $tableName;
 
     protected $fieldList;
+
+    protected $validator;
 
 
     public function index (Request $request, Response $response)
@@ -59,9 +62,10 @@ class AdminManuController
     {
         $jsonData = json_decode($request->getBody(), true);
 
-        // TODO : validation
-        // $errorList = Validator::reservation($jsonData);
         $errorList = [];
+        if($this->validator != null){
+            $errorList = call_user_func($this->validator,$jsonData);
+        }
 
         if(empty($errorList)){
             DB::insert($this->tableName,$jsonData);
@@ -94,9 +98,10 @@ class AdminManuController
             $this->fieldList[$jsonData['fieldIndex']] => $jsonData['value']
         ];
 
-        // TODO : validation
-        // $errorList = Validator::reservation($jsonData, false);
         $errorList = [];
+        if($this->validator != null){
+            $errorList = call_user_func($this->validator,$data, false);
+        }
 
         if(empty($errorList)){
             DB::update($this->tableName,$data,'id=%s',$id);

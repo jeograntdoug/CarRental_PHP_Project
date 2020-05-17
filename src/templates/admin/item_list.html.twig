@@ -65,7 +65,7 @@
 
         function reloadItemList()
         {
-            let url = `/admin/ajax/reservations?page=${selPage}&sortBy=${sortBy}&order=${order}`;
+            let url = `/admin/ajax/${items}?page=${selPage}&sortBy=${sortBy}&order=${order}`;
             $.ajax({
                 url: url,
                 type: "GET",
