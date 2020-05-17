@@ -6,7 +6,7 @@
 
 {% block section %}
     <div class="mx-auto w-3/5 my-6 mx-12">
-        <form action="/modified_locations" method="post">
+        <form action="/modified_locations" method="post" onsubmit="return isValidForm()">
             <div>
                 <p class="mb-2 font-bold">1. PICK-UP LOCATION (Postal Code, City)</p>
                 <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
@@ -18,14 +18,14 @@
             </div>
 
             <div class="mt-2">
-                <input type="checkbox" name="isDiffLocation"/>
+                <input type="checkbox" name="isDiffLocation" id="ckbIsDiffLocation"/>
                 <span class="font-bold">Return to a different location</span>
             </div>
             <div id="returnLocation" class="hidden">
                 <p class="my-2 font-bold text-blue-900">PICK-UP RETURN LOCATION (Postal Code, City)</p>
                 <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
                        name="returnLocation" id="returnSearchText" list="returnLocationList"
-                       autocomplete="false"/><br>
+                       autocomplete="false"/>
                 <datalist id="returnLocationList">
                 </datalist>
                 <input type="text" class="hidden" id="returnStoreId" name="returnStoreId"/>
@@ -38,7 +38,7 @@
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
             </script>
             <div class="my-6 mr-20 text-right">
-                <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
+                <input type="submit" class="px-8 py-2 mt-3 rounded bg-green-700 text-white" value="CONTINUE">
             </div>
         </form>
     </div>
@@ -85,11 +85,11 @@
                 },
                 title: store.storeName,
                 animation: google.maps.Animation.DROP,
-                label:{
+                label: {
                     text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
-                    fontSize:"14px",
-                    fontWeight:"bold",
-                    color:"white"
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    color: "white"
                 }
             });
 
@@ -110,9 +110,11 @@
             })
 
             marker.addListener('click', function () {
+                if (store['avaCarNum'].carNum === 0) {
+                    alert('No avaliable cars in the store, would you select a different location?');
+                }
                 curLocationElement.val(`${store.storeName}  (${store.address} ${store.postCode})`);
                 curLocationElement.next().next().val(store.id);
-                //alert(store.id);
             })
 
             markers.push(marker);
@@ -135,13 +137,14 @@
             });
         }
 
-        google.maps.event.addDomListener(window, 'load', initMap);
+        //google.maps.event.addDomListener(window, 'load', initMap);
 
         function formatStoreInfo(store) {
             return `<p class="font-bold text-base">${store.storeName}</p>
                     <p class="text-sm">${store.address}</p>
                     <p class="text-sm">${store.phone}</p>`;
         }
+
 
         function searchCities(element, listElement) {
             var curSearchText = $(element).val();
@@ -169,7 +172,6 @@
             }
         }
 
-
         function loadAdjacentStores(yourLocation) {
             $.ajax({
                 url: "/map/location/80",
@@ -180,9 +182,6 @@
                     alert("AJAX error: " + jqxhr.responseText);
                 }
             }).done(function (stores) {
-
-                deleteAllMarkers();
-
                 for (var i = 0; i < stores.length; i++) {
                     var store = stores[i];
                     var location = {lat: parseFloat(store.latitude), lng: parseFloat(store.longitude)};
@@ -195,6 +194,7 @@
         }
 
         function resetMapCenter(cityname) {
+            deleteAllMarkers();
             $.ajax({ // FIXME: escape special characters using urlencode
                 url: "/search/cityname",
                 type: "POST",
@@ -230,6 +230,9 @@
                     },
                 });
 
+                markers.push(marker);
+                showAllMarkers();
+
                 loadAdjacentStores(yourLocation);
 
             }).always(function () {
@@ -237,7 +240,42 @@
             });
         }
 
+
+
+        function isValidForm() {
+            if ($("#pickupStoreId").val() === '') {
+                toastr.error("PICKUP store need select","Store selection error");
+
+                return false;
+            }
+            if ($("#ckbIsDiffLocation").prop('checked') === true) {
+                if ($("#returnStoreId").val() === '') {
+                    toastr.error("RETURN store need select","Store selection error")
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
         $(document).ready(function () {
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "4000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
             $('form input').keydown(function (e) {
                 if (e.keyCode == 13) {
@@ -265,7 +303,7 @@
                 searchCities(this, "#returnLocationList");
             });
 
-            $("input[name=isDiffLocation]").on("click", function () {
+            $("#ckbIsDiffLocation").on("click", function () {
                 if ($(this).prop("checked")) {
                     curLocationElement = $("#returnSearchText");
                     $("#returnLocation").show();
@@ -284,7 +322,15 @@
             })
 
 
+            $(window).bind("pageshow", function () {
+                $("#pickupSearchText").val("");
+                $("#returnSearchText").val("");
+                $("#pickupStoreId").val("");
+                $("#returnStoreId").val("");
+            });
+
         })
+
         $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
             console.log("Ajax error occured on " + settings.url);
             alert("Ajax error occurred");

@@ -28,7 +28,11 @@
                     </ul>
                     <ul class="mt-5">
                         <li class="flex my-3">
-                            <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
+                            {% if dateLocationData.isDiffLocation %}
+                                <span class="font-bold  text-lg flex-1">PICK-UP LOCATION</span>
+                            {% else %}
+                                <span class="font-bold  text-lg flex-1">PICK-UP & RETURN LOCATION</span>
+                            {% endif %}
                             <div class="font-bold inline-block underline flex-1 text-center"><a
                                         class="cursor-pointer text-green-700 " href="../modify_locations">MODIFY</a>
                             </div>
@@ -39,7 +43,20 @@
                             <span>{{ dateLocationData.pickupCity }}, {{ dateLocationData.pickupProvince }} {{ dateLocationData.pickupPostCode }}</span><br>
                             <span>{{ dateLocationData.pickupPhone }}</span>
                         </li>
+
+                        {% if dateLocationData.isDiffLocation %}
+                            <br>
+                            <span class="font-bold  text-lg flex-1">RETURN LOCATION</span>
+                            <li>
+                                <span>{{ dateLocationData.returnStoreName }}</span><br>
+                                <span>{{ dateLocationData.returnAddress }}</span><br>
+                                <span>{{ dateLocationData.returnCity }}, {{ dateLocationData.returnProvince }} {{ dateLocationData.returnPostCode }}</span><br>
+                                <span>{{ dateLocationData.returnPhone }}</span>
+                            </li>
+                        {% endif %}
                     </ul>
+
+
                 </div>
                 <div class="my-8 block px-5 py-3 bg-gray-400 border-solid border-black border">
                     <div class="flex flex-row">
@@ -226,7 +243,7 @@
                         alert("AJAX error: " + jqxhr.responseText);
                     }
                 }).done(function (response) {
-                    toastr.success("Your reservation has been saved!","Reservation success");
+                    toastr.success("Your reservation has been saved!", "Reservation success");
 
                     window.location.href = response.url;
 

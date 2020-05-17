@@ -108,7 +108,23 @@
             $dateLocateData = $request->getParsedBody();
 
             $_SESSION['isDiffLocation'] = isset($dateLocateData['isDiffLocation']);
-            $_SESSION['returnStoreId'] = $dateLocateData['returnStoreId'];
+            if($_SESSION['isDiffLocation']){
+                $returnStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s", $dateLocateData['returnStoreId']);
+                $_SESSION['returnStoreId'] = $dateLocateData['returnStoreId'];
+                $_SESSION['returnAddress']=$returnStore['address'];
+                $_SESSION['returnStoreName'] = $returnStore['storeName'];
+                $_SESSION['returnCity'] = $returnStore['city'];
+                $_SESSION['returnProvince'] = $returnStore['province'];
+                $_SESSION['returnPostCode']=$returnStore['postCode'];
+            }else{
+                unset($_SESSION['returnStoreId']);
+                unset($_SESSION['returnAddress']);
+                unset($_SESSION['returnStoreName']);
+                unset($_SESSION['returnCity']);
+                unset($_SESSION['returnProvince']);
+                unset($_SESSION['returnPostCode']);
+            }
+
             $_SESSION['pickupDate'] = $dateLocateData['pickupDate'];
             $_SESSION['pickupTime'] = $dateLocateData['pickupTime'];
             $_SESSION['returnDate'] = $dateLocateData['returnDate'];
@@ -200,6 +216,24 @@
             $_SESSION['pickupProvince'] = $pickupStore['province'];
             $_SESSION['pickupPostCode'] = $pickupStore['postCode'];
 
+            $_SESSION['isDiffLocation'] = isset($modifiedLocationData['isDiffLocation']);
+            if($_SESSION['isDiffLocation']){
+                $returnStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s", $modifiedLocationData['returnStoreId']);
+                $_SESSION['returnStoreId'] = $modifiedLocationData['returnStoreId'];
+                $_SESSION['returnAddress']=$returnStore['address'];
+                $_SESSION['returnStoreName'] = $returnStore['storeName'];
+                $_SESSION['returnCity'] = $returnStore['city'];
+                $_SESSION['returnProvince'] = $returnStore['province'];
+                $_SESSION['returnPostCode']=$returnStore['postCode'];
+            }else{
+                unset($_SESSION['returnStoreId']);
+                unset($_SESSION['returnAddress']);
+                unset($_SESSION['returnStoreName']);
+                unset($_SESSION['returnCity']);
+                unset($_SESSION['returnProvince']);
+                unset($_SESSION['returnPostCode']);
+            }
+
             $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
 
             return $view->render($response, 'review_reserve.html.twig', [
@@ -232,7 +266,7 @@
                 "tvq" => $reservationData['tvq'],
                 "rentDays" => $reservationData['rentDays'],
                 "rentStoreId" => $_SESSION['pickupStoreId'],
-                "returnStoreId" => $_SESSION['pickupStoreId'], //FIXME when return store is implemented!!!
+                "returnStoreId" => $_SESSION['returnStoreId'], //FIXME when return store is implemented!!!
             );
 
             $result = DB::insert("reservations", $json);
