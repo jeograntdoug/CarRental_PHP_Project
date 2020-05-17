@@ -7,13 +7,22 @@
 {% block userContent %}
     <div class="mx-auto my-5 text-center">
         <table class="inline-block ">
-            {% for key in orderList %}
-
-            {% endfor %}
-
-
+            <tr>
+                {% for key in keyList %}
+                    <th class="text-center border-solid border border-black">{{ key }}</th>
+                {% endfor %}
+            </tr>
             {% for order in orders %}
-                <tr>
+                <tr class="dataRow">
+                    <td class="p-1 border border-solid border-gray-500">{{ order.id }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.reservationId  }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.userId }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.carId }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.createdTS }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.returnDateTime }}</td>
+                    <td class="p-1 border border-solid border-gray-500 text-center"><span class="text-sm">$</span>&nbsp;{{ order.totalPrice }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.rentStoreId  }}</td>
+                    <td class="p-1 border border-solid border-gray-500">{{ order.returnStoreId  }}</td>
 
                 </tr>
             {% endfor %}
@@ -21,11 +30,11 @@
     </div>
     <script>
         $(document).ready(function () {
-            $("table tr").on('mouseover', function () {
+            $(".dataRow").on('mouseover', function () {
                 $(this).addClass("bg-green-400");
             })
 
-            $("table tr").on('mouseout', function () {
+            $(".dataRow").on('mouseout', function () {
                 $(this).removeClass("bg-green-400");
             })
         })

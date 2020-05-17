@@ -1,0 +1,20 @@
+{% extends "user_summary.html.twig" %}
+
+{% block title %}
+    User Profile
+{% endblock title %}
+
+{% block userContent %}
+
+    <script>
+        $(document).ready(function () {
+            $(".dataRow").on('mouseover', function () {
+                $(this).addClass("bg-green-400");
+            })
+
+            $(".dataRow").on('mouseout', function () {
+                $(this).removeClass("bg-green-400");
+            })
+        })
+    </script>
+{% endblock %}

@@ -273,7 +273,27 @@
                 $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
 
                 return $view->render($response, 'summary_orders.html.twig', [
-                   'orders'=>$orders
+                    'orders' => $orders,
+                    'keyList' => [
+                        'id', 'reservationId', 'userId', 'carId', 'createdTS', 'returnDateTime', 'totalPrice', 'rentStoreId', 'returnStoreId',
+                    ]
+                ]);
+            } else {
+                return $view->render($response, 'login.html.twig', []);
+            }
+        });
+
+        $app->get('/summary/map', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+                $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
+
+                return $view->render($response, 'summary_map.html.twig', [
+                    'orders' => $orders,
+                    'keyList' => [
+                        'id', 'reservationId', 'userId', 'carId', 'createdTS', 'returnDateTime', 'totalPrice', 'rentStoreId', 'returnStoreId',
+                    ]
                 ]);
             } else {
                 return $view->render($response, 'login.html.twig', []);
