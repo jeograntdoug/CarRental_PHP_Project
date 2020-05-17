@@ -1,0 +1,33 @@
+{% extends "user_summary.html.twig" %}
+
+{% block title %}
+    User Profile
+{% endblock title %}
+
+{% block userContent %}
+    <div class="mx-auto my-5 text-center">
+        <table class="inline-block ">
+            {% for key in orderList %}
+
+            {% endfor %}
+
+
+            {% for order in orders %}
+                <tr>
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("table tr").on('mouseover', function () {
+                $(this).addClass("bg-green-400");
+            })
+
+            $("table tr").on('mouseout', function () {
+                $(this).removeClass("bg-green-400");
+            })
+        })
+    </script>
+{% endblock %}

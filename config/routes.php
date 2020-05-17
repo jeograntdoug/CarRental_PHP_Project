@@ -98,10 +98,10 @@
             return $response;
         });
 
-/*
-        $app->group('', function (RouteCollectorProxy $group) {
-            $group->post('/car_selection', UserReservationController::class . ':selectCarType');
-        });*/
+        /*
+                $app->group('', function (RouteCollectorProxy $group) {
+                    $group->post('/car_selection', UserReservationController::class . ':selectCarType');
+                });*/
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
@@ -155,9 +155,9 @@
             $_SESSION['selVehicleTypeId'] = $selId;
             $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
             $_SESSION['selVehicle'] = $selVehicle;
-            if(isset($_SESSION['userId'])){
+            if (isset($_SESSION['userId'])) {
                 $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
-            }else{
+            } else {
                 $userInfo = false;
             }
             return $view->render($response, 'review_reserve.html.twig', [
@@ -239,13 +239,45 @@
 
             if ($result) {
                 $result = array(
-                    "url" => "../"
+                    "url" => "../user_summary"
                 );
             }
 
             $response->getBody()->write(json_encode($result));
 
             return $response;
+        });
+
+        $app->get('/summary/profile', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id=%s", $userId);
+                $orderSummary = DB::query("SELECT COUNT(*) as 'count', SUM(totalPrice) as 'expense' FROM orders WHERE userId = %s", $userId)[0];
+                $reservationSummary = DB::query("SELECT COUNT(*) as 'count' FROM reservations WHERE userId = %s", $userId)[0];
+
+                return $view->render($response, 'summary_profile.html.twig', [
+                    'userInfo' => $userInfo,
+                    'orderSummary' => $orderSummary,
+                    'reservationSummary' => $reservationSummary
+                ]);
+            } else {
+                return $view->render($response, 'login.html.twig', []);
+            }
+        });
+
+        $app->get('/summary/orders', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+                $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
+
+                return $view->render($response, 'summary_orders.html.twig', [
+                   'orders'=>$orders
+                ]);
+            } else {
+                return $view->render($response, 'login.html.twig', []);
+            }
         });
 
         $app->get('/modify_datetime', function (Request $request, Response $response, array $args) {
@@ -262,9 +294,9 @@
             ]);
         });
 
-        $app->get('/modal_login', function (Request $request, Response $response, array $args) {
+        $app->get('/user_summary', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
-            return $view->render($response, 'modal_login.html.twig', [
+            return $view->render($response, 'user_summary.html.twig', [
 
             ]);
         });

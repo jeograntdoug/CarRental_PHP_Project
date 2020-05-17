@@ -4,7 +4,24 @@
     User summary
 {% endblock title %}
 
-{% block section %}
 
+
+{% block section %}
+    <div class="flex-col flex">
+        <ul class="flex self-end mr-10 inline-block">
+            <li class="mx-5 my-2 font-bold text-lg hover:text-red-800"><a href="/summary/profile">Profile</a></li>
+            <li class="mx-5 my-2 font-bold text-lg hover:text-red-800"><a href="/summary/orders">Orders</a></li>
+            <li class="mx-5 my-2 font-bold text-lg hover:text-red-800"><a href="/sumary/map">Map</a></li>
+        </ul>
+    </div>
+
+    {% block userContent %}
+
+    {% endblock %}
+
+
+    <script>
+
+    </script>
 
 {% endblock section %}
