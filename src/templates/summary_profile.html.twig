@@ -1,0 +1,34 @@
+{% extends "user_summary.html.twig" %}
+
+{% block title %}
+    User Profile
+{% endblock title %}
+
+{% block userContent %}
+    <div class="mx-auto my-5 text-center">
+        <table class="inline-block ">
+            <tr><th class="px-2"> User id:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ userInfo.id }}</td></tr>
+            <tr><th class="px-2"> First name:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ userInfo.firstname }}</td></tr>
+            <tr><th class="px-2"> Last name:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ userInfo.lastname }}</td></tr>
+            <tr><th class="px-2"> Driving license:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ userInfo.drivinglicense }}</td></tr>
+            <tr><th class="px-2"> Address:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ userInfo.address }}</td></tr>
+            <tr><th class="px-2"> Email:</th><td class="font-bold pl-5 text-center py-1 pr-2" >{{ userInfo.email }}</td></tr>
+            <tr><th class="px-2"> Phone:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ userInfo.phone }}</td></tr>
+            <tr><th class="px-2"> Password:</th><td class="font-bold pl-5 text-center py-1 pr-2">******</td></tr>
+            <tr><th class="px-2"> Reservation count:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ reservationSummary.count }}</td></tr>
+            <tr><th class="px-2"> Order count:</th><td class="font-bold pl-5 text-center py-1 pr-2">{{ orderSummary.count }}</td></tr>
+            <tr><th class="px-2"> Total expense:</th><td class="font-bold pl-5 text-center py-1 pr-2"><span class="text-sm">CAD</span> &nbsp;{{ orderSummary.expense|number_format(2, '.',',') }}</td></tr>
+        </table>
+    </div>
+<script>
+    $(document).ready(function () {
+        $("table tr").on('mouseover', function () {
+            $(this).addClass("bg-green-400");
+        })
+
+        $("table tr").on('mouseout', function () {
+            $(this).removeClass("bg-green-400");
+        })
+    })
+</script>
+{% endblock %}

@@ -19,16 +19,23 @@
         public function login(Request $request, Response $response)
         {
             $view = Twig::fromRequest($request);
-            return $view->render($response, 'login.html.twig');
+            $paramArray = $request->getQueryParams();
+            $url = isset($paramArray['url']) ? $paramArray['url'] : "/";
+
+            return $view->render($response, "login.html.twig", [
+                'url' => $url
+            ]);
         }
 
         public function logout(Request $request, Response $response)
         {
-            $html ='
+            $html = '
                 <a class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
             ';
 
-            DB::delete('userSessions','sessionId=%s',session_id());
+            DB::delete('userSessions', 'sessionId=%s', session_id());
+
+            unset($_SESSION['userId']);
 
             $response->getBody()->write($html);
 

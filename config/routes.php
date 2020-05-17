@@ -98,6 +98,11 @@
             return $response;
         });
 
+        /*
+                $app->group('', function (RouteCollectorProxy $group) {
+                    $group->post('/car_selection', UserReservationController::class . ':selectCarType');
+                });*/
+
         $app->post('/car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
             $dateLocateData = $request->getParsedBody();
@@ -134,6 +139,7 @@
             $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
             $vehiclesInfo = $_SESSION;
 
+
             return $view->render($response, 'car_selection.html.twig', [
                 'allVehicles' => $allVehicles,
                 'vehiclesInfo' => $vehiclesInfo
@@ -149,9 +155,11 @@
             $_SESSION['selVehicleTypeId'] = $selId;
             $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
             $_SESSION['selVehicle'] = $selVehicle;
-
-            $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= 1");
-
+            if (isset($_SESSION['userId'])) {
+                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
+            } else {
+                $userInfo = false;
+            }
             return $view->render($response, 'review_reserve.html.twig', [
                 'selVehicle' => $selVehicle,
                 'userInfo' => $userInfo,
@@ -214,7 +222,7 @@
             $datetime = $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime'];
 
             $json = array(
-                "userId" => 1,
+                "userId" => $_SESSION['userId'],
                 "carTypeId" => $_SESSION['selVehicleTypeId'],
                 "startDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime']),
                 "returnDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['returnDate'] . " " . $_SESSION['returnTime']),
@@ -231,13 +239,89 @@
 
             if ($result) {
                 $result = array(
-                    "url" => "../"
+                    "url" => "../user_summary"
                 );
             }
 
             $response->getBody()->write(json_encode($result));
 
             return $response;
+        });
+
+        $app->get('/summary/profile', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id=%s", $userId);
+                $orderSummary = DB::query("SELECT COUNT(*) as 'count', SUM(totalPrice) as 'expense' FROM orders WHERE userId = %s", $userId)[0];
+                $reservationSummary = DB::query("SELECT COUNT(*) as 'count' FROM reservations WHERE userId = %s", $userId)[0];
+
+                return $view->render($response, 'summary_profile.html.twig', [
+                    'userInfo' => $userInfo,
+                    'orderSummary' => $orderSummary,
+                    'reservationSummary' => $reservationSummary
+                ]);
+            } else {
+                return $view->render($response, 'login.html.twig', []);
+            }
+        });
+
+        $app->get('/summary/orders', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+                $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
+                $rawData = DB::query("SELECT monthname(createdTS) as 'Month', 
+                                        year(createdTS) as 'Year',
+                                        SUM(totalPrice) as 'Exp'                                        
+                                        FROM orders 
+                                        WHERE userId=%s
+                                        GROUP BY month(createdTS),
+                                                 year(createdTS)
+                                        ORDER BY createdTS", $userId);
+
+                $dataPoints = [];
+                foreach ($rawData as $point) {
+                    array_push($dataPoints, array('y' => $point['Exp'], 'label' => $point['Month'] . ',' . $point['Year']));
+                }
+
+                return $view->render($response, 'summary_orders.html.twig', [
+                    'orders' => $orders,
+                    'keyList' => [
+                        'id', 'reservationId', 'userId', 'carId', 'createdTS', 'returnDateTime', 'totalPrice', 'rentStoreId', 'returnStoreId',
+                    ],
+                    'dataPoints' => json_encode($dataPoints, JSON_NUMERIC_CHECK)
+                ]);
+            } else {
+                return $view->render($response, 'login.html.twig', []);
+            }
+        });
+
+        $app->get('/summary/map', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+                $orders = DB::query("SELECT * FROM orders WHERE userId = %s", $userId);
+                $monthlyMileage = DB::query("SELECT monthname(createdTS) as 'Month', 
+                                        year(createdTS) as 'Year',                                        
+                                        SUM(returnMileage-startMileage) as 'Mileage'
+                                        FROM orders 
+                                        WHERE userId=%s
+                                        GROUP BY month(createdTS),
+                                                 year(createdTS)                                                                                              
+                                        ORDER BY createdTS", $userId);
+
+
+                return $view->render($response, 'summary_map.html.twig', [
+                    'orders' => $orders,
+                    'keyList' => [
+                        'Year','Month','Mileage'
+                    ],
+                    'monthlyMileage' => $monthlyMileage
+                ]);
+            } else {
+                return $view->render($response, 'login.html.twig', []);
+            }
         });
 
         $app->get('/modify_datetime', function (Request $request, Response $response, array $args) {
@@ -250,6 +334,13 @@
         $app->get('/modify_locations', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
             return $view->render($response, 'modify_locations.html.twig', [
+
+            ]);
+        });
+
+        $app->get('/user_summary', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'user_summary.html.twig', [
 
             ]);
         });

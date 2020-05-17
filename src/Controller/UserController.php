@@ -65,7 +65,6 @@ class UserController
             return $response->withHeader('Location','/');        
         }
 
-
         $errorList['email'] = 'Email already exists';
 
         return $view->render($response,'register.html.twig',[

@@ -4,56 +4,23 @@
     Welcome to my blog
 {% endblock title %}
 
-{% block section %}
 
+{% block section %}
 
     <div class="mx-auto w-3/5">
         <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
         <ul class="p-4 font-bold text-2xl text-green-900">
-            <li>Welcome, please select location and date</li>
+            <li>Welcome, please select datetime and store(s).</li>
         </ul>
         {% if errors %}
             <ul>
             </ul>
         {% endif %}
 
-
-        <form class="text-lg p-4" method="post" action="/car_selection">
-            <div>
-                <div>
-                    <p class="mb-2 font-bold">1. PICK-UP LOCATION (Postal Code, City)</p>
-                    <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
-                           name="pickupLocation" id="pickupSearchText" list="pickupLocationList"
-                           autocomplete="false"/>
-                    <datalist id="pickupLocationList">
-                    </datalist>
-                    <input type="text" class="hidden" id="pickupStoreId" name="pickupStoreId"/>
-                </div>
-
-                <div class="mt-2">
-                    <input type="checkbox" name="isDiffLocation"/>
-                    <span class="font-bold">Return to a different location</span>
-                </div>
-                <div id="returnLocation" class="hidden">
-                    <p class="my-2 font-bold text-blue-900">PICK-UP RETURN LOCATION (Postal Code, City)</p>
-                    <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
-                           name="returnLocation" id="returnSearchText" list="returnLocationList"
-                           autocomplete="false"/><br>
-                    <datalist id="returnLocationList">
-                    </datalist>
-                    <input type="text" class="hidden" id="returnStoreId" name="returnStoreId"/>
-                </div>
-            </div>
-
-
-            <div id="googleMap" class="my-5 w-3/4" style="height: 500px"></div>
-
-            <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
-            </script>
-            <div class="mt-6">
+        <form class="text-lg p-4" method="post" action="/car_selection" onsubmit="return isValidForm()">
+            <div class="">
                 <div class="flex inline-block">
-                    <span class="mb-2 font-bold w-5/12 ">2. PICK-UP TIME</span>
+                    <span class="mb-2 font-bold w-5/12 ">1. PICK-UP TIME</span>
                     <span class="mb-2 font-bold pl-10">RENT DAYS</span>
                 </div>
 
@@ -86,7 +53,7 @@
                 </div>
             </div>
             <div class="mt-4">
-                <p class="mb-2 font-bold">3. RETURN TIME</p>
+                <p class="mb-2 font-bold">2. RETURN TIME</p>
                 <div class="flex">
                     <input class="returnDate font-bold w-1/5 text-center p-2 mr-5 h-10 border-2 border-gray-500"
                            type="date"
@@ -113,13 +80,44 @@
                 </div>
             </div>
 
+            <div>
+                <div>
+                    <p class="my-4 font-bold">3. PICK-UP LOCATION (Postal Code, City)</p>
+                    <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
+                           name="pickupLocation" id="pickupSearchText" list="pickupLocationList"
+                           autocomplete="false"/>
+                    <datalist id="pickupLocationList">
+                    </datalist>
+                    <input type="text" class="hidden" id="pickupStoreId" name="pickupStoreId"/>
+                </div>
+
+                <div class="mt-2">
+                    <input type="checkbox" name="isDiffLocation" id="ckbIsDiffLocation"/>
+                    <span class="font-bold">Return to a different location</span>
+                </div>
+                <div id="returnLocation" class="hidden">
+                    <p class="my-2 font-bold text-blue-900">PICK-UP RETURN LOCATION (Postal Code, City)</p>
+                    <input placeholder="X1X or city name" class="w-3/5 p-2 h-10 border-2 border-gray-500" type="text"
+                           name="returnLocation" id="returnSearchText" list="returnLocationList"
+                           autocomplete="false"/>
+                    <datalist id="returnLocationList">
+                    </datalist>
+                    <input type="text" class="hidden" id="returnStoreId" name="returnStoreId"/>
+                </div>
+            </div>
+
+
+            <div id="googleMap" class="my-5 w-3/4" style="height: 500px"></div>
+
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
+            </script>
+
             <div class="mt-6 text-right">
                 <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
             </div>
         </form>
     </div>
-
-
 
     <script>
         var curLocationElement = $("#pickupSearchText");
@@ -165,7 +163,7 @@
                 title: store.storeName,
                 animation: google.maps.Animation.DROP,
                 label: {
-                    text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
+                    text: store['carNum'].carNum + '\xa0\xa0\xa0\xa0\xa0' + store['avaCarNum'].carNum,
                     fontSize: "14px",
                     fontWeight: "bold",
                     color: "white"
@@ -189,13 +187,11 @@
             })
 
             marker.addListener('click', function () {
-                if (store['avaCarNum'].carNum == 0) {
+                if (store['avaCarNum'].carNum === 0) {
                     alert('No avaliable cars in the store, would you select a different location?');
                 }
-
                 curLocationElement.val(`${store.storeName}  (${store.address} ${store.postCode})`);
                 curLocationElement.next().next().val(store.id);
-
             })
 
             markers.push(marker);
@@ -218,7 +214,7 @@
             });
         }
 
-        google.maps.event.addDomListener(window, 'load', initMap);
+       google.maps.event.addDomListener(window, 'load', initMap);
 
         function formatStoreInfo(store) {
             return `<p class="font-bold text-base">${store.storeName}</p>
@@ -273,7 +269,6 @@
                 });
             }
         }
-
 
         function loadAdjacentStores(yourLocation) {
             $.ajax({
@@ -343,7 +338,50 @@
             });
         }
 
+
+
+        function isValidForm() {
+            if ($("#pickupDate").val() === '' || $("#pickupTime").val() === '') {
+                toastr.error("PICKUP datetime need select","Datetime selection error");
+
+                return false;
+            }
+            if ($("#returnDate").val() === '' || $("#returnTime").val() === '') {
+                toastr.error("RETURN datetime need select","Datetime selection error");
+                return false;
+            }
+            //alert("pickup: " + $("#pickupStoreId").val() + ", return:" + $("#returnStoreId").val());
+            if ($("#pickupStoreId").val() === '') {
+                toastr.error("PICKUP store need select","Store selection error");
+
+                return false;
+            }
+            if ($("#ckbIsDiffLocation").prop('checked') === true) {
+                if ($("#returnStoreId").val() === '') {
+                    toastr.error("RETURN store need select","Store selection error")
+                    return false;
+                }
+            }
+            return true;
+        }
+
         $(document).ready(function () {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "4000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
             $('form input').keydown(function (e) {
                 if (e.keyCode == 13) {
@@ -363,13 +401,16 @@
             })
 
 
-            $("#pickupSearchText").on('keypress', function (e) {
+            $("#pickupSearchText").on('keypress', function () {
+                alert(getTodayDate());
                 searchCities(this, "#pickupLocationList");
             });
 
             $("#returnSearchText").on("keypress", function () {
                 searchCities(this, "#returnLocationList");
             });
+
+
 
             $("#pickupDate").val(getTodayDate);
             $("#pickupTime").val(getNowTime);
@@ -390,7 +431,7 @@
                 $("#returnDate").val(getReturnDate(Number(days)));
             })
 
-            $("input[name=isDiffLocation]").on("click", function () {
+            $("#ckbIsDiffLocation").on("click", function () {
                 if ($(this).prop("checked")) {
                     curLocationElement = $("#returnSearchText");
                     $("#returnLocation").show();
@@ -408,8 +449,19 @@
                 curLocationElement = $("#returnSearchText");
             })
 
-
+            $(window).bind("pageshow", function () {
+                $("#pickupSearchText").val("");
+                $("#returnSearchText").val("");
+                $("#pickupStoreId").val("");
+                $("#returnStoreId").val("");
+                $("#pickupDate").val(getTodayDate);
+                $("#pickupTime").val(getNowTime);
+                $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
+                $("#returnTime").val(getNowTime);
+            });
         })
+
+
         $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
             console.log("Ajax error occured on " + settings.url);
             alert("Ajax error occurred");
@@ -418,7 +470,5 @@
 
     </script>
 
-
-
-
 {% endblock section %}
+
