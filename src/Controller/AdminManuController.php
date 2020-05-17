@@ -122,7 +122,7 @@ class AdminManuController
         $totalResv = DB::queryFirstField(
             "SELECT COUNT(*) FROM %l", $this->tableName
         );
-        $totalPage = ceil( $totalResv / $this->records_per_page);
+        $totalPage = ceil( $totalResv / $this->records_per_page) ;
 
         return [
             'currentPage' => $this->getCurrentPage($get, $totalPage),

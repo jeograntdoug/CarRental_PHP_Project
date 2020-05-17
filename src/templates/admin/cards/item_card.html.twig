@@ -10,30 +10,45 @@
     </td>
 </tr>
 {% endfor %}
-{% set maxPages = 10 %}
+
+
+{% if totalPage > 1 %}
+
 <tr id="pagenation">
     <td class="text-center" colspan="1000">
         {% if currentPage != 1 %}
             <span id="prevPage" class="cursor-pointer hover:underline">prev</span>
         {% endif %}
+
         {% if currentPage <= 5 %}
-            {% for page in 1.. 9 %}
+            {% set maxPage = totalPage < 9 ? totalPage : 9 %}
+
+            {% for page in 1.. maxPage %}
                 {% if page == currentPage %}
                     <span class="text-2xl font-semibold">{{ page }}</span>
                 {% else %}
                     <span class="btPage cursor-pointer hover:underline">{{ page }}</span>
                 {% endif %}
             {% endfor %}
+
+            {% if maxPage < 9 %}
             <span> ... </span>
+            {% endif %}
+
         {% elseif currentPage > totalPage - 5 %}
+            {% set minPage = totalPage < 9 ? 1 : totalPage - 8 %}
+
+            {% if minPage != 1 %}
             <span> ... </span>
-            {% for page in totalPage - 8 .. totalPage %}
+            {% endif %}
+            {% for page in minPage .. totalPage %}
                 {% if page == currentPage %}
                     <span class="text-2xl font-semibold">{{ page }}</span>
                 {% else %}
                     <span class="btPage cursor-pointer hover:underline">{{ page }}</span>
                 {% endif %}
             {% endfor %}
+
         {% else %}
             <span> ... </span>
             {% for page in currentPage - 4 .. currentPage + 4 %}
@@ -45,8 +60,10 @@
             {% endfor %}
             <span> ... </span>
         {% endif %}
+
         {% if currentPage != totalPage %}
             <span id="nextPage" class="cursor-pointer hover:underline">next</span>
         {% endif %}
     </td>
 </tr>
+{% endif %}
