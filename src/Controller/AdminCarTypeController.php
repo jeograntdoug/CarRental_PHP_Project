@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-class AdminCarTypeController extends AdminManuController
+class AdminCarTypeController extends AdminController
 {
     public function __construct(){
         $this->itemTitle = 'CarType';
@@ -11,8 +11,14 @@ class AdminCarTypeController extends AdminManuController
 
         $this->fieldList = [
             'id', 'category', 'subtype', 'description', 
-            'passengers', 'bags', 'dailyPrice'
+            'passengers', 'bags', 'dailyPrice', 'photoPath'
         ];
+
+        $this->fieldListInHeader = [
+            'ID', 'CATEGORY', 'TYPE', 'DESCRIPTION', 
+            'PASSENGERS', 'BAGS', 'DALIY PRICE'
+        ];
+;
 
         $this->validator = "Validator::carType";
     }

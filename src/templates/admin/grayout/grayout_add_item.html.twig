@@ -66,26 +66,24 @@
                 dataType: "json",
                 data: JSON.stringify(newItem)
             })
-            .done(function (result) {
-                if(result.errorList.length == 0){
-                    $("#grayout").addClass("hidden");
-                    $("#notificationTitle").html("New {{itemTitle}} Added!");
-                    $("#notificationText").html(""); // FIXME : use result from server
-                    $("#notificationDiv")
-                        .addClass("bg-orange-500")
-                        .removeClass("bg-red-700")
-                        .slideDown().delay(2000).fadeOut("slow");
+            .done(function () {
+                $("#grayout").addClass("hidden");
+                $("#notificationTitle").html("New {{itemTitle}} Added!");
+                $("#notificationText").html(""); // FIXME : use result from server
+                $("#notificationDiv")
+                    .addClass("bg-orange-500")
+                    .removeClass("bg-red-700")
+                    .slideDown().delay(2000).fadeOut("slow");
 
-                    reloadItemList();
-                } else {
-                    $("#addItemDiv p").html("");
-                    Object.keys(result.errorList).forEach(function(key) {
-                        let element = `#addItemDiv input[name=${key}]`;
-                        $(element).next().text(result.errorList[key]);
-                    });
-                }
-            }).fail(function () {
-                console.log(`${itemTitle} Addtion ajax fail!`);
+                reloadItemList();
+            }).fail(function (result) {
+                let errorList = result.responseJSON.errorList;
+
+                $("#addItemDiv p").html("");
+                Object.keys(errorList).forEach(function(key) {
+                    let element = `#addItemDiv input[name=${key}]`;
+                    $(element).next().text(errorList[key]);
+                });
             });
 
         });

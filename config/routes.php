@@ -36,33 +36,40 @@
         $app->group('/admin', function (RouteCollectorProxy $group) {
             $group->get('', AdminController::class . ':home');
 
+            $group->get('/ajax/users/{id:[0-9]+}', UserController::class . ':showToAdmin');
+
             $group->get('/stores', AdminStoreController::class . ':index');
             $group->get('/ajax/stores', AdminStoreController::class . ':showAll');
             $group->post('/ajax/stores', AdminStoreController::class . ':create');
+            $group->get('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':show');
             $group->patch('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':edit');
             $group->delete('/ajax/stores/{id:[0-9]+}', AdminStoreController::class . ':delete');
 
             $group->get('/cars', AdminCarController::class . ':index');
             $group->get('/ajax/cars', AdminCarController::class . ':showAll');
             $group->post('/ajax/cars', AdminCarController::class . ':create');
+            $group->get('/ajax/cars/{id:[0-9]+}', AdmincarController::class . ':show');
             $group->patch('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':edit');
             $group->delete('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':delete');
 
             $group->get('/cartypes', AdminCarTypeController::class . ':index');
             $group->get('/ajax/cartypes', AdminCarTypeController::class . ':showAll');
             $group->post('/ajax/cartypes', AdminCarTypeController::class . ':create');
+            $group->get('/ajax/carTypes/{id:[0-9]+}', AdmincarTypeController::class . ':show');
             $group->patch('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':edit');
             $group->delete('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':delete');
 
             $group->get('/reservations', AdminReservationController::class . ':index');
             $group->get('/ajax/reservations', AdminReservationController::class . ':showAll');
             $group->post('/ajax/reservations', AdminReservationController::class . ':create');
+            $group->get('/ajax/reservations/{id:[0-9]+}', AdminReservationController::class . ':show');
             $group->patch('/ajax/reservations/{id:[0-9]+}', AdminReservationController::class . ':edit');
             $group->delete('/ajax/reservations/{id:[0-9]+}', AdminReservationController::class . ':delete');
 
             $group->get('/orders', AdminOrderController::class . ':index');
             $group->get('/ajax/orders', AdminOrderController::class . ':showAll');
             $group->post('/ajax/orders', AdminOrderController::class . ':create');
+            $group->get('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':show');
             $group->patch('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':edit');
             $group->delete('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':delete');
         });

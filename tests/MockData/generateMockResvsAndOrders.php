@@ -35,13 +35,15 @@ $userIdList = DB::queryFirstColumn('SELECT id FROM users');
 // $carTypeIdList = DB::query('SELECT id FROM carTypes');
 
 $resvList= [];
-for( $i = 0 ; $i < 2000 ; $i++)
+$recordSize = 2000;
+for( $i = 0 ; $i < $recordSize ; $i++)
 {
+    $gap = (5 * AN_YEAR) / $recordSize;
 
     /**
      * Start Generating fields in orders table
      */
-    $randCreatedTS = rand(time() - 5 * AN_YEAR, time());
+    $randCreatedTS = time() - A_DAY - 5 * AN_YEAR + rand($i * $gap, ($i + 1) * $gap);
 
     $randReturnTime = $randCreatedTS + rand(A_DAY, 60 * A_DAY);
 
@@ -50,10 +52,36 @@ for( $i = 0 ; $i < 2000 ; $i++)
     // TODO : check if user has reservation in this period
     $randUserId = $userIdList[rand(0, count($userIdList) - 1)];
     $randStoreId = $storeIdList[rand(0, count($storeIdList) - 1)];
+    $randReturnStoreId = $randStoreId;
+    if(rand(1,3) == 3){
+        $randReturnStoreId = $storeIdList[rand(0, count($storeIdList) - 1)];
+    }
 
     $randCreatedTS = date("Y-m-d H:i:s", $randCreatedTS);
     $randReturnTime = date("Y-m-d H:i:s", $randReturnTime);
 
+    //// rentStore == returnStore
+    // $carList = DB::query(
+    //     "SELECT c.id AS 'id', c.mileage AS 'mileage',
+    //         c.carTypeId AS 'carTypeId'
+    //     FROM cars AS c
+    //     LEFT JOIN orders AS o
+    //     ON o.carId = c.id
+    //     WHERE c.storeId = %s
+    //     AND c.year < %s
+    //     AND (
+    //         createdTS IS NULL 
+    //         OR createdTS > %s
+    //         OR returnDateTime < %s
+    //     )",
+    //     $randStoreId,
+    //     date('Y',strtotime($randCreatedTS)),
+    //     $randReturnTime,
+    //     $randCreatedTS
+    // );
+
+
+    // rentStore != returnStore
     $carList = DB::query(
         "SELECT c.id AS 'id', c.mileage AS 'mileage',
             c.carTypeId AS 'carTypeId'
@@ -72,8 +100,6 @@ for( $i = 0 ; $i < 2000 ; $i++)
         $randReturnTime,
         $randCreatedTS
     );
-
-
 
     if(empty($carList)){
         continue;
@@ -128,7 +154,7 @@ for( $i = 0 ; $i < 2000 ; $i++)
         'tvq' => $tvq,
         'rentDays' => $rentDays,
         'rentStoreId' => $randStoreId,
-        'returnStoreId' => $randStoreId,
+        'returnStoreId' => $randReturnStoreId,
     ];
 
     DB::insert("reservations", $reservation); 
@@ -145,11 +171,14 @@ for( $i = 0 ; $i < 2000 ; $i++)
         'returnMileage' => $randReturnMileage,
         'totalPrice' => $totalPrice,
         'rentStoreId' => $randStoreId,
-        'returnStoreId' => $randStoreId,
+        'returnStoreId' => $randReturnStoreId,
     ];
 
     DB::insert("orders", $order);
     $orderId = DB::insertId();
-    DB::update("cars", ['mileage' => $randReturnMileage], "id=%s", $randCar['id']);
+    DB::update("cars", [
+        'mileage' => $randReturnMileage,
+        'storeId' => $randReturnStoreId
+    ], "id=%s", $randCar['id']);
 }
 

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Validator;
 
-class AdminCarController extends AdminManuController
+class AdminCarController extends AdminController
 {
     public function __construct(){
         $this->itemTitle = 'Car';
@@ -13,8 +13,14 @@ class AdminCarController extends AdminManuController
 
         $this->fieldList = [
             'id', 'carTypeId', 'model', 'year', 'manufacturer', 'mileage', 
-            'status', 'storeId', 'description', 'fuelType'
+            'status', 'storeId', 'description', 'fuelType', 'photoPath'
         ];
+
+        $this->fieldListInHeader = [
+            'ID', 'CAR TYPE', 'MODEL', 'YEAR', 'MANUFACTURER', 'MILEAGE', 
+            'STATUS', 'STORE', 'DESCRIPTION', 'FUEL TYPE'
+        ];
+
 
         $this->validator = Validator::car();
     }

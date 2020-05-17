@@ -22,11 +22,21 @@
 <!-- End EditorDiv Input to edit single field -->
 
 
+<!-- Start popup on mouseover to id fields. Show detail information -->
+    <div id="popup" class="hidden w-64 absolute p-4 z-20 inline-block bg-gray-400 border-2 border-gray-700 rounded">
+    </div>
+<!-- End popup on mouseover to id fields. Show detail information -->
+
+
 <!-- Start Item List Table -->
     <table class="w-full mt-2 border-2 border-collapse">
         <tr id="tableHeader" class="bg-gray-800 text-gray-200">
-            {% for key in itemKeyList %}
-                <th class="{{ key|lower == 'id' ? 'itemId' :''}} border-2 border-gray-200">{{ key }}</th>
+            {% for key in itemKeyListInHeader %}
+                {% if key == 'photoPath' %}
+                    {# Do nothing #}
+                {% else %}
+                    <th class="{{ key|lower == 'id' ? 'itemId' :''}} p-2 border-2 cursor-default border-gray-200 hover:bg-green-800">{{ key|upper }}</th>
+                {% endif %}
             {% endfor %}
         </tr>
         <tbody id="tbodyItemList" class="text-center">
@@ -61,6 +71,19 @@
         let order = "";
         let selPage = currentPage;
 
+        switch(items){
+            case "reservations" :
+                sortBy = "startDateTime";
+                order = "desc";
+                break;
+            case "orders" :
+                sortBy = "returnDateTime";
+                order = "desc";
+                break;
+            default :
+                //Do Nothing
+        }
+
         reloadItemList();
 
         function reloadItemList()
@@ -77,6 +100,19 @@
             });
         }
 
+        // start Sorting on click header of table
+        $("table tr:first-child th").click(function () {
+            let newSortBy = $(this).text().toUpperCase();
+            if(newSortBy == sortBy){
+                order = order.toLowerCase() == 'asc' ? 'desc' : 'asc';
+            } else{
+                order = 'asc';
+            }
+            sortBy = newSortBy;
+            reloadItemList();
+        });
+        // end Sorting on click header of table
+        
         // start pagenation
         $("#tbodyItemList").on('click','tr#pagenation span.btPage',function () {
             selPage = $(this).text() - 0;
@@ -94,6 +130,74 @@
         });
         // end pagenation
 
+
+        // start show record detail on hover
+        $("#tbodyItemList").on('mouseenter','tr>td.foreignKey',function (event) {
+            let id = $(this).children(".targetId").text();
+            let foreignKey = $(this).children(".key").text();
+
+            if(id == ''){ 
+                return; 
+            }
+
+            let position = $(this).position();
+            let elementWidth = $(this).outerWidth();
+            let elementHeight = $(this).outerHeight();
+
+            let tableList = {
+                userId : 'users',
+                storeId : 'stores',
+                rentStoreId : 'stores',
+                returnStoreId : 'stores',
+                carId : 'cars',
+                carTypeId : 'carTypes',
+                reservationId : 'reservations',
+                orderId : 'orderId'
+            }
+            let url = `/admin/ajax/${tableList[foreignKey]}/${id}`;
+            $.ajax({
+                url: url,
+                type: "GET",
+            }).done(function (item) {
+                $("div#popup").html(item);
+
+                $("div#popup").offset(function() {
+                        let width = $(this).outerWidth();
+                        if( position.left + elementWidth + width > $(document).outerWidth()){
+                            position.left -= width;
+                        } else {
+                            position.left += elementWidth;
+                        }
+
+                        let height = $(this).outerHeight();
+                        if( position.top + elementHeight + height > $(document).outerHeight()){
+                            position.top -= height - elementHeight;
+                        } else {
+                            position.top += elementHeight;
+                        }
+                        return position;
+                    })
+                    .addClass("block")
+                    .removeClass("hidden");
+            }).fail(function (result) {
+                let errorList = result.responseJSON.errorList;
+                Object.keys(errorList).forEach(function (key) {
+                    $("#notificationTitle").html(`[${key}] is Invalid!!`);
+                    $("#notificationText").html(errorList[key]);
+                    $("#notificationDiv")
+                        .removeClass("bg-orange-500")
+                        .addClass("bg-red-700")
+                        .slideDown().delay(2000).fadeOut("slow");
+                });
+            });
+        });
+
+        $("#tbodyItemList").on('mouseleave','tr td.foreignKey',function () {
+            $("div#popup")
+                .offset({ top: 0 , left : 0})
+                .addClass("hidden")
+                .removeClass("block");
+        });
 
 
         let selItemId = 1;
@@ -144,21 +248,18 @@
                 dataType: "json",
                 data: JSON.stringify(data)
             })
-            .done(function (result) {
-                if(result.errorList.length == 0){
-                    $(selElement).html(data.value);
-                }else{
-                    Object.keys(result.errorList).forEach(function (key) {
-                        $("#notificationTitle").html(`[${key}] is Invalid!!`);
-                        $("#notificationText").html(result.errorList[key]);
-                        $("#notificationDiv")
-                            .removeClass("bg-orange-500")
-                            .addClass("bg-red-700")
-                            .slideDown().delay(2000).fadeOut("slow");
-                    });
-                }
-            }).fail(function () {
-                console.log(`${itemTitle} deletion ajax fail!`);
+            .done(function () {
+                $(selElement).html(data.value);
+            }).fail(function (result) {
+                let errorList = result.responseJSON.errorList;
+                Object.keys(errorList).forEach(function (key) {
+                    $("#notificationTitle").html(`[${key}] is Invalid!!`);
+                    $("#notificationText").html(errorList[key]);
+                    $("#notificationDiv")
+                        .removeClass("bg-orange-500")
+                        .addClass("bg-red-700")
+                        .slideDown().delay(2000).fadeOut("slow");
+                });
             });
 
             $("#editorDiv").delay(1000).addClass("hidden");
@@ -190,6 +291,46 @@
                 reloadItemList();
             }).fail(function () {
                 console.log(`${itemTitle} deletion ajax fail!`);
+            });
+        });
+
+        // Place Order for Reservations page only
+        $("table").on("click","tbody td span.btOrder",function () 
+        {
+            let itemId = $(this).parents("tr").children(".itemId").html();
+            let url = `/admin/ajax/orders`;
+            let data = {
+                reservationId: itemId
+            };
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "json"
+            })
+            .done(function (data) {
+
+                $("#notificationTitle").html(`${itemTitle} Ordered!`);
+                $("#notificationText").html("");
+                $("#notificationDiv")
+                    .removeClass("bg-red-700")
+                    .addClass("bg-orange-500")
+                    .slideDown().delay(2000).fadeOut("slow");
+
+                $("input[name=searchKeyword]").val("");
+                reloadItemList();
+            }).fail(function (result) {
+                let errorList = result.responseJSON.errorList;
+
+                Object.keys(errorList).forEach(function (key) {
+                    $("#notificationTitle").html(`[${key}] is Invalid!!`);
+                    $("#notificationText").html(errorList[key]);
+                    $("#notificationDiv")
+                        .removeClass("bg-orange-500")
+                        .addClass("bg-red-700")
+                        .slideDown().delay(2000).fadeOut("slow");
+                });
             });
         });
 

@@ -147,6 +147,29 @@ class UserController
         ]);
     }
 
+    public function showToAdmin (Request $request,Response $response, array $args){
+        $id = $args['id'];
+
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE id=%s", $id);
+
+        $idPhotoBase64 = isset($user['idPhoto']) ?  base64_encode($user['idPhoto']) : '';
+
+        $view = Twig::fromRequest($request);
+        return $view->render($response, '/admin/cards/item_detail.html.twig',[
+            'item' => [
+                'id' => $user['id'],
+                'email' => $user['email'],
+                'name' => $user['firstname'],
+                'firstname' => $user['firstname'],
+                'lastname' => $user['lastname'],
+                'drivinglicense' => $user['drivinglicense'],
+                'address' => $user['address'],
+                'phone' => $user['phone'],
+                'idPhotoBase64' => $idPhotoBase64
+            ],
+        ]);
+    }
+
 
 
     /**

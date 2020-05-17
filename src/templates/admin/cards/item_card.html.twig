@@ -1,16 +1,39 @@
+{% set foreignKeyList = ['storeId', 'reservationId', 'rentStoreId', 'returnStoreId', 'carTypeId', 'carId', 'userId'] %}
+
+
+{## Item Card ##}
+
 {% for item in itemList %}
 <tr> 
     {% for key in item|keys %}
-        <td class="{{ key == 'id' ? 'itemId' : 'itemField cursor-pointer' }} relative border-2 border-gray-500">{{ item[key]}}</td>
+        {% if key == 'photoPath' or key == 'orderId' %}
+            {# Do nothing #}
+        {% elseif key in foreignKeyList %}
+            <td class="foreignKey cursor-default relative border-2 border-gray-500 hover:bg-green-500">
+                <span class="targetId block">{{ item[key]}}</span>
+                <span class="key hidden">{{ key }}</span>
+            </td>
+        {% else %}
+            <td class="{{ key == 'id' ? 'itemId' : 'itemField cursor-pointer' }} relative border-2 border-gray-500">{{ item[key]}}</td>
+        {% endif %}
     {% endfor %}
     <td class="border-none flex justify-center">
-        <span class="material-icons btDelete cursor-pointer fill-current text-red-500">
+        {% set now = "now"|date("Y-m-d h:i:s") %}
+        {% if itemTitle|lower == 'reservation' and item['orderId'] == null %}
+            <span class="material-icons btOrder cursor-pointer fill-current text-blue-500" title="Place Order">
+                thumb_up_alt
+            </span>
+        {% endif %}
+        <span class="material-icons btDelete cursor-pointer fill-current text-red-500" title="Delete">
             delete 
         </span>
     </td>
 </tr>
 {% endfor %}
 
+
+
+{## Pagenation ##}
 
 {% if totalPage > 1 %}
 
@@ -31,7 +54,7 @@
                 {% endif %}
             {% endfor %}
 
-            {% if maxPage < 9 %}
+            {% if totalPage > 9 %}
             <span> ... </span>
             {% endif %}
 

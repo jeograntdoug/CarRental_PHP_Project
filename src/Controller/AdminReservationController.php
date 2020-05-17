@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
-class AdminReservationController extends AdminManuController 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Views\Twig;
+use App\Validator;
+use DB;
+
+class AdminReservationController extends AdminController 
 {
     public function __construct(){
         $this->itemTitle = 'Reservation';
@@ -13,5 +19,38 @@ class AdminReservationController extends AdminManuController
             'id', 'userId', 'carTypeId', 'startDateTime', 'returnDateTime',
             'dailyPrice', 'netFees', 'rentStoreId', 'returnStoreId'
         ];
+
+        $this->fieldListInHeader = [
+            'ID', 'User', 'Car Type', 'Start Date', 'Return Date',
+            'Price per day', 'Net Fee', 'Rent Store', 'Return Store'
+        ];
+    }
+
+
+    public function showAll (Request $request, Response $response)
+    {
+        $view = Twig::fromRequest($request);
+
+        $get = $this->parseGetRequest($request);
+
+        $startResv = ($get['currentPage'] - 1) * $this->records_per_page;
+
+        $resvList = DB::query(
+            "SELECT r.id, r.userId, r.carTypeId, r.startDateTime, r.returnDateTime, r.dailyPrice, r.netFees, r.rentStoreId, r.returnStoreId , o.id AS 'orderId'
+            FROM reservations AS r
+            LEFT JOIN orders AS o
+            ON o.reservationId = r.id
+            ORDER BY %l %l
+            LIMIT %i, %i",
+            $get['sortBy'], $get['order'], 
+            $startResv, $this->records_per_page
+        );
+
+        return $view->render($response, 'admin/cards/' . $this->itemTemplate, [
+            'itemTitle' => $this->itemTitle,
+            'itemList' => $resvList,
+            'currentPage' => $get['currentPage'],
+            'totalPage' => $get['totalPage']
+        ]);
     }
 }

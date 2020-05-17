@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Validator;
 
-class AdminStoreController extends AdminManuController
+class AdminStoreController extends AdminController
 {
     public function __construct(){
         $this->itemTitle = 'Store';
@@ -14,6 +14,11 @@ class AdminStoreController extends AdminManuController
         $this->fieldList = [
             'id', 'storeName', 'province', 'city', 
             'postCode', 'address', 'phone'
+        ];
+
+        $this->fieldListInHeader = [
+            'ID', 'NAME', 'PROVINCE', 'CITY', 
+            'POST CODE', 'ADDRESS', 'PHONE'
         ];
 
         $this->validator = Validator::store();
