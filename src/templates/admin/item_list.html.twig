@@ -14,11 +14,13 @@
 <!-- End Search Bar -->
 
 <div>
+
 <!-- Start EditorDiv Input to edit single field -->
     <form id="editorDiv" class="hidden absolute z-20 top-0 items-center bg-gray-200 border-1 border-gray-800">
         <input id="editorInput" class="text-center" type="text" value="" />
     </form>
 <!-- End EditorDiv Input to edit single field -->
+
 
 <!-- Start Item List Table -->
     <table class="w-full mt-2 border-2 border-collapse">
@@ -32,6 +34,7 @@
         </tbody>
     </table>
 <!-- End Item List Table -->
+
 
     <!-- Add Item Button -->
     <div class="text-right">
@@ -53,18 +56,45 @@
         let items = "{{ itemTitle|lower }}s";
         let itemTitle = "{{ itemTitle }}";
 
+        let currentPage = {{ currentPage }};
+        let sortBy = "";
+        let order = "";
+        let selPage = currentPage;
+
+        reloadItemList();
+
         function reloadItemList()
         {
-            let url = "/admin/ajax/" + items;
+            let url = `/admin/ajax/reservations?page=${selPage}&sortBy=${sortBy}&order=${order}`;
             $.ajax({
                 url: url,
                 type: "GET",
             }).done(function (itemList) {
                 $("#tbodyItemList").html(itemList);
+                currentPage = selPage;
             }).fail(function () {
-                console.log(`${itemTitle} list ajax fail!`);
+                console.log(`list ajax fail!`);
             });
         }
+
+        // start pagenation
+        $("#tbodyItemList").on('click','tr#pagenation span.btPage',function () {
+            selPage = $(this).text() - 0;
+            reloadItemList();
+        });
+        
+        $("#tbodyItemList").on('click','tr#pagenation span#prevPage',function () {
+            selPage = currentPage - 1;
+            reloadItemList();
+        });
+
+        $("#tbodyItemList").on('click','tr#pagenation span#nextPage',function () {
+            selPage = currentPage + 1;
+            reloadItemList();
+        });
+        // end pagenation
+
+
 
         let selItemId = 1;
         let fieldIndex = 1;

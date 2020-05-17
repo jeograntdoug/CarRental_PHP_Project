@@ -1,12 +1,52 @@
 {% for item in itemList %}
-    <tr> 
-        {% for key in item|keys %}
-            <td class="{{ key == 'id' ? 'itemId' : 'itemField cursor-pointer' }} relative border-2 border-gray-500">{{ item[key]}}</td>
-        {% endfor %}
-        <td class="border-none flex justify-center">
-            <span class="material-icons btDelete cursor-pointer fill-current text-red-500">
-                delete 
-            </span>
-        </td>
-    </tr>
+<tr> 
+    {% for key in item|keys %}
+        <td class="{{ key == 'id' ? 'itemId' : 'itemField cursor-pointer' }} relative border-2 border-gray-500">{{ item[key]}}</td>
+    {% endfor %}
+    <td class="border-none flex justify-center">
+        <span class="material-icons btDelete cursor-pointer fill-current text-red-500">
+            delete 
+        </span>
+    </td>
+</tr>
 {% endfor %}
+{% set maxPages = 10 %}
+<tr id="pagenation">
+    <td class="text-center" colspan="1000">
+        {% if currentPage != 1 %}
+            <span id="prevPage" class="cursor-pointer hover:underline">prev</span>
+        {% endif %}
+        {% if currentPage <= 5 %}
+            {% for page in 1.. 9 %}
+                {% if page == currentPage %}
+                    <span class="text-2xl font-semibold">{{ page }}</span>
+                {% else %}
+                    <span class="btPage cursor-pointer hover:underline">{{ page }}</span>
+                {% endif %}
+            {% endfor %}
+            <span> ... </span>
+        {% elseif currentPage > totalPage - 5 %}
+            <span> ... </span>
+            {% for page in totalPage - 9 .. totalPage %}
+                {% if page == currentPage %}
+                    <span class="text-2xl font-semibold">{{ page }}</span>
+                {% else %}
+                    <span class="btPage cursor-pointer hover:underline">{{ page }}</span>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <span> ... </span>
+            {% for page in currentPage - 4 .. currentPage + 4 %}
+                {% if page == currentPage %}
+                    <span class="text-2xl font-semibold">{{ page }}</span>
+                {% else %}
+                    <span class="btPage cursor-pointer hover:underline">{{ page }}</span>
+                {% endif %}
+            {% endfor %}
+            <span> ... </span>
+        {% endif %}
+        {% if currentPage != totalPage %}
+            <span id="nextPage" class="cursor-pointer hover:underline">next</span>
+        {% endif %}
+    </td>
+</tr>

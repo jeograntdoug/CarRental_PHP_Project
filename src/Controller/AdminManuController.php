@@ -2,35 +2,30 @@
 
 namespace App\Controller;
 
-// const RECORDS_PER_PAGE = 20;
-// const FIELD_LIST = [
-//     'id', 'userId', 'carTypeId', 'startDateTime', 'returnDateTime',
-//     'dailyPrice', 'netFees', 'rentStoreId', 'returnStoreId'
-// ];
-// const ITEM_TITLE = 'Reservation';
-// const TABLE_NAME = 'reservations';
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Views\Twig;
+use DB;
 
-class AdminReservationController extends AdminManuController 
+
+class AdminManuController
 {
-    public function __construct(){
-        $this->itemTitle = 'Reservation';
+    protected $records_per_page = 20;
 
-        $this->tableName = 'reservations';
+    protected $itemTitle;
 
-        $this->fieldList = [
-            'id', 'userId', 'carTypeId', 'startDateTime', 'returnDateTime',
-            'dailyPrice', 'netFees', 'rentStoreId', 'returnStoreId'
-        ];
-    }
+    protected $tableName;
 
-    /*
+    protected $fieldList;
+
+
     public function index (Request $request, Response $response)
     {
         $view = Twig::fromRequest($request);
 
         return $view->render($response, 'admin/item_list.html.twig',[
-            'itemTitle' => ITEM_TITLE,
-            'itemKeyList' => FIELD_LIST,
+            'itemTitle' => $this->itemTitle,
+            'itemKeyList' => $this->fieldList,
             'currentPage' => 1
         ]);
     }
@@ -42,16 +37,15 @@ class AdminReservationController extends AdminManuController
 
         $get = $this->parseGetRequest($request);
 
-        $startResv = ($get['currentPage'] - 1) * RECORDS_PER_PAGE;
+        $startResv = ($get['currentPage'] - 1) * $this->records_per_page;
 
         $resvList = DB::query(
-            "SELECT %l
-            FROM %l
+            "SELECT %l FROM %l
             ORDER BY %l %l
             LIMIT %i, %i",
-            implode(",",FIELD_LIST),
-            TABLE_NAME,
-            $get['sortBy'], $get['order'], $startResv, RECORDS_PER_PAGE
+            implode(",",$this->fieldList),
+            $this->tableName,
+            $get['sortBy'], $get['order'], $startResv, $this->records_per_page
         );
 
         return $view->render($response, 'admin/cards/item_card.html.twig', [
@@ -70,7 +64,7 @@ class AdminReservationController extends AdminManuController
         $errorList = [];
 
         if(empty($errorList)){
-            DB::insert(TABLE_NAME,$jsonData);
+            DB::insert($this->tableName,$jsonData);
         }
 
         $response->getBody()->write(json_encode([
@@ -84,7 +78,7 @@ class AdminReservationController extends AdminManuController
     {
         $id = $args['id'];
 
-        DB::delete(TABLE_NAME,'id=%i', $id);
+        DB::delete($this->tableName,'id=%i', $id);
         $response->getBody()->write(json_encode(DB::affectedRows()));
 
         return $response;
@@ -97,7 +91,7 @@ class AdminReservationController extends AdminManuController
         $jsonData = json_decode($request->getBody(), true);
 
         $data = [
-            FIELD_LIST[$jsonData['fieldIndex']] => $jsonData['value']
+            $this->fieldList[$jsonData['fieldIndex']] => $jsonData['value']
         ];
 
         // TODO : validation
@@ -105,7 +99,7 @@ class AdminReservationController extends AdminManuController
         $errorList = [];
 
         if(empty($errorList)){
-            DB::update(TABLE_NAME,$data,'id=%s',$id);
+            DB::update($this->tableName,$data,'id=%s',$id);
         }
 
         $response->getBody()->write(json_encode([
@@ -121,9 +115,9 @@ class AdminReservationController extends AdminManuController
         $get = $request->getQueryParams();
 
         $totalResv = DB::queryFirstField(
-            "SELECT COUNT(*) FROM %l", TABLE_NAME
+            "SELECT COUNT(*) FROM %l", $this->tableName
         );
-        $totalPage = ceil( $totalResv / RECORDS_PER_PAGE);
+        $totalPage = ceil( $totalResv / $this->records_per_page);
 
         return [
             'currentPage' => $this->getCurrentPage($get, $totalPage),
@@ -147,20 +141,19 @@ class AdminReservationController extends AdminManuController
     private function getSortBy($get)
     {
         if(isset($get['sortBy'])){
-            $fieldList = DB::queryFirstColumn("DESCRIBE reservations");
+            $fieldList = DB::queryFirstColumn("DESCRIBE " . $this->tableName);
             return in_array($get['sortBy'], $fieldList) 
-                    ? $get['sortBy'] : 'startDateTime';
+                    ? $get['sortBy'] : 'id';
         }
-        return 'startDateTime';
+        return 'id';
         
     }
 
     private function getOrder($get)
     {
         if(isset($get['order'])){
-            return strtoupper($get['order']) == 'ASC' ? 'ASC': 'DESC';
+            return strtoupper($get['order']) == 'DESC' ? 'DESC' : 'ASC';
         }     
-        return 'DESC';
-    }
-    */
+        return 'ASC';
+    }  
 }
