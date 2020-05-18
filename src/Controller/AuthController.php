@@ -36,11 +36,11 @@
                 }
 
                 return $response->withHeader('Location', $url);
-               /* return $view->render($response, $url, [
-                    'selVehicle' => $selVehicle,
-                    'userInfo' => $userInfo,
-                    'dateLocationData' => $_SESSION
-                ]);*/
+                /* return $view->render($response, $url, [
+                     'selVehicle' => $selVehicle,
+                     'userInfo' => $userInfo,
+                     'dateLocationData' => $_SESSION
+                 ]);*/
             }
 
 
@@ -48,7 +48,6 @@
                 'error' => 'The email or password is incorrect.'
             ]);
         }
-
 
         // public function register (Request $request, Response $response)
         // {

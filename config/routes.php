@@ -34,6 +34,7 @@
 
 
         $app->group('/admin', function (RouteCollectorProxy $group) {
+            // $group->get('', AdminController::class . ':home');
             $group->redirect('','/admin/stores');
 
             $group->get('/ajax/users/{id:[0-9]+}', UserController::class . ':showToAdmin');
