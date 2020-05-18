@@ -30,6 +30,9 @@
                 // $url = $post['url'];
 
                 $url = $_SESSION['backUrl'];
+                if(strpos($url,'review_reserve') !== false){
+                    $url = '/review_reserve';
+                }
 
                 return $response->withHeader('Location', $url);
                /* return $view->render($response, $url, [
