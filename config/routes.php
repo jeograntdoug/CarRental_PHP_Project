@@ -251,20 +251,21 @@
 
 
         $app->post('/recaptcha', function (Request $request, Response $response, array $args) {
-            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+//            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
 
-            $params = json_decode($request->getBody()->getContent(), true);
+            $params = json_decode($request->getBody()->getContents(), true);
             $secret = "6LcKJfkUAAAAANUWHAX_YV0sBPxnR2smEBQsgZ-s";
             $captcha = $params['captcha'];
-            $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$captcha}");
+            $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $captcha);
             $captcha_success = json_decode($verify);
 
 
             if ($captcha_success->success == false) {
-                return $response->withJson(['success' => 'false', 'msg' => 'reCaptcha verification failed']);
+                return $response->withStatus(400);
             }
 
-            return $response->withJson(['success' => 'true', 'msg' => 'reCaptcha verification success']);
+            $response->getBody()->write(json_encode(['success' => 'true', 'msg' => 'reCaptcha verification success']));
+            return $response;
 
         });
 

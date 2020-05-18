@@ -16,7 +16,7 @@
             <p class="px-4 text-red-500">{{ error }}</p>
         {% endif %}
 
-        <form class="text-lg py-5" action="/login" method="post" onsubmit="return validateRecaptcha()">
+        <form class="text-lg py-5" action="/login" method="post" onsubmit="validateRecaptcha();">
             <input name="url" class="hidden" value={{ url }}>
             <div>
                 <span class="mb-2 font-bold">Email</span>
@@ -29,7 +29,7 @@
                 <input class="w-full p-2 h-10 border-2 border-gray-500" type="password" name="password"/>
             </div>
             <div class="my-5 w-full inline-block text-right">
-                <div data-type="image" class="g-recaptcha  inline-block"
+                <div {#data-type="image"#} class="g-recaptcha  inline-block"
                      data-sitekey="6LcKJfkUAAAAAOaq64T2Y0ybmt652SK51zRe6u6k"></div>
                 <script src="https://www.google.com/recaptcha/api.js?explicit&hl=en" async defer></script>
             </div>
@@ -47,25 +47,26 @@
     </div>
     <script>
         function validateRecaptcha() {
+            let jsonData = {
+                captcha: grecaptcha.getResponse()
+            };
             $.ajax({
                 type: "POST",
                 url: "/recaptcha",
                 dataType: "json",
-                data: {
-                    captcha: grecaptcha.getResponse()
-                },
+                data: JSON.stringify(jsonData),
                 success: function (data, textStatus, jQxhr) {
-                    alert("success");
+                    toastr.success("reCaptcha varefication success!");
                     console.log(JSON.stringify(data));
                     return true;
                 },
                 error: function (jqxhr, status, errorThrown) {
-                    //toastr.error("Need pass reCaptcha verification!");
+                    toastr.error("Need pass reCaptcha verification!");
                     return false;
                 }
             });
             //alert("validate false");
-            //return false;
+            return false;
         }
 
         $(document).ready(function () {
