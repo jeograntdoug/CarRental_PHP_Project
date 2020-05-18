@@ -249,6 +249,25 @@
             ]);
         });
 
+
+  /*      $app->post('/recaptcha', function (Request $request, Response $response, array $args) {
+            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+
+            $params = json_decode($request->getBody()->getContents(), true);
+            $secret = "6LcKJfkUAAAAANUWHAX_YV0sBPxnR2smEBQsgZ-s";
+            $captcha = $params['captcha'];
+            $verify=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$captcha}");
+            $captcha_success=json_decode($verify);
+
+
+            if ($captcha_success->success==false) {
+                return $response->withJson(['success'=>'false', 'msg'=>'reCaptcha verification failed']);
+            }
+
+            return $response->withJson(['success'=>'true', 'msg'=>'reCaptcha verification success']);
+
+        });*/
+
         $app->post('/modified_datetime', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
@@ -347,24 +366,6 @@
 
             return $response;
         });
-
-        /*       $app->get('/summary/profile', function (Request $request, Response $response, array $args) {
-                   $view = Twig::fromRequest($request);
-                   if (isset($_SESSION['userId'])) {
-                       $userId = $_SESSION['userId'];
-                       $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id=%s", $userId);
-                       $orderSummary = DB::query("SELECT COUNT(*) as 'count', SUM(totalPrice) as 'expense' FROM orders WHERE userId = %s", $userId)[0];
-                       $reservationSummary = DB::query("SELECT COUNT(*) as 'count' FROM reservations WHERE userId = %s", $userId)[0];
-
-                       return $view->render($response, 'summary_profile.html.twig', [
-                           'userInfo' => $userInfo,
-                           'orderSummary' => $orderSummary,
-                           'reservationSummary' => $reservationSummary
-                       ]);
-                   } else {
-                       return $view->render($response, 'login.html.twig', []);
-                   }
-               });*/
 
         $app->get('/summary/orders', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);

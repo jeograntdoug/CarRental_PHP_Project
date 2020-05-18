@@ -35,7 +35,7 @@
             </div>
 
             <div class="mt-4 text-right">
-                <button id="btLogin" class="px-8 py-2 mr-2 rounded bg-gray-500 font-bold" type="submit">Login</button>
+                <input name="login" class="px-8 py-2 mr-2 rounded bg-gray-500 font-bold" type="submit" value="Login">
                 <a class="font-bold" href="/register">Register</a>
             </div>
         </form>
@@ -60,17 +60,19 @@
                     return true;
                 },
                 error: function (jqxhr, status, errorThrown) {
-                    toastr.error("Need pass reCaptcha verification!");
+                   // toastr.error("Need pass reCaptcha verification!");
                     return false;
                 }
             });
-
+           /* alert("validate false");
+            return false;*/
         }
 
         $(document).ready(function () {
-            $("#btLogin").on('click', function () {
-               return validateRecaptcha();
-            });
+          /*  $("input[type=submit]").on('click', function () {
+                validateRecaptcha();
+            })
+*/
 
             toastr.options = {
                 "closeButton": false,
