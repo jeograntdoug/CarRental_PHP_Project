@@ -21,22 +21,23 @@
 
     <!-- Icons -->
    {# <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
 
 </head>
 
 <body class="">
-<div class="bg-gray-200">
+<div class="bg-gray-200 relative min-h-screen h-full">
     <header class="bg-gray-900 text-gray-300">
         {% include 'layouts/header.html.twig' %}
     </header>
 
-    <section>
+    <section class="min-h-screen h-full pb-32">
         {% block section %}
         {% endblock section %}
     </section>
     
-    <footer class="bg-gray-900 text-gray-300">
+    <footer class="text-center bg-green-600 text-white w-full absolute bottom-0">
         {% include 'layouts/footer.html.twig' %}
     </footer>
 </div>

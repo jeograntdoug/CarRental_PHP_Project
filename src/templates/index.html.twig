@@ -6,10 +6,9 @@
 
 
 {% block section %}
-
     <div class="mx-auto w-3/5">
-        <h1 class="p-4 text-3xl font-bold">START A RESERVATION</h1>
-        <ul class="p-4 font-bold text-2xl text-green-900">
+        <h1 class="px-4 py-3 text-3xl font-bold">START A RESERVATION</h1>
+        <ul class="px-4 py-2 font-bold text-2xl text-green-900">
             <li>Welcome, please select datetime and store(s).</li>
         </ul>
         {% if errors %}
@@ -27,7 +26,7 @@
                 <div>
                     <input class="w-1/5 font-bold text-center p-2 mr-5 h-10 border-2 border-gray-500" type="date"
                            name="pickupDate" id="pickupDate"/>
-                    <input class="pickupTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500 mr-5"
+                    <input class="pickupTime font-bold w-1/5 text-center p-2 h-10 border-2 border-gray-500 mr-5"
                            value="09:00:00"
                            type="time"
                            list="pickupTimeList"
@@ -58,7 +57,7 @@
                     <input class="returnDate font-bold w-1/5 text-center p-2 mr-5 h-10 border-2 border-gray-500"
                            type="date"
                            name="returnDate" id="returnDate"/>
-                    <input class="returnTime font-bold w-1/6 text-center p-2 h-10 border-2 border-gray-500"
+                    <input class="returnTime font-bold w-1/5 text-center p-2 h-10 border-2 border-gray-500"
                            value="09:00:00"
                            type="time" step="600"
                            list="returnTimeList" name="returnTime" id="returnTime">
@@ -113,7 +112,7 @@
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
             </script>
 
-            <div class="mt-6 text-right">
+            <div class="my-6 text-right">
                 <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
             </div>
         </form>
