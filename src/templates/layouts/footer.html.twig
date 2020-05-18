@@ -9,21 +9,29 @@
     ]
 %}
 
-<div class=" flex flex-row inline-block py-1">
-    <div class="mx-auto">
+<div class=" flex flex-row inline-block pt-1 bg-black">
+    <div class="inline-block flex-1">
         {% for footerItem in footerItemList %}
             <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
                 <li class="p-1"><a href=#>{{ footerItem[0] }}</a></li>
                 <li class="p-1"><a href=#>{{ footerItem[1] }}</a></li>
-                <li class="p-1"><a href=#>{{ footerItem[2] }}</a></li>
             </ul>
 
         {% endfor %}
     </div>
-    <div class="mx-auto flex flex-col">
-        <p class="font-bold">Follow us:</p>
-        <i class="fab fa-instagram-square"></i>
+    <div class="flex flex-col self-center flex-1 bg-red-400">
+        <p class="font-bold p-2 inline-block">Follow us:</p>
+        <div>
+            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram-square fa-2x p-1"></i></a>
+            <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook fa-2x p-1"></i></a>
+            <a href="https://twitter.com/explore" target="_blank"><i class="fab fa-twitter-square fa-2x p-1"></i></a>
+            <a href=https://www.youtube.com/" target="_blank"><i class="fab fa-youtube fa-2x p-1"></i></a>
+        </div>
+
     </div>
+</div>
+<div class="inline-block pb-3 font-semibold">
+    <p>Copyright © 2020 Entry-Level Car Rental</p>
 </div>
 
 

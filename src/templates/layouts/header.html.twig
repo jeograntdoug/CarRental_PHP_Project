@@ -1,20 +1,31 @@
-<div class="p-2 bg-green-600">
-    <div class="py-2 px-5 flex items-center justify-between">
+<div class="bg-green-600">
+    <div class="px-5 flex items-center justify-between">
         <div class="text-5xl h-24">
             <a href="/">
-                <img src="/resources/companyimages/enterprise.png" class="h-full border-3 border-white border-solid" />
+                <img src="/resources/companyimages/enterprise.png" class="h-full border-3 border-white border-solid"/>
             </a>
         </div>
         <div>
             <div id="loginDiv" class="text-right">
                 {% if loginUser %}
-                    <span>Hello, <a href="/profile/{{ loginUser.id }}">{{ loginUser.name }}.</a></span>
-                    {% if loginUser.role == 'admin' %}
-                        <a class="underline" href="/admin">Go To Admin Page</a>
-                    {% endif %}
-                    <button id="btLogout" class="underline text-xs">Logout</button>
+                    <div class="inline-block pr-5">
+                        <span class="font-bold">Hello,
+                            <a id="userProfile" class="text-xl font-bold text-red-500 pl-1 inline-block"
+                               href="/profile/{{ loginUser.id }}">{{ loginUser.name }}</a>
+                        </span>
+                        {% if loginUser.role == 'admin' %}
+                            <a class="underline" href="/admin">Go To Admin Page</a>
+                        {% endif %}
+                        <button id="btLogout" class="underline text-xl pl-3 font-bold">Logout</button>
+                    </div>
+
                 {% else %}
-                    <a id="btLogin" class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
+                    <div class="inline-block pr-5">
+                        <a id="btLogin" class="underline font-bold text-xl hover:text-red-800" href="/login">Login</a>
+                        <span class="px-2">or</span>
+                        <a class="underline font-bold text-xl hover:text-red-800" href="/register">Register</a>
+                    </div>
+
                 {% endif %}
             </div>
 
@@ -53,9 +64,30 @@
                 $("#loginDiv").html(data);
                 location.reload();
             })
-            .fail(function () {
-                console.log("logout Fail!!");
-            });
+                .fail(function () {
+                    console.log("logout Fail!!");
+                });
         });
+
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        $("#userProfile").on('mouseover', function () {
+            toastr.info("Press your name to edit the profile", 'Edit profile');
+        })
     });
 </script>
