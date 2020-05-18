@@ -68,5 +68,6 @@
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="toastr.js" level="application" />
     <orderEntry type="library" name="canvasjs" level="application" />
+    <orderEntry type="library" name="api" level="application" />
   </component>
 </module>

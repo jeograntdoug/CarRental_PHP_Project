@@ -23,11 +23,12 @@
             // $paramArray = $request->getQueryParams();
             // $url = isset($paramArray['url']) ? $paramArray['url'] : "/";
 
-            $backUrl = $request->getHeader('Referer')[0];
+            $backUrl = $request->getHeader('Referer')[0] ?? "/";
 
             $_SESSION['backUrl'] = $backUrl;
 
             return $view->render($response, "login.html.twig");
+
         }
 
         public function logout(Request $request, Response $response)
