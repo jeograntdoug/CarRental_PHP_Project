@@ -8,7 +8,7 @@
 <!-- Start Search Bar -->
 <div>
     <div class="flex">
-        <input class="p-2 border-2 w-full h-full" type="text" name="searchKeyword" placeHolder="Search here..."/>
+        <input class="p-2 border-2 w-full h-full" type="text" name="searchKeyword" placeHolder="Search here... (Only current page records for the moment)"/>
     </div>
 </div>
 <!-- End Search Bar -->
@@ -95,6 +95,7 @@
             }).done(function (itemList) {
                 $("#tbodyItemList").html(itemList);
                 currentPage = selPage;
+                $("input[name=searchKeyword]").val("");
             }).fail(function () {
                 console.log(`list ajax fail!`);
             });
@@ -287,7 +288,6 @@
                     .addClass("bg-orange-500")
                     .slideDown().delay(2000).fadeOut("slow");
 
-                $("input[name=searchKeyword]").val("");
                 reloadItemList();
             }).fail(function () {
                 console.log(`${itemTitle} deletion ajax fail!`);
@@ -318,7 +318,6 @@
                     .addClass("bg-orange-500")
                     .slideDown().delay(2000).fadeOut("slow");
 
-                $("input[name=searchKeyword]").val("");
                 reloadItemList();
             }).fail(function (result) {
                 let errorList = result.responseJSON.errorList;
@@ -347,6 +346,7 @@
             } else {
                 $("tbody#tbodyItemList")
                     .children()
+                    .not("tr#pagenation")
                     .removeClass("hidden")
                     .each(function(){
                         let hasRowKeyword = false;

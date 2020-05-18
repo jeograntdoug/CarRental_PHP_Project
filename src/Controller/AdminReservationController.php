@@ -21,8 +21,8 @@ class AdminReservationController extends AdminController
         ];
 
         $this->fieldListInHeader = [
-            'ID', 'User', 'Car Type', 'Start Date', 'Return Date',
-            'Price per day', 'Net Fee', 'Rent Store', 'Return Store'
+            'ID', 'USER', 'CAR TYPE', 'START DATE', 'RETURN DATE',
+            'PRICE PER DAY', 'NET FEE', 'RENT STORE', 'RETURN STORE'
         ];
     }
 
