@@ -47,7 +47,7 @@
     </div>
     <script>
         function validateRecaptcha() {
-            $.post({
+            $.ajax({
                 type: "POST",
                 url: "/recaptcha",
                 dataType: "json",
@@ -60,12 +60,12 @@
                     return true;
                 },
                 error: function (jqxhr, status, errorThrown) {
-                   // toastr.error("Need pass reCaptcha verification!");
+                    toastr.error("Need pass reCaptcha verification!");
                     return false;
                 }
             });
-           /* alert("validate false");
-            return false;*/
+            //alert("validate false");
+            return false;
         }
 
         $(document).ready(function () {

@@ -35,7 +35,7 @@
 
         $app->group('/admin', function (RouteCollectorProxy $group) {
             // $group->get('', AdminController::class . ':home');
-            $group->redirect('','/admin/stores');
+            $group->redirect('', '/admin/stores');
 
             $group->get('/ajax/users/{id:[0-9]+}', UserController::class . ':showToAdmin');
 
@@ -250,23 +250,23 @@
         });
 
 
-  /*      $app->post('/recaptcha', function (Request $request, Response $response, array $args) {
+        $app->post('/recaptcha', function (Request $request, Response $response, array $args) {
             $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
 
-            $params = json_decode($request->getBody()->getContents(), true);
+            $params = json_decode($request->getBody()->getContent(), true);
             $secret = "6LcKJfkUAAAAANUWHAX_YV0sBPxnR2smEBQsgZ-s";
             $captcha = $params['captcha'];
-            $verify=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$captcha}");
-            $captcha_success=json_decode($verify);
+            $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$captcha}");
+            $captcha_success = json_decode($verify);
 
 
-            if ($captcha_success->success==false) {
-                return $response->withJson(['success'=>'false', 'msg'=>'reCaptcha verification failed']);
+            if ($captcha_success->success == false) {
+                return $response->withJson(['success' => 'false', 'msg' => 'reCaptcha verification failed']);
             }
 
-            return $response->withJson(['success'=>'true', 'msg'=>'reCaptcha verification success']);
+            return $response->withJson(['success' => 'true', 'msg' => 'reCaptcha verification success']);
 
-        });*/
+        });
 
         $app->post('/modified_datetime', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
