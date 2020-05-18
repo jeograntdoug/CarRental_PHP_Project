@@ -155,7 +155,7 @@
                 map: map,
                 icon: {
                     url: "../../resources/companyimages/enterprise_icon.jpg",
-                    scaledSize: new google.maps.Size(46, 46),
+                    scaledSize: new google.maps.Size(48, 48),
                     origin: new google.maps.Point(0, 0),
                     anchor: new google.maps.Point(10, 10),
                     labelOrigin: {x: 23, y: 10},
@@ -187,8 +187,10 @@
             })
 
             marker.addListener('click', function () {
-                if (store['avaCarNum'].carNum === 0) {
-                    alert('No avaliable cars in the store, would you select a different location?');
+                if (store['avaCarNum'].carNum == "0") {
+                    //alert('No avaliable cars in the store, would you select a different location?');
+                    toastr.error("No available cars in the store, would you select a different location?", "No available cars");
+                    return;
                 }
                 curLocationElement.val(`${store.storeName}  (${store.address} ${store.postCode})`);
                 curLocationElement.next().next().val(store.id);
@@ -350,6 +352,13 @@
                 toastr.error("RETURN datetime need select","Datetime selection error");
                 return false;
             }
+            var retDate = $("#returnDate").val();
+            var picDate = $("#pickupDate").val();
+            if (retDate <= picDate) {
+                toastr.error("PICKUP date must be at least one day before RETURN date!","Date error");
+                return false;
+            }
+
             //alert("pickup: " + $("#pickupStoreId").val() + ", return:" + $("#returnStoreId").val());
             if ($("#pickupStoreId").val() === '') {
                 toastr.error("PICKUP store need select","Store selection error");
@@ -366,6 +375,12 @@
         }
 
         $(document).ready(function () {
+
+            $("#pickupDate").attr('min', getTodayDate);
+            $("#returnDate").attr('min', getReturnDate(1));
+
+
+            initMap();
 
             toastr.options = {
                 "closeButton": false,
@@ -422,7 +437,15 @@
                 var retDate = $(this).val();
                 var picDate = $("#pickupDate").val();
                 if (retDate <= picDate) {
-                    alert("Return date must be at least one day after pick-up date!");
+                    toastr.error("Return date must be at least one day after pickup date!","Return date error");
+                }
+            })
+
+            $("#pickupDate").on("change", function () {
+                var picDate = $(this).val();
+                var retDate = $("#returnDate").val();
+                if (retDate <= picDate) {
+                    toastr.error("PICKUP date must be at least one day before return date!","Pickup date error");
                 }
             })
 

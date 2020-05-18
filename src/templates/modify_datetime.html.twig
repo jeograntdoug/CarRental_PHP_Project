@@ -5,7 +5,7 @@
 {% endblock title %}
 
 {% block section %}
-    <form method="post" action="/modified_datetime" class="w-3/5 mx-auto">
+    <form method="post" action="/modified_datetime" class="w-3/5 mx-auto" onsubmit="return isValidForm()">
         <div class="mx-12 mt-6">
             <div class="flex inline-block">
                 <span class="mb-2 font-bold w-5/12 ">PICK-UP TIME</span>
@@ -96,13 +96,51 @@
             return retDate.getFullYear() + "-" + ("0" + (retDate.getMonth() + 1)).slice(-2) + "-" + ("0" + retDate.getDate()).slice(-2);
         }
 
+        function isValidForm() {
+            if ($("#pickupDate").val() === '' || $("#pickupTime").val() === '') {
+                toastr.error("PICKUP datetime need select","Datetime selection error");
+
+                return false;
+            }
+            if ($("#returnDate").val() === '' || $("#returnTime").val() === '') {
+                toastr.error("RETURN datetime need select","Datetime selection error");
+                return false;
+            }
+            var retDate = $("#returnDate").val();
+            var picDate = $("#pickupDate").val();
+            if (retDate <= picDate) {
+                toastr.error("PICKUP date must be at least one day before RETURN date!","Date error");
+                return false;
+            }
+            return true;
+        }
+
 
         $(document).ready(function () {
+            $("#pickupDate").attr('min', getTodayDate);
+            $("#returnDate").attr('min', getReturnDate(1));
 
             $("#pickupDate").val(getTodayDate);
             $("#pickupTime").val(getNowTime);
             $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
             $("#returnTime").val(getNowTime);
+
+            $("#returnDate").on("change", function () {
+                var retDate = $(this).val();
+                var picDate = $("#pickupDate").val();
+                if (retDate <= picDate) {
+                    toastr.error("Return date must be at least one day after pickup date!","Return date error");
+                }
+            })
+
+            $("#pickupDate").on("change", function () {
+                var picDate = $(this).val();
+                var retDate = $("#returnDate").val();
+                if (retDate <= picDate) {
+                    toastr.error("PICKUP date must be at least one day before return date!","Pickup date error");
+                }
+            })
+
 
             $("#rentDays").on("change", function () {
                 var days = $(this).val() > 0 ? $("#rentDays").val() : 1;
