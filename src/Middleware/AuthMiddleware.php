@@ -68,7 +68,7 @@ class AuthMiddleware implements Middleware
             $response = $handler->handle($request);
 
             if(empty($user)){
-                return $response->withHeader('Location','/errors/forbidden');
+                return $response->withHeader('Location','/');
             }
 
             return $response;

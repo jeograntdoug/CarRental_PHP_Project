@@ -3,7 +3,7 @@
         {% if key|lower == 'idphotobase64' %}
             <div class="my-1">
                 <img class="w-full border-2"
-                alt="ID Photo" src="{{ item[key] ? 'data:image/png;base64,'. item[key]: '/resources/images/no_photo.png'}}" />
+                alt="ID Photo" src="{{ item[key] ? 'data:image/png;base64,' ~ item[key] : '/resources/images/no_photo.png'}}" />
             </div>
         {% elseif key|lower == 'photopath' %}
             <div class="my-1">

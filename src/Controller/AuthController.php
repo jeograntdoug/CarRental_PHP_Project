@@ -29,7 +29,8 @@
                 $_SESSION['userId'] = $user['id'];
                 // $url = $post['url'];
 
-                $url = $_SESSION['backUrl'];
+                $url = isset($_SESSION['backUrl']) ? $_SESSION['backUrl'] : '/';
+                unset($_SESSION['backUrl']);
                 if(strpos($url,'review_reserve') !== false){
                     $url = '/review_reserve';
                 }
