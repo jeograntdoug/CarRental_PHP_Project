@@ -34,7 +34,8 @@
 
 
         $app->group('/admin', function (RouteCollectorProxy $group) {
-            $group->get('', AdminController::class . ':home');
+            // $group->get('', AdminController::class . ':home');
+            $group->redirect('','/admin/stores');
 
             $group->get('/ajax/users/{id:[0-9]+}', UserController::class . ':showToAdmin');
 
@@ -72,8 +73,7 @@
             $group->get('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':show');
             $group->patch('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':edit');
             $group->delete('/ajax/orders/{id:[0-9]+}', AdminOrderController::class . ':delete');
-        });
-        //->add(AuthMiddleware::mustBeLoginAsAdmin());
+        })->add(AuthMiddleware::mustBeLoginAsAdmin());
 
         //Routes for Errors Pages
         $app->group('/errors', function (RouteCollectorProxy $group) {
@@ -108,6 +108,19 @@
 
         $app->group('/summary', function (RouteCollectorProxy $group) {
             $group->get('/profile', UserSummaryController::class . ':getProfile');
+        });
+
+        $app->get('/car_selection', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+
+            $vehiclesInfo = $_SESSION;
+
+            $allVehicles = DB::query("SELECT * FROM cartypes");
+
+            return $view->render($response, 'car_selection.html.twig', [
+                'allVehicles' => $allVehicles,
+                'vehiclesInfo' => $vehiclesInfo
+            ]);
         });
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args) {

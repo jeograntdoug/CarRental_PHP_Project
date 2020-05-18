@@ -8,17 +8,13 @@
         <div>
             <div id="loginDiv" class="text-right">
                 {% if loginUser %}
-                    <div>
-                        <span class="text-base">Hello, <a id="userName" class="px-3 text-xl text-red-700 font-bold hover:text-red-800" href="/profile/{{ loginUser.id }}">{{ loginUser.name }}</a></span>
-                        <button id="btLogout" class="underline text-lg font-bold mr-5">Logout</button>
-                    </div>
-
+                    <span>Hello, <a href="/profile/{{ loginUser.id }}">{{ loginUser.name }}.</a></span>
+                    {% if loginUser.role == 'admin' %}
+                        <a class="underline" href="/admin">Go To Admin Page</a>
+                    {% endif %}
+                    <button id="btLogout" class="underline text-xs">Logout</button>
                 {% else %}
-                    <div>
-                        <a class="underline text-xl font-bold mr-2" href="/login">Login</a>
-                        <span class="text-base">&nbsp;or&nbsp;</span>
-                        <a class="underline text-xl font-bold mr-5 ml-2" href="/register">Register</a>
-                    </div>
+                    <a id="btLogin" class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
                 {% endif %}
             </div>
 
@@ -57,30 +53,9 @@
                 $("#loginDiv").html(data);
                 location.reload();
             })
-                .fail(function () {
-                    console.log("logout Fail!!");
-                });
+            .fail(function () {
+                console.log("logout Fail!!");
+            });
         });
-
-        toastr.options = {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-center",
-            "preventDuplicates": false,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "3000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-
-        $("#userName").on("mouseover", function () {
-            toastr.info("Click to edit your profile", "Edit profile");
-        })
     });
 </script>
