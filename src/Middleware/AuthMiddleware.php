@@ -96,7 +96,7 @@ class AuthMiddleware implements Middleware
         $expiredTime = date('Y-m-d H:i:s',time() - 60 * 60);
 
         $user = DB::queryFirstRow(
-            "SELECT u.id AS 'id', u.firstname AS 'name'
+            "SELECT u.id AS 'id', u.firstname AS 'name', u.role AS 'role'
             FROM users AS u
             JOIN userSessions AS s
             ON s.userId = u.id

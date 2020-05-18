@@ -27,9 +27,11 @@
                 ]);
 
                 $_SESSION['userId'] = $user['id'];
-                $url = $post['url'];
+                // $url = $post['url'];
 
-                return $response->withHeader('Location', "/");
+                $url = $_SESSION['backUrl'];
+
+                return $response->withHeader('Location', $url);
                /* return $view->render($response, $url, [
                     'selVehicle' => $selVehicle,
                     'userInfo' => $userInfo,

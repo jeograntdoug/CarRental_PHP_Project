@@ -19,12 +19,15 @@
         public function login(Request $request, Response $response)
         {
             $view = Twig::fromRequest($request);
-            $paramArray = $request->getQueryParams();
-            $url = isset($paramArray['url']) ? $paramArray['url'] : "/";
 
-            return $view->render($response, "login.html.twig", [
-                'url' => $url
-            ]);
+            // $paramArray = $request->getQueryParams();
+            // $url = isset($paramArray['url']) ? $paramArray['url'] : "/";
+
+            $backUrl = $request->getHeader('Referer')[0];
+
+            $_SESSION['backUrl'] = $backUrl;
+
+            return $view->render($response, "login.html.twig");
         }
 
         public function logout(Request $request, Response $response)

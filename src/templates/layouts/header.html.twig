@@ -8,10 +8,13 @@
         <div>
             <div id="loginDiv" class="text-right">
                 {% if loginUser %}
-                    <span>Hello, <a href="/profile/{{ loginUser.id }}">{{ loginUser.name }}</a></span>
+                    <span>Hello, <a href="/profile/{{ loginUser.id }}">{{ loginUser.name }}.</a></span>
+                    {% if loginUser.role == 'admin' %}
+                        <a class="underline" href="/admin">Go To Admin Page</a>
+                    {% endif %}
                     <button id="btLogout" class="underline text-xs">Logout</button>
                 {% else %}
-                    <a class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
+                    <a id="btLogin" class="underline" href="/login">Login</a> or <a class="underline" href="/register">Register</a>
                 {% endif %}
             </div>
 
@@ -50,9 +53,9 @@
                 $("#loginDiv").html(data);
                 location.reload();
             })
-                .fail(function () {
-                    console.log("logout Fail!!");
-                });
+            .fail(function () {
+                console.log("logout Fail!!");
+            });
         });
     });
 </script>
