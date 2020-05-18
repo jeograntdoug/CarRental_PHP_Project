@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Validator;
+
 class AdminCarTypeController extends AdminController
 {
     public function __construct(){
@@ -20,6 +22,6 @@ class AdminCarTypeController extends AdminController
         ];
 ;
 
-        $this->validator = "Validator::carType";
+        $this->validator = Validator::carType();
     }
 }

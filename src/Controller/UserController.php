@@ -83,7 +83,7 @@ class UserController
 
         $view = Twig::fromRequest($request);
         $newUser = $request->getParsedBody();
-        $newUser['role'] = 'user';
+        
         $photo = $request->getUploadedFiles();
         $errorList = UserValidator::getValidationErrorList($newUser,false);
 
