@@ -16,7 +16,7 @@
             <p class="px-4 text-red-500">{{ error }}</p>
         {% endif %}
 
-        <form class="text-lg py-5" action="/login" method="post" onsubmit="validateRecaptcha();">
+        <form id="loginForm" class="text-lg py-5" action="/login" method="post">
             <input name="url" class="hidden" value={{ url }}>
             <div>
                 <span class="mb-2 font-bold">Email</span>
@@ -47,33 +47,10 @@
     </div>
     <script>
         function validateRecaptcha() {
-            let jsonData = {
-                captcha: grecaptcha.getResponse()
-            };
-            $.ajax({
-                type: "POST",
-                url: "/recaptcha",
-                dataType: "json",
-                data: JSON.stringify(jsonData),
-                success: function (data, textStatus, jQxhr) {
-                    toastr.success("reCaptcha varefication success!");
-                    console.log(JSON.stringify(data));
-                    return true;
-                },
-                error: function (jqxhr, status, errorThrown) {
-                    toastr.error("Need pass reCaptcha verification!");
-                    return false;
-                }
-            });
-            //alert("validate false");
-            return false;
+
         }
 
         $(document).ready(function () {
-          /*  $("input[type=submit]").on('click', function () {
-                validateRecaptcha();
-            })
-*/
 
             toastr.options = {
                 "closeButton": false,
@@ -91,6 +68,29 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
+
+            $("#loginForm").on('submit', function () {
+                let jsonData = {
+                    captcha: grecaptcha.getResponse()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/recaptcha",
+                    dataType: "json",
+                    data: JSON.stringify(jsonData),
+                    success: function (data, textStatus, jQxhr) {
+                        toastr.success("reCaptcha varefication success!");
+                        console.log(JSON.stringify(data));
+                        return true;
+                    },
+                    error: function (jqxhr, status, errorThrown) {
+                        toastr.error("Need pass reCaptcha verification!");
+                        return false;
+                    }
+                });
+                //alert("validate false");
+                //return false;
+            })
         })
     </script>
 

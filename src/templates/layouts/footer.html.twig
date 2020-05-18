@@ -1,4 +1,4 @@
-{% set footerItemList = 
+{% set footerItemList =
     [
         [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
         [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
@@ -6,26 +6,34 @@
         [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
         [ 'link1_blah' , 'link2_blah' , 'link3_blah' ],
         [ 'link1_blah' , 'link2_blah' , 'link3_blah' ]
-    ]
-%}
+    ] %}
 
-<div class=" flex flex-row inline-block pt-1 bg-black">
-    <div class="inline-block flex-1">
-        {% for footerItem in footerItemList %}
-            <ul class="inline-block p-2 m-2 border-2 border-solid border-gray-200">
-                <li class="p-1"><a href=#>{{ footerItem[0] }}</a></li>
-                <li class="p-1"><a href=#>{{ footerItem[1] }}</a></li>
-            </ul>
+<div class=" flex flex-row inline-block">
+    <div class="inline-block flex-1 flex-row flex items-center">
+        <div class="flex flex-col flex-1 inline-block">
+            <span class="font-bold text-base pt-2">CONTACT US</span>
+            <span>12-111 Richmond St W</span>
+            <span>Toronto, ON M5H 2G4</span>
+            <span>Canada</span>
+        </div>
 
-        {% endfor %}
+        <div class="flex-col flex flex-1 text-center">
+            <span class="font-bold text-base pt-2">QUICK LINKS</span>
+            <span><a href="https://www.caaquebec.com/en/">Career</a></span>
+            <span><a href="https://www.caaquebec.com/en/">CAA</a></span>
+            <span><a href="#">Terms</a></span>
+        </div>
     </div>
-    <div class="flex flex-col self-center flex-1 bg-red-400">
-        <p class="font-bold p-2 inline-block">Follow us:</p>
+    <div>
+        <img src="/resources/companyimages/enterprise%20_long_footer.png" style="height: 80px">
+    </div>
+    <div class="flex flex-col self-center flex-1">
+        <p class="font-bold text-lg p-2 inline-block">Follow us:</p>
         <div>
-            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram-square fa-2x p-1"></i></a>
-            <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook fa-2x p-1"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram-square fa-2x p-1"></i></a>
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook fa-2x p-1"></i></a>
             <a href="https://twitter.com/explore" target="_blank"><i class="fab fa-twitter-square fa-2x p-1"></i></a>
-            <a href=https://www.youtube.com/" target="_blank"><i class="fab fa-youtube fa-2x p-1"></i></a>
+            <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube fa-2x p-1"></i></a>
         </div>
 
     </div>

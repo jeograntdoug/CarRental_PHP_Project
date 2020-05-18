@@ -251,7 +251,7 @@
 
 
         $app->post('/recaptcha', function (Request $request, Response $response, array $args) {
-//            $response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
+
 
             $params = json_decode($request->getBody()->getContents(), true);
             $secret = "6LcKJfkUAAAAANUWHAX_YV0sBPxnR2smEBQsgZ-s";
@@ -263,7 +263,7 @@
             if ($captcha_success->success == false) {
                 return $response->withStatus(400);
             }
-
+            $response->withStatus(200);
             $response->getBody()->write(json_encode(['success' => 'true', 'msg' => 'reCaptcha verification success']));
             return $response;
 
