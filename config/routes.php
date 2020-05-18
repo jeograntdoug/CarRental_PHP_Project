@@ -105,25 +105,25 @@
             return $response;
         });
 
-        /*
-                $app->group('', function (RouteCollectorProxy $group) {
-                    $group->post('/car_selection', UserReservationController::class . ':selectCarType');
-                });*/
+
+        $app->group('/summary', function (RouteCollectorProxy $group) {
+            $group->get('/profile', UserSummaryController::class . ':getProfile');
+        });
 
         $app->post('/car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
             $dateLocateData = $request->getParsedBody();
 
             $_SESSION['isDiffLocation'] = isset($dateLocateData['isDiffLocation']);
-            if($_SESSION['isDiffLocation']){
+            if ($_SESSION['isDiffLocation']) {
                 $returnStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s", $dateLocateData['returnStoreId']);
                 $_SESSION['returnStoreId'] = $dateLocateData['returnStoreId'];
-                $_SESSION['returnAddress']=$returnStore['address'];
+                $_SESSION['returnAddress'] = $returnStore['address'];
                 $_SESSION['returnStoreName'] = $returnStore['storeName'];
                 $_SESSION['returnCity'] = $returnStore['city'];
                 $_SESSION['returnProvince'] = $returnStore['province'];
-                $_SESSION['returnPostCode']=$returnStore['postCode'];
-            }else{
+                $_SESSION['returnPostCode'] = $returnStore['postCode'];
+            } else {
                 unset($_SESSION['returnStoreId']);
                 unset($_SESSION['returnAddress']);
                 unset($_SESSION['returnStoreName']);
@@ -145,7 +145,8 @@
             $_SESSION['pickupProvince'] = $pickupStore['province'];
             $_SESSION['pickupPostCode'] = $pickupStore['postCode'];
 
-            $allVehicles = DB::query("SELECT ct.* FROM cartypes ct, cars cs WHERE cs.storeId= %s AND cs.carTypeId=ct.id",$_SESSION['pickupStoreId']);
+            $allVehicles = DB::query("SELECT ct.* FROM cartypes ct, cars cs WHERE cs.storeId= %s AND cs.carTypeId=ct.id 
+                                        AND cs.status='avaliable' GROUP BY ct.id", $_SESSION['pickupStoreId']);
             $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
             $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
             $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
@@ -194,6 +195,25 @@
             ]);
         });
 
+        $app->get('/review_reserve', function (Request $request, Response $response, array $args) {
+            $view = Twig::fromRequest($request);
+
+
+            $selId = $_SESSION['selVehicleTypeId'];
+            $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
+            $_SESSION['selVehicle'] = $selVehicle;
+            if (isset($_SESSION['userId'])) {
+                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
+            } else {
+                $userInfo = false;
+            }
+            return $view->render($response, 'review_reserve.html.twig', [
+                'selVehicle' => $selVehicle,
+                'userInfo' => $userInfo,
+                'dateLocationData' => $_SESSION
+            ]);
+        });
+
 
         $app->post('/review_reserve/{id:[0-9]+}', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
@@ -211,7 +231,8 @@
             return $view->render($response, 'review_reserve.html.twig', [
                 'selVehicle' => $selVehicle,
                 'userInfo' => $userInfo,
-                'dateLocationData' => $_SESSION
+                'dateLocationData' => $_SESSION,
+                'url' => '/review_reserve'
             ]);
         });
 
@@ -249,15 +270,15 @@
             $_SESSION['pickupPostCode'] = $pickupStore['postCode'];
 
             $_SESSION['isDiffLocation'] = isset($modifiedLocationData['isDiffLocation']);
-            if($_SESSION['isDiffLocation']){
+            if ($_SESSION['isDiffLocation']) {
                 $returnStore = DB::queryFirstRow("SELECT * FROM stores WHERE id=%s", $modifiedLocationData['returnStoreId']);
                 $_SESSION['returnStoreId'] = $modifiedLocationData['returnStoreId'];
-                $_SESSION['returnAddress']=$returnStore['address'];
+                $_SESSION['returnAddress'] = $returnStore['address'];
                 $_SESSION['returnStoreName'] = $returnStore['storeName'];
                 $_SESSION['returnCity'] = $returnStore['city'];
                 $_SESSION['returnProvince'] = $returnStore['province'];
-                $_SESSION['returnPostCode']=$returnStore['postCode'];
-            }else{
+                $_SESSION['returnPostCode'] = $returnStore['postCode'];
+            } else {
                 unset($_SESSION['returnStoreId']);
                 unset($_SESSION['returnAddress']);
                 unset($_SESSION['returnStoreName']);
@@ -298,7 +319,7 @@
                 "tvq" => $reservationData['tvq'],
                 "rentDays" => $reservationData['rentDays'],
                 "rentStoreId" => $_SESSION['pickupStoreId'],
-                "returnStoreId" => $_SESSION['returnStoreId'], //FIXME when return store is implemented!!!
+                "returnStoreId" => isset($_SESSION['returnStoreId']) ? $_SESSION['returnStoreId'] : $_SESSION['pickupStoreId'], //FIXME when return store is implemented!!!
             );
 
             $result = DB::insert("reservations", $json);
@@ -314,23 +335,23 @@
             return $response;
         });
 
-        $app->get('/summary/profile', function (Request $request, Response $response, array $args) {
-            $view = Twig::fromRequest($request);
-            if (isset($_SESSION['userId'])) {
-                $userId = $_SESSION['userId'];
-                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id=%s", $userId);
-                $orderSummary = DB::query("SELECT COUNT(*) as 'count', SUM(totalPrice) as 'expense' FROM orders WHERE userId = %s", $userId)[0];
-                $reservationSummary = DB::query("SELECT COUNT(*) as 'count' FROM reservations WHERE userId = %s", $userId)[0];
+        /*       $app->get('/summary/profile', function (Request $request, Response $response, array $args) {
+                   $view = Twig::fromRequest($request);
+                   if (isset($_SESSION['userId'])) {
+                       $userId = $_SESSION['userId'];
+                       $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id=%s", $userId);
+                       $orderSummary = DB::query("SELECT COUNT(*) as 'count', SUM(totalPrice) as 'expense' FROM orders WHERE userId = %s", $userId)[0];
+                       $reservationSummary = DB::query("SELECT COUNT(*) as 'count' FROM reservations WHERE userId = %s", $userId)[0];
 
-                return $view->render($response, 'summary_profile.html.twig', [
-                    'userInfo' => $userInfo,
-                    'orderSummary' => $orderSummary,
-                    'reservationSummary' => $reservationSummary
-                ]);
-            } else {
-                return $view->render($response, 'login.html.twig', []);
-            }
-        });
+                       return $view->render($response, 'summary_profile.html.twig', [
+                           'userInfo' => $userInfo,
+                           'orderSummary' => $orderSummary,
+                           'reservationSummary' => $reservationSummary
+                       ]);
+                   } else {
+                       return $view->render($response, 'login.html.twig', []);
+                   }
+               });*/
 
         $app->get('/summary/orders', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
@@ -381,7 +402,7 @@
                 return $view->render($response, 'summary_map.html.twig', [
                     // 'orders' => $orders,
                     'keyList' => [
-                        'Year', 'Month', 'Mileage','Count'
+                        'Year', 'Month', 'Mileage'
                     ],
                     'monthlyMileage' => $monthlyMileage
                 ]);
@@ -395,7 +416,7 @@
             $selPeriod = json_decode($request->getBody()->getContents(), true);
             $userId = $_SESSION['userId'];
             $orders = DB::query("SELECT id, createdTS FROM orders WHERE year(createdTS) = %s AND monthname(createdTS)=%s AND userId=%s",
-                                $selPeriod['year'], $selPeriod['month'], $userId);
+                $selPeriod['year'], $selPeriod['month'], $userId);
             $result = [];
             foreach ($orders as $order) {
                 $origin = DB::queryFirstRow("SELECT s.storeName as 'name', s.latitude as 'lat', s.longitude as 'lng' FROM orders o, stores s 
@@ -434,8 +455,11 @@
         $app->get('/modify_car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
-            $allVehicles = DB::query("SELECT * FROM cartypes");
-            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
+            $allVehicles = DB::query("SELECT ct.* FROM cartypes ct, cars cs WHERE cs.storeId= %s 
+                                        AND cs.carTypeId=ct.id AND cs.status='avaliable' 
+                                        GROUP BY ct.id",
+                $_SESSION['pickupStoreId']);
+            /*$_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
             $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
             $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
             $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
@@ -448,7 +472,7 @@
             $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
             $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
             $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
-            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
+            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];*/
             $vehiclesInfo = $_SESSION;
 
             return $view->render($response, 'car_selection.html.twig', [
