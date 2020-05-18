@@ -5,28 +5,39 @@
 {% endblock title %}
 
 {% block section %}
-<div class="max-w-sm mx-auto">
-    <h1 class="p-4 text-4xl font-bold">Login page</h1>
+    <div class="mx-auto w-1/5 pt-10">
+        <div class="text-center">
+            <i class="fas fa-sign-in-alt fa-2x"></i>
+            <span class="p-4 text-4xl font-bold">Login</span>
+        </div>
 
-    {% if error %}
-        <p class="px-4 text-red-500">{{ error }}</p>
-    {% endif %}
 
-    <form class="text-lg p-4" action="/login" method="post">
-        <input name="url" class="hidden" value={{ url }}>
-        <div>
-            <p class="mb-2">Email</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="email" />
-        </div>
-        <div class="mt-4">
-            <p class="mb-2">Password</p>
-            <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="password" />
-        </div>
-        <div class="mt-4 text-right">
-            <button class="px-8 py-2 mr-2 rounded bg-gray-500" type="submit">Login</button>
-            <a href="/register">Register</a>
-        </div>
-    </form>
-</div>
+        {% if error %}
+            <p class="px-4 text-red-500">{{ error }}</p>
+        {% endif %}
+
+        <form class="text-lg py-5" action="/login" method="post">
+            <input name="url" class="hidden" value={{ url }}>
+            <div>
+                <span class="mb-2 font-bold">Email</span>
+                <i class="far fa-envelope"></i>
+                <input class="w-full p-2 h-10 border-2 border-gray-500" type="text" name="email"/>
+            </div>
+            <div class="mt-4">
+                <span class="mb-2 font-bold">Password</span>
+                <i class="fas fa-unlock-alt"></i>
+                <input class="w-full p-2 h-10 border-2 border-gray-500" type="password" name="password"/>
+            </div>
+            <div class="mt-4 text-right">
+                <button class="px-8 py-2 mr-2 rounded bg-gray-500 font-bold" type="submit">Login</button>
+               {# <a class="font-bold" href="/register">Register</a>#}
+            </div>
+        </form>
+    </div>
+
+    <div>
+
+
+    </div>
 
 {% endblock section %}
