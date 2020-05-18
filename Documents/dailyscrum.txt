@@ -439,3 +439,27 @@ in this middleware
 3. Need assistance / figure things out
 
 **************************************************
+
+2020/05/17 Wang Wei
+1. Done since last scrum:
+- add profile, orders, map pages.
+- adjust footer, header layout
+- add recaptcha
+
+2. To do until next Scrum:
+- presentation
+
+3. Need assistance / figure things out
+
+
+2020/05/17 Donghyeok Seo
+1. Done since last scrum
+- Crud for other admin pages (cars, carTypes)
+- Validation for admin pages
+
+2. To do until next Scrum:
+- Generate Mock Data for users, cars, reservations
+
+3. Need assistance / figure things out
+
+**************************************************
