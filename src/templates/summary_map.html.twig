@@ -40,6 +40,8 @@
         var directionsService;
         var directionsDisplay = [];
         var bounds;
+        var northEastLatLng;
+        var westSouthLatLng;
 
         function initMap() {
             directionsService = new google.maps.DirectionsService();
@@ -49,7 +51,7 @@
                 center: defaultLocation
             }
             map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
-            //bounds = new google.maps.LatLngBounds();
+            bounds = new google.maps.LatLngBounds();
 
         }
 
@@ -70,13 +72,11 @@
                     //alert("response ok");
                     //directionsDisplay[index].setMap(map);
                     directionsDisplay[index].setDirections(result);
-                    // resizeBounds(mapOrigin, mapDestination);
-
-                    /* bounds.extend(mapOrigin);
-                     bounds.extend(mapDestination);*/
-                    //bounds.union(result.routes[0].bounds);
+                    bounds.extend(northEastLatLng);
+                    bounds.extend(westSouthLatLng);
                     map.fitBounds(bounds);
                 }
+
             });
         }
 
@@ -86,7 +86,6 @@
                 if (route != null) {
                     route.setMap(null);
                 }
-
             }
             directionsDisplay = [];
         }
@@ -181,20 +180,10 @@
                                 west = getMin(west, curWest);
                                 east = getMax(east, curEast);
 
-                                bounds = {
-                                    north: north,
-                                    south: south,
-                                    west: west,
-                                    east: east
-                                };
-
+                                northEastLatLng = new google.maps.LatLng(north, east);
+                                westSouthLatLng = new google.maps.LatLng(south, west);
                             }
                         }
-
-                      /*  var finalBounds = new google.maps.LatLngBounds();
-                        finalBounds.extend({north, east});
-                        finalBounds.extend({sount, west});
-                        map.fitBounds(finalBounds);*/
 
                         for (var i = 0; i < trips.length; i++) {
                             var trip = trips[i];
@@ -206,13 +195,14 @@
                                 };
                                 counter++;
                                 toastr.info(`${counter}: from ${trip['origin'].name} to ${trip['destination'].name}`);
-
                                 calculateRoute(originCoor, destCoor, i);
+
                             }
                         }
 
+
                     }).always(function () {
-                       // map.fitBounds(bounds);
+
                     })
 
                 } else {
@@ -223,7 +213,7 @@
                         newLocation(defaultLocation.lat, defaultLocation.lng);
                     }
                 }
-                //map.fitBounds(bounds);
+
 
             })
         })
