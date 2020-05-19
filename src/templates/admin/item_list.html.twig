@@ -151,7 +151,7 @@
                 rentStoreId : 'stores',
                 returnStoreId : 'stores',
                 carId : 'cars',
-                carTypeId : 'carTypes',
+                carTypeId : 'cartypes',
                 reservationId : 'reservations',
                 orderId : 'orderId'
             }
@@ -180,16 +180,13 @@
                     })
                     .addClass("block")
                     .removeClass("hidden");
-            }).fail(function (result) {
-                let errorList = result.responseJSON.errorList;
-                Object.keys(errorList).forEach(function (key) {
-                    $("#notificationTitle").html(`[${key}] is Invalid!!`);
-                    $("#notificationText").html(errorList[key]);
-                    $("#notificationDiv")
-                        .removeClass("bg-orange-500")
-                        .addClass("bg-red-700")
-                        .slideDown().delay(2000).fadeOut("slow");
-                });
+            }).fail(function () {
+                $("#notificationTitle").html("Fail to Load Detail");
+                $("#notificationText").html("");
+                $("#notificationDiv")
+                    .removeClass("bg-orange-500")
+                    .addClass("bg-red-700")
+                    .slideDown().delay(2000).fadeOut("slow");
             });
         });
 

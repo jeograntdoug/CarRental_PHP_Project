@@ -43,7 +43,9 @@ class AuthMiddleware implements Middleware
 
             $user = AuthMiddleware::getUserInCurrentSession(session_id());
 
-            $response = $handler->handle($request);
+            // $response = $handler->handle($request);
+            $responseFactory = new ResponseFactory();
+            $response = $responseFactory->createResponse(403);
 
             if(empty($user)){
                 return $response->withHeader('Location','/errors/forbidden');
@@ -55,7 +57,7 @@ class AuthMiddleware implements Middleware
                 return $response->withHeader('Location','/errors/forbidden');
             }
 
-            return $response;
+            return $handler->handle($request);
         };
     }
 
@@ -65,13 +67,13 @@ class AuthMiddleware implements Middleware
         return function (Request $request, RequestHandler $handler) {
             $user = AuthMiddleware::getUserInCurrentSession(session_id());
 
-            $response = $handler->handle($request);
-
             if(empty($user)){
+                $responseFactory = new ResponseFactory();
+                $response = $responseFactory->createResponse(302);
                 return $response->withHeader('Location','/');
             }
 
-            return $response;
+            return $handler->handle($request);
         };
     }
 
@@ -86,7 +88,8 @@ class AuthMiddleware implements Middleware
                 return $response;
             }
 
-            $response = (new ResponseFactory())->createResponse(302);
+            $responseFactory = new ResponseFactory();
+            $response = $responseFactory->createResponse(302);
             return $response->withHeader('Location','/');
         };
     }

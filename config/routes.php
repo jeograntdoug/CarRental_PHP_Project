@@ -55,7 +55,7 @@
             $group->get('/cartypes', AdminCarTypeController::class . ':index');
             $group->get('/ajax/cartypes', AdminCarTypeController::class . ':showAll');
             $group->post('/ajax/cartypes', AdminCarTypeController::class . ':create');
-            $group->get('/ajax/cartypes/{id:[0-9]+}', AdmincarTypeController::class . ':show');
+            $group->get('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':show');
             $group->patch('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':edit');
             $group->delete('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':delete');
 

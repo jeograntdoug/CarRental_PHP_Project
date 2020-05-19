@@ -13,12 +13,13 @@
 
     if (strpos($_SERVER['HTTP_HOST'], "ipd20.com") !== false) {
         // hosting on ipd20.com
-        DB::$user = 'cp4966_carrental';
-        DB::$password = 'vI4d(+~ALuQ)';
-        DB::$dbName = 'cp4966_carrental';
+        DB::$user = 'cp4966_heok';
+        DB::$password = 'UzXoLgOfibQ1Nk7n';
+        DB::$dbName = 'cp4966_heok';
         DB::$encoding = 'utf8'; // defaults to latin1 if omitted
-
-    } else { // local computer
+    } 
+    else 
+    { // local computer
         DB::$user = 'carrental';
         DB::$password = 'QFzyVmD4mYO8Ah8G';  //each localhost has different password
         DB::$dbName = 'carrental';
