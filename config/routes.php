@@ -48,7 +48,7 @@
             $group->get('/cars', AdminCarController::class . ':index');
             $group->get('/ajax/cars', AdminCarController::class . ':showAll');
             $group->post('/ajax/cars', AdminCarController::class . ':create');
-            $group->get('/ajax/cars/{id:[0-9]+}', AdmincarController::class . ':show');
+            $group->get('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':show');
             $group->patch('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':edit');
             $group->delete('/ajax/cars/{id:[0-9]+}', AdminCarController::class . ':delete');
 
