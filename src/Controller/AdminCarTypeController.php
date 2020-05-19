@@ -9,7 +9,7 @@ class AdminCarTypeController extends AdminController
     public function __construct(){
         $this->itemTitle = 'CarType';
 
-        $this->tableName = 'carTypes';
+        $this->tableName = 'cartypes';
 
         $this->fieldList = [
             'id', 'category', 'subtype', 'description', 
@@ -20,7 +20,6 @@ class AdminCarTypeController extends AdminController
             'ID', 'CATEGORY', 'TYPE', 'DESCRIPTION', 
             'PASSENGERS', 'BAGS', 'DALIY PRICE'
         ];
-;
 
         $this->validator = Validator::carType();
     }
