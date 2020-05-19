@@ -2,10 +2,10 @@
 -- version 4.9.4
 -- https://www.phpmyadmin.net/
 --
--- 主机： localhost:3306
--- 生成日期： 2020-05-17 14:38:34
--- 服务器版本： 10.3.23-MariaDB-log
--- PHP 版本： 7.3.6
+-- Host: localhost:3306
+-- Generation Time: May 18, 2020 at 07:05 PM
+-- Server version: 10.3.23-MariaDB-log
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库： `cp4966_carrental`
+-- Database: `cp4966_carrental`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cars`
+-- Table structure for table `cars`
 --
 
 CREATE TABLE `cars` (
@@ -45,7 +45,7 @@ CREATE TABLE `cars` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `cars`
+-- Dumping data for table `cars`
 --
 
 INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `mileage`, `status`, `storeId`, `description`, `photoPath`, `fuelType`, `latitude`, `longitude`) VALUES
@@ -81,7 +81,7 @@ INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `mileage
 (30, 9, '300S', 2002, 'Chrysler', 109751, 'avaliable', 4, 'A premium car rental offers comfortable seating with plenty of room in the trunk for luggage. A premium rental car is a great choice for a business travel or leisure.', '\\resources\\carimages\\premium_special_car.png', 'gas', 45.3629762, -73.8148386),
 (31, 19, 'Wrangler Unlimited', 1953, 'Jeep', 441343, 'avaliable', 4, 'A standard elite SUV rental provides plenty of room for passengers and luggage. SUVs are great for business', '\\resources\\carimages\\jeep_4_door_suv.png', 'diesel', 45.5070645, -73.5682808),
 (32, 1, 'Spark', 1968, 'Chevrolet', 366882, 'renting', 4, 'An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 43.6777215, -79.6270084),
-(33, 12, 'Qashqai', 2019, 'Nissan', 7363, 'avaliable', 17, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 43.7114079, -79.5377247),
+(33, 12, 'Qashqai', 2019, 'Nissan', 7363, 'renting', 17, 'An Intermediate SUV rental  provides plenty of room for 5 passengers but is compact enough to for high traffic driving.', '\\resources\\carimages\\compact_suv.png', 'gas', 43.7114079, -79.5377247),
 (34, 1, 'Spark', 1909, 'Chevrolet', 705913, 'avaliable', 16, 'An economy car for driving in crowded', '\\resources\\carimages\\economy_car.png', 'gas', 43.7114079, -79.5377247),
 (35, 4, 'Jetta', 2008, 'Volkswagen', 82269, 'reserved', 1, 'An intermediate car rental provides some more room for passengers and luggage than most smaller cars.', '\\resources\\carimages\\standard_car.png', 'gas', 45.6044119, -73.3229069),
 (36, 7, 'Mustang', 2010, 'Ford', 54750, 'avaliable', 1, 'A Full-Size car rental is helpful when needing more passenger room and luggage space than a smaller call offers.', '\\resources\\carimages\\convertible_car.png', 'gas', 43.7114079, -79.5377247),
@@ -253,10 +253,10 @@ INSERT INTO `cars` (`id`, `carTypeId`, `model`, `year`, `manufacturer`, `mileage
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cartypes`
+-- Table structure for table `carTypes`
 --
 
-CREATE TABLE `cartypes` (
+CREATE TABLE `carTypes` (
   `id` int(11) NOT NULL,
   `category` varchar(20) NOT NULL,
   `subtype` varchar(20) NOT NULL,
@@ -268,10 +268,10 @@ CREATE TABLE `cartypes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `cartypes`
+-- Dumping data for table `carTypes`
 --
 
-INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`, `bags`, `dailyPrice`, `photoPath`) VALUES
+INSERT INTO `carTypes` (`id`, `category`, `subtype`, `description`, `passengers`, `bags`, `dailyPrice`, `photoPath`) VALUES
 (1, 'Car', 'Economy', 'Chevrolet Spark or similar', 4, 2, 79.98, '\\resources\\carimages\\economy_car.png'),
 (2, 'Car', 'Compact', 'Hyundai Accent or similar', 5, 2, 89.98, '\\resources\\carimages\\compact_car.png'),
 (3, 'Car', 'Intermediate', 'Kia Forte or similar', 5, 3, 99.98, '\\resources\\carimages\\intermediate_car.png'),
@@ -299,7 +299,7 @@ INSERT INTO `cartypes` (`id`, `category`, `subtype`, `description`, `passengers`
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cities`
+-- Table structure for table `cities`
 --
 
 CREATE TABLE `cities` (
@@ -312,7 +312,7 @@ CREATE TABLE `cities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `cities`
+-- Dumping data for table `cities`
 --
 
 INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `longitude`) VALUES
@@ -1979,7 +1979,7 @@ INSERT INTO `cities` (`id`, `postalCode`, `name`, `provinceCode`, `latitude`, `l
 -- --------------------------------------------------------
 
 --
--- 表的结构 `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -1997,7 +1997,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `orders`
+-- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`id`, `createdTS`, `reservationId`, `userId`, `carId`, `returnDateTime`, `startMileage`, `returnMileage`, `totalPrice`, `rentStoreId`, `returnStoreId`) VALUES
@@ -2472,7 +2472,7 @@ INSERT INTO `orders` (`id`, `createdTS`, `reservationId`, `userId`, `carId`, `re
 (469, '2016-08-09 19:54:50', 469, 4, 115, '2016-09-01 04:39:20', 677672, 681237, 11822.621, 14, 21),
 (470, '2016-08-10 14:18:10', 470, 4, 157, '2016-09-23 10:58:06', 446306, 458546, 13971.465, 12, 12),
 (471, '2016-08-11 12:54:02', 471, 13, 117, '2016-08-24 06:15:29', 664900, 668085, 1494.701, 15, 15),
-(472, '2016-08-13 00:12:32', 472, 1, 87, '2016-08-23 02:55:52', 613206, 614603, 1138.247, 3, 9),
+(472, '2016-08-13 00:12:32', 472, 1, 87, '2016-08-23 02:55:52', 613206, 614603, 1138.247, 6, 18),
 (473, '2016-08-14 02:49:41', 473, 8, 85, '2016-08-28 14:05:37', 271261, 273946, 7710.405, 18, 18),
 (474, '2016-08-14 21:15:42', 474, 4, 110, '2016-10-12 20:18:13', 728049, 740709, 24148.62, 9, 9),
 (475, '2016-08-15 21:48:25', 475, 1, 86, '2016-09-11 09:37:00', 273289, 276259, 10866.879, 7, 7),
@@ -2488,7 +2488,7 @@ INSERT INTO `orders` (`id`, `createdTS`, `reservationId`, `userId`, `carId`, `re
 (485, '2016-08-26 16:26:16', 485, 22, 162, '2016-09-08 11:57:53', 421316, 422980, 6114.251, 4, 4),
 (486, '2016-08-27 10:25:09', 486, 24, 141, '2016-10-06 03:40:10', 476464, 486304, 4139.08, 7, 10),
 (487, '2016-08-28 16:43:15', 487, 19, 129, '2016-09-19 11:27:20', 175667, 176481, 10777.294, 3, 3),
-(488, '2016-08-28 23:20:26', 488, 1, 150, '2016-10-10 23:58:19', 379418, 392398, 13610.388, 5, 16),
+(488, '2016-08-28 23:20:26', 488, 1, 150, '2016-10-10 23:58:19', 379418, 392398, 13610.388, 5, 8),
 (489, '2016-08-29 23:53:30', 489, 25, 111, '2016-10-07 09:46:58', 632627, 634967, 9372.753, 17, 18),
 (490, '2016-08-31 05:50:43', 490, 2, 37, '2016-09-11 15:53:43', 707344, 709756, 3725.724, 22, 18),
 (491, '2016-08-31 21:22:55', 491, 18, 170, '2016-10-13 22:59:34', 556755, 563971, 16494.588, 20, 20),
@@ -3894,12 +3894,14 @@ INSERT INTO `orders` (`id`, `createdTS`, `reservationId`, `userId`, `carId`, `re
 (1890, '2020-05-13 06:06:39', 1890, 25, 198, NULL, 702511, NULL, NULL, 6, NULL),
 (1891, '2020-05-14 17:54:38', 1891, 9, 77, NULL, 503297, NULL, NULL, 16, NULL),
 (1892, '2020-05-15 17:01:16', 1892, 24, 128, NULL, 120193, NULL, NULL, 14, NULL),
-(1893, '2020-05-16 03:52:29', 1893, 18, 121, NULL, 619019, NULL, NULL, 13, NULL);
+(1893, '2020-05-16 03:52:29', 1893, 18, 121, NULL, 619019, NULL, NULL, 13, NULL),
+(1894, '2020-05-18 01:45:52', 1894, 1, 33, NULL, 7363, NULL, NULL, 17, NULL),
+(1895, '2016-08-16 01:41:09', 1901, 1, 119, '2016-08-18 11:28:11', 34567, 39687, 550, 15, 10);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `reservations`
+-- Table structure for table `reservations`
 --
 
 CREATE TABLE `reservations` (
@@ -3919,7 +3921,7 @@ CREATE TABLE `reservations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `reservations`
+-- Dumping data for table `reservations`
 --
 
 INSERT INTO `reservations` (`id`, `createdTS`, `userId`, `carTypeId`, `startDateTime`, `returnDateTime`, `dailyPrice`, `netFees`, `tps`, `tvq`, `rentDays`, `rentStoreId`, `returnStoreId`) VALUES
@@ -5822,12 +5824,17 @@ INSERT INTO `reservations` (`id`, `createdTS`, `userId`, `carTypeId`, `startDate
 (1893, '2020-04-20 14:29:45', 18, 19, '2020-05-15 23:52:29', '2020-05-26 13:45:39', 458.98, 5048.78, 504.878, 252.439, 11, 13, 13),
 (1894, '2020-05-17 20:31:25', 1, 2, '2020-05-17 16:40:00', '2020-05-22 16:40:00', 89.98, 449.9, 22.495, 44.85503, 5, 17, 17),
 (1895, '2020-05-17 20:34:42', 1, 2, '2020-05-19 16:40:00', '2020-05-21 16:40:00', 89.98, 179.96, 8.998, 17.942012, 2, 17, 17),
-(1896, '2020-05-17 21:33:30', 1, 21, '2020-05-17 17:00:00', '2020-05-18 17:00:00', 506.98, 506.98, 25.349, 50.545906, 1, 17, 17);
+(1896, '2020-05-17 21:33:30', 1, 21, '2020-05-17 17:00:00', '2020-05-18 17:00:00', 506.98, 506.98, 25.349, 50.545906, 1, 17, 17),
+(1897, '2020-05-18 01:34:43', 1, 7, '2020-05-17 21:40:00', '2020-05-18 21:40:00', 179.98, 179.98, 8.999, 17.944006, 1, 4, 4),
+(1898, '2020-05-18 03:36:38', 1, 13, '2020-05-17 23:40:00', '2020-05-18 23:40:00', 168.98, 168.98, 8.449, 16.847306, 1, 17, 17),
+(1899, '2020-05-18 18:31:09', 2, 3, '2020-05-18 14:30:00', '2020-05-19 14:30:00', 99.98, 99.98, 4.999, 9.968006, 1, 16, 16),
+(1900, '2020-05-18 21:08:40', 2, 19, '2020-05-23 17:10:00', '2020-05-29 17:10:00', 458.98, 2753.88, 137.694, 274.561836, 6, 17, 17),
+(1901, '2020-05-19 01:39:40', 1, 16, '2016-08-15 21:38:11', '2016-08-18 11:28:11', 100, 300, 20, 39.99, 3, 15, 10);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `stores`
+-- Table structure for table `stores`
 --
 
 CREATE TABLE `stores` (
@@ -5843,7 +5850,7 @@ CREATE TABLE `stores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `stores`
+-- Dumping data for table `stores`
 --
 
 INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`, `province`, `latitude`, `longitude`) VALUES
@@ -5872,7 +5879,7 @@ INSERT INTO `stores` (`id`, `city`, `storeName`, `address`, `phone`, `postCode`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -5889,7 +5896,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`, `email`, `phone`, `role`, `idPhoto`, `password`) VALUES
@@ -5924,7 +5931,7 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `drivinglicense`, `address`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `userSessions`
+-- Table structure for table `userSessions`
 --
 
 CREATE TABLE `userSessions` (
@@ -5934,18 +5941,20 @@ CREATE TABLE `userSessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 转存表中的数据 `userSessions`
+-- Dumping data for table `userSessions`
 --
 
 INSERT INTO `userSessions` (`sessionId`, `userId`, `updated_at`) VALUES
-('t4bpp1m9klcq2lfm39tl6rn9td', 25, '2020-05-15 00:32:44');
+('d8b2b1a3163a15a3df21b3cd06e5dfd0', 1, '2020-05-19 09:03:35'),
+('t4bpp1m9klcq2lfm39tl6rn9td', 25, '2020-05-15 00:32:44'),
+('ucsf7l9k8ti9jutj3lbubsb784', 1, '2020-05-19 07:42:36');
 
 --
--- 转储表的索引
+-- Indexes for dumped tables
 --
 
 --
--- 表的索引 `cars`
+-- Indexes for table `cars`
 --
 ALTER TABLE `cars`
   ADD PRIMARY KEY (`id`),
@@ -5953,19 +5962,19 @@ ALTER TABLE `cars`
   ADD KEY `carTypeId` (`carTypeId`);
 
 --
--- 表的索引 `cartypes`
+-- Indexes for table `carTypes`
 --
-ALTER TABLE `cartypes`
+ALTER TABLE `carTypes`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `cities`
+-- Indexes for table `cities`
 --
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
@@ -5976,7 +5985,7 @@ ALTER TABLE `orders`
   ADD KEY `carId` (`carId`);
 
 --
--- 表的索引 `reservations`
+-- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id`),
@@ -5986,83 +5995,83 @@ ALTER TABLE `reservations`
   ADD KEY `returnStoreId` (`returnStoreId`);
 
 --
--- 表的索引 `stores`
+-- Indexes for table `stores`
 --
 ALTER TABLE `stores`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `userSessions`
+-- Indexes for table `userSessions`
 --
 ALTER TABLE `userSessions`
   ADD PRIMARY KEY (`sessionId`) USING BTREE,
   ADD KEY `userId` (`userId`);
 
 --
--- 在导出的表使用AUTO_INCREMENT
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- 使用表AUTO_INCREMENT `cars`
+-- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 
 --
--- 使用表AUTO_INCREMENT `cartypes`
+-- AUTO_INCREMENT for table `carTypes`
 --
-ALTER TABLE `cartypes`
+ALTER TABLE `carTypes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- 使用表AUTO_INCREMENT `cities`
+-- AUTO_INCREMENT for table `cities`
 --
 ALTER TABLE `cities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1658;
 
 --
--- 使用表AUTO_INCREMENT `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1894;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1896;
 
 --
--- 使用表AUTO_INCREMENT `reservations`
+-- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1897;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1902;
 
 --
--- 使用表AUTO_INCREMENT `stores`
+-- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- 使用表AUTO_INCREMENT `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- 限制导出的表
+-- Constraints for dumped tables
 --
 
 --
--- 限制表 `cars`
+-- Constraints for table `cars`
 --
 ALTER TABLE `cars`
   ADD CONSTRAINT `cars_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `stores` (`id`),
-  ADD CONSTRAINT `cars_ibfk_2` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
+  ADD CONSTRAINT `cars_ibfk_2` FOREIGN KEY (`carTypeId`) REFERENCES `carTypes` (`id`);
 
 --
--- 限制表 `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservations` (`id`),
@@ -6072,16 +6081,16 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_6` FOREIGN KEY (`carId`) REFERENCES `cars` (`id`);
 
 --
--- 限制表 `reservations`
+-- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`rentStoreId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `reservations_ibfk_4` FOREIGN KEY (`returnStoreId`) REFERENCES `stores` (`id`),
   ADD CONSTRAINT `reservations_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `reservations_ibfk_6` FOREIGN KEY (`carTypeId`) REFERENCES `cartypes` (`id`);
+  ADD CONSTRAINT `reservations_ibfk_6` FOREIGN KEY (`carTypeId`) REFERENCES `carTypes` (`id`);
 
 --
--- 限制表 `userSessions`
+-- Constraints for table `userSessions`
 --
 ALTER TABLE `userSessions`
   ADD CONSTRAINT `fk_users_userSessions` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

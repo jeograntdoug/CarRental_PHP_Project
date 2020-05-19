@@ -92,6 +92,13 @@
         }
 
 
+        function newLocation(newLat, newLng) {
+            map.setCenter({
+                lat: newLat,
+                lng: newLng
+            });
+        }
+
         //google.maps.event.addDomListener(window, 'load', initMap);
 
         function getMax(first, second) {
@@ -145,6 +152,7 @@
 
                     $dataString = JSON.stringify({'year': $year, 'month': $month});
                     $.ajax({
+
                         url: "/summary/map",
                         type: "POST",
                         dataType: "json",
@@ -163,13 +171,6 @@
                         for (var i = 0; i < trips.length; i++) {
                             var trip = trips[i];
                             if (trip['origin'].name !== trip['destination'].name) {
-                                var originCoor = {lat: Number(trip['origin'].lat), lng: Number(trip['origin'].lng)};
-                                var destCoor = {
-                                    lat: Number(trip['destination'].lat),
-                                    lng: Number(trip['destination'].lng)
-                                };
-                                counter++;
-                                toastr.info(`${counter}: from ${trip['origin'].name} to ${trip['destination'].name}`);
                                 curNorth = getMax(Number(trip['destination'].lat), Number(trip['origin'].lat));
                                 curSouth = getMin(Number(trip['destination'].lat), Number(trip['origin'].lat));
                                 curWest = getMin(Number(trip['destination'].lng), Number(trip['origin'].lng));
@@ -187,12 +188,31 @@
                                     east: east
                                 };
 
+                            }
+                        }
+
+                      /*  var finalBounds = new google.maps.LatLngBounds();
+                        finalBounds.extend({north, east});
+                        finalBounds.extend({sount, west});
+                        map.fitBounds(finalBounds);*/
+
+                        for (var i = 0; i < trips.length; i++) {
+                            var trip = trips[i];
+                            if (trip['origin'].name !== trip['destination'].name) {
+                                var originCoor = {lat: Number(trip['origin'].lat), lng: Number(trip['origin'].lng)};
+                                var destCoor = {
+                                    lat: Number(trip['destination'].lat),
+                                    lng: Number(trip['destination'].lng)
+                                };
+                                counter++;
+                                toastr.info(`${counter}: from ${trip['origin'].name} to ${trip['destination'].name}`);
+
                                 calculateRoute(originCoor, destCoor, i);
                             }
                         }
 
                     }).always(function () {
-                        map.fitBounds(bounds);
+                       // map.fitBounds(bounds);
                     })
 
                 } else {
@@ -200,9 +220,10 @@
                         clearRoutes();
                         $(this).removeClass('border-2 border-solid border-green-400 bg-green-400 font-bold');
                         hasSelection = false;
+                        newLocation(defaultLocation.lat, defaultLocation.lng);
                     }
                 }
-
+                //map.fitBounds(bounds);
 
             })
         })
