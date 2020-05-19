@@ -56,7 +56,7 @@
             $group->get('/cartypes', AdminCarTypeController::class . ':index');
             $group->get('/ajax/cartypes', AdminCarTypeController::class . ':showAll');
             $group->post('/ajax/cartypes', AdminCarTypeController::class . ':create');
-            $group->get('/ajax/carTypes/{id:[0-9]+}', AdmincarTypeController::class . ':show');
+            $group->get('/ajax/cartypes/{id:[0-9]+}', AdmincarTypeController::class . ':show');
             $group->patch('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':edit');
             $group->delete('/ajax/cartypes/{id:[0-9]+}', AdminCarTypeController::class . ':delete');
 
@@ -115,7 +115,7 @@
 
             $vehiclesInfo = $_SESSION;
 
-            $allVehicles = DB::query("SELECT * FROM cartypes");
+            $allVehicles = DB::query("SELECT * FROM carTypes");
 
             return $view->render($response, 'car_selection.html.twig', [
                 'allVehicles' => $allVehicles,
@@ -158,22 +158,22 @@
             $_SESSION['pickupProvince'] = $pickupStore['province'];
             $_SESSION['pickupPostCode'] = $pickupStore['postCode'];
 
-            $allVehicles = DB::query("SELECT ct.* FROM cartypes ct, cars cs WHERE cs.storeId= %s AND cs.carTypeId=ct.id 
+            $allVehicles = DB::query("SELECT ct.* FROM carTypes ct, cars cs WHERE cs.storeId= %s AND cs.carTypeId=ct.id 
                                         AND cs.status='avaliable' GROUP BY ct.id", $_SESSION['pickupStoreId']);
-            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
-            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
-            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
-            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
+            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from carTypes WHERE category = %s", "Car")[0]['min'];
+            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from carTypes WHERE category = %s", "SUV")[0]['min'];
+            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from carTypes WHERE category = %s", "Van")[0]['min'];
+            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from carTypes WHERE category = %s", "Truck")[0]['min'];
 
-            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 2")[0]['min'];
-            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 4")[0]['min'];
-            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 5")[0]['min'];
-            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 7")[0]['min'];
+            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 2")[0]['min'];
+            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 4")[0]['min'];
+            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 5")[0]['min'];
+            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 7")[0]['min'];
 
-            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
-            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
-            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
-            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
+            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 3")[0]['min'];
+            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 4")[0]['min'];
+            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 5")[0]['min'];
+            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 7")[0]['min'];
             $vehiclesInfo = $_SESSION;
 
             return $view->render($response, 'car_selection.html.twig', [
@@ -185,21 +185,21 @@
         $app->get('/car_selection/god_mode', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
-            $allVehicles = DB::query("SELECT * FROM cartypes");
-            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
-            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
-            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
-            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
+            $allVehicles = DB::query("SELECT * FROM carTypes");
+            $_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from carTypes WHERE category = %s", "Car")[0]['min'];
+            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from carTypes WHERE category = %s", "SUV")[0]['min'];
+            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from carTypes WHERE category = %s", "Van")[0]['min'];
+            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from carTypes WHERE category = %s", "Truck")[0]['min'];
 
-            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 2")[0]['min'];
-            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 4")[0]['min'];
-            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 5")[0]['min'];
-            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 7")[0]['min'];
+            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 2")[0]['min'];
+            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 4")[0]['min'];
+            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 5")[0]['min'];
+            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 7")[0]['min'];
 
-            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
-            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
-            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
-            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];
+            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 3")[0]['min'];
+            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 4")[0]['min'];
+            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 5")[0]['min'];
+            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 7")[0]['min'];
             $vehiclesInfo = $_SESSION;
 
             return $view->render($response, 'car_selection.html.twig', [
@@ -213,7 +213,7 @@
 
 
             $selId = $_SESSION['selVehicleTypeId'];
-            $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
+            $selVehicle = DB::queryFirstRow("SELECT * FROM carTypes WHERE id = %s", $selId);
             $_SESSION['selVehicle'] = $selVehicle;
             if (isset($_SESSION['userId'])) {
                 $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
@@ -234,7 +234,7 @@
             $selId = $args['id'];
 
             $_SESSION['selVehicleTypeId'] = $selId;
-            $selVehicle = DB::queryFirstRow("SELECT * FROM cartypes WHERE id = %s", $selId);
+            $selVehicle = DB::queryFirstRow("SELECT * FROM carTypes WHERE id = %s", $selId);
             $_SESSION['selVehicle'] = $selVehicle;
             if (isset($_SESSION['userId'])) {
                 $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
@@ -470,24 +470,24 @@
         $app->get('/modify_car_selection', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
-            $allVehicles = DB::query("SELECT ct.* FROM cartypes ct, cars cs WHERE cs.storeId= %s 
+            $allVehicles = DB::query("SELECT ct.* FROM carTypes ct, cars cs WHERE cs.storeId= %s 
                                         AND cs.carTypeId=ct.id AND cs.status='avaliable' 
                                         GROUP BY ct.id",
                 $_SESSION['pickupStoreId']);
-            /*$_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "Car")[0]['min'];
-            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from cartypes WHERE category = %s", "SUV")[0]['min'];
-            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Van")[0]['min'];
-            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from cartypes WHERE category = %s", "Truck")[0]['min'];
+            /*$_SESSION['carMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from carTypes WHERE category = %s", "Car")[0]['min'];
+            $_SESSION['suvMinPrice'] = DB::query("SELECT MIN(dailyPrice) as 'min' from carTypes WHERE category = %s", "SUV")[0]['min'];
+            $_SESSION['vanMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from carTypes WHERE category = %s", "Van")[0]['min'];
+            $_SESSION['truckMinPrice'] = DB::query("SELECT MIN(dailyPrice)  as 'min' from carTypes WHERE category = %s", "Truck")[0]['min'];
 
-            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 2")[0]['min'];
-            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 4")[0]['min'];
-            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 5")[0]['min'];
-            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE passengers >= 7")[0]['min'];
+            $_SESSION['pass2'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 2")[0]['min'];
+            $_SESSION['pass4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 4")[0]['min'];
+            $_SESSION['pass5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 5")[0]['min'];
+            $_SESSION['pass7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE passengers >= 7")[0]['min'];
 
-            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 3")[0]['min'];
-            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 4")[0]['min'];
-            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 5")[0]['min'];
-            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM cartypes WHERE bags >= 7")[0]['min'];*/
+            $_SESSION['bag3'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 3")[0]['min'];
+            $_SESSION['bag4'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 4")[0]['min'];
+            $_SESSION['bag5'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 5")[0]['min'];
+            $_SESSION['bag7'] = DB::query("SELECT MIN(dailyPrice) as 'min' FROM carTypes WHERE bags >= 7")[0]['min'];*/
             $vehiclesInfo = $_SESSION;
 
             return $view->render($response, 'car_selection.html.twig', [
