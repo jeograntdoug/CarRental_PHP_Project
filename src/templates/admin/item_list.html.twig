@@ -290,7 +290,12 @@
 
                 reloadItemList();
             }).fail(function () {
-                console.log(`${itemTitle} deletion ajax fail!`);
+                $("#notificationTitle").html("Fail to delete");
+                $("#notificationText").html("This record has associate value to other table");
+                $("#notificationDiv")
+                    .removeClass("bg-orange-500")
+                    .addClass("bg-red-700")
+                    .slideDown().delay(2000).fadeOut("slow");
             });
         });
 
