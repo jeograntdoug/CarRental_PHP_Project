@@ -5,7 +5,6 @@
 
     use App\Middleware\AuthMiddleware;
     use DB;
-    use Respect\Validation\Rules\Number;
     use Slim\App;
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
