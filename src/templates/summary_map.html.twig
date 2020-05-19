@@ -40,10 +40,6 @@
         var directionsService;
         var directionsDisplay = [];
         var bounds;
-        var southWestLat = 0;
-        var southWestLng = 0;
-        var northEastLat = 0;
-        var northEastLng = 0;
 
         function initMap() {
             directionsService = new google.maps.DirectionsService();
@@ -53,27 +49,9 @@
                 center: defaultLocation
             }
             map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
-            bounds = new google.maps.LatLngBounds();
+            //bounds = new google.maps.LatLngBounds();
 
         }
-
-
-  /*      function resizeBounds(mapOrigin, mapDestination){
-            var tmpLat = mapOrigin.lat > mapDestination.lat ? mapOrigin.lat : mapDestination.lat;
-            var tmpLng = mapOrigin.lng > mapDestination.lng ? mapOrigin.lng : mapDestination.lng;
-            northEastLat = northEastLat > Math.abs(tmpLat) ? northEastLat : tmpLat;
-            northEastLng = northEastLng > Math.abs(tmpLng) ? northEastLng : tmpLng;
-
-            tmpLat = mapOrigin.lat < mapDestination.lat ? mapOrigin.lat : mapDestination.lat;
-            tmpLng = mapOrigin.lng < mapDestination.lng ? mapOrigin.lng : mapDestination.lng;
-            southWestLat = southWestLat < tmpLat ? southWestLat : tmpLat;
-            southWestLng = southWestLng < tmpLng ? southWestLng : tmpLng;
-
-            var curSW = new google.maps.LatLng(southWestLat, southWestLng);
-            var curNE = new google.maps.LatLng(northEastLat, northEastLng);
-            bounds = new google.maps.LatLngBounds(curSW, curNE);
-            map.fitBounds(bounds);
-        }*/
 
         function calculateRoute(mapOrigin, mapDestination, index) {
 
@@ -92,11 +70,11 @@
                     //alert("response ok");
                     //directionsDisplay[index].setMap(map);
                     directionsDisplay[index].setDirections(result);
-                   // resizeBounds(mapOrigin, mapDestination);
+                    // resizeBounds(mapOrigin, mapDestination);
 
                     /* bounds.extend(mapOrigin);
                      bounds.extend(mapDestination);*/
-                    bounds.union(result.routes[0].bounds);
+                    //bounds.union(result.routes[0].bounds);
                     map.fitBounds(bounds);
                 }
             });
@@ -115,6 +93,14 @@
 
 
         //google.maps.event.addDomListener(window, 'load', initMap);
+
+        function getMax(first, second) {
+            return first > second ? first : second;
+        }
+
+        function getMin(first, second) {
+            return first < second ? first : second;
+        }
 
 
         var hasSelection = false;
@@ -168,6 +154,11 @@
                         }
                     }).done(function (trips) {
                         let counter = 0;
+                        let firstTrip = trips[0];
+                        let north = Number(firstTrip['destination'].lat);
+                        let south = Number(firstTrip['origin'].lat);
+                        let west = Number(firstTrip['origin'].lng);
+                        let east = Number(firstTrip['destination'].lng);
 
                         for (var i = 0; i < trips.length; i++) {
                             var trip = trips[i];
@@ -179,6 +170,23 @@
                                 };
                                 counter++;
                                 toastr.info(`${counter}: from ${trip['origin'].name} to ${trip['destination'].name}`);
+                                curNorth = getMax(Number(trip['destination'].lat), Number(trip['origin'].lat));
+                                curSouth = getMin(Number(trip['destination'].lat), Number(trip['origin'].lat));
+                                curWest = getMin(Number(trip['destination'].lng), Number(trip['origin'].lng));
+                                curEast = getMax(Number(trip['destination'].lng), Number(trip['origin'].lng));
+
+                                north = getMax(north, curNorth);
+                                south = getMin(north, curSouth);
+                                west = getMin(west, curWest);
+                                east = getMax(east, curEast);
+
+                                bounds = {
+                                    north:north,
+                                    south: south,
+                                    west: west,
+                                    east: east
+                                };
+
                                 calculateRoute(originCoor, destCoor, i);
                             }
                         }
@@ -192,7 +200,6 @@
                         clearRoutes();
                         $(this).removeClass('border-2 border-solid border-green-400 bg-green-400 font-bold');
                         hasSelection = false;
-
                     }
                 }
 
