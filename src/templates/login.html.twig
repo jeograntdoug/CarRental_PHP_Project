@@ -28,12 +28,6 @@
                 <i class="fas fa-unlock-alt"></i>
                 <input class="w-full p-2 h-10 border-2 border-gray-500" type="password" name="password" value="q1w2E3"/>
             </div>
-            <div class="my-5 w-full inline-block text-right">
-                <div data-type="image" class="g-recaptcha  inline-block"
-                     data-sitekey="6LcKJfkUAAAAAOaq64T2Y0ybmt652SK51zRe6u6k"></div>
-
-                <script src="https://www.google.com/recaptcha/api.js?explicit&hl=en" async defer></script>
-            </div>
 
             <div class="mt-4 text-right">
                 <input name="login" class="px-8 py-2 mr-2 rounded bg-gray-500 font-bold" type="submit" value="Login">
@@ -41,56 +35,5 @@
             </div>
         </form>
     </div>
-
-    <div>
-
-
-    </div>
-    <script>
-
-
-        $(document).ready(function () {
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": true,
-                "progressBar": true,
-                "positionClass": "toast-top-center",
-                "preventDuplicates": false,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "3000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            $("#loginForm").on('submit', function () {
-                let jsonData = {
-                    captcha: grecaptcha.getResponse()
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "/recaptcha",
-                    dataType: "json",
-                    data: JSON.stringify(jsonData),
-                    success: function (data, textStatus, jQxhr) {
-                        toastr.success("reCaptcha varefication success!");
-                        console.log(JSON.stringify(data));
-                        return true;
-                    },
-                    error: function (jqxhr, status, errorThrown) {
-                        toastr.error("Need pass reCaptcha verification!");
-                        return false;
-                    }
-                });
-                //alert("validate false");
-                //return false;
-            })
-        })
-    </script>
 
 {% endblock section %}

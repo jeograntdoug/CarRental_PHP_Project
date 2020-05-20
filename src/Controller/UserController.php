@@ -116,7 +116,7 @@ class UserController
 
         DB::update('users', $newUser, 'id=%s',$id);
 
-        return $view->render($response, 'edit_profile_succeed.html.twig');
+        return $view->render($response, 'profile/edit_succeed.html.twig');
     }
 
     
@@ -132,7 +132,7 @@ class UserController
         $idPhotoBase64 = isset($user['idPhoto']) ? 'data:image/png;base64,' . base64_encode($user['idPhoto']) : '';
 
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'profile.html.twig',[
+        return $view->render($response, 'profile/profile.html.twig',[
             'user' => [
                 'id' => $user['id'],
                 'email' => $user['email'],

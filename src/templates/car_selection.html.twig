@@ -5,242 +5,80 @@
 {% endblock title %}
 
 {% block section %}
-    <div class="min-h-screen block w-full">
-        <div class="flex items-center mx-12 justify-between w-full">
-            <span class="font-bold text-4xl text-dark">CHOOSE A VEHICLE CLASS</span>
-            <div class="inline-block mr-20">
-                <span class="font-bold pr-3 inline-block">SORT BY :</span>
-                <select id="sortSelector">
-                    <option>Featured</option>
-                    <option name="lowToHigh">Price low to high</option>
-                    <option name="highToLow">Price high to low</option>
-                </select>
-            </div>
+<div>
+    <div class="fixed w-1/5 inline-block border-2 border-teal-800 p-5">
+        <h1 class="font-bold text-4xl text-dark">CHOOSE A VEHICLE CLASS</h1>
+        <table>
+            <tr>
+                <th class="pt-4 text-left">VEHICLE TYPE</th>
+                <th class="pt-4 text-left">Total From</th>
+            </tr>
+
+
+            {% for category in categoryPriceList %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="carType" value="{{ category.category }}">
+                    <label class="font-bold">{{ category.category }}s</label>
+                </td>
+            
+                <td>CAD ${{ category.dailyPrice }}</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <th class="pt-4 text-left">NUMBER OF PASSENGERS</th>
+                <th class="pt-4 text-left"></th>
+            </tr>
+
+            {% for psgNum in psgNumPriceList %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="psgNum" value="passengers_{{ psgNum.passengers }}">
+                    <label class="font-bold">
+                        {{ psgNum == psgNumList|last 
+                            ? psgNum.passengers ~'+' : psgNum.passengers }}
+                    </label>
+                </td>
+                <td>CAD ${{ psgNum.dailyPrice }}</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <th class="pt-4 text-left">NUMBER OF BAGS</th>
+                <th class="pt-4 text-left"></th>
+            </tr>
+            {% for bagNum in bagNumPriceList %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="bagNum" value="bags_{{ bagNum.bags }}">
+                    <label class="font-bold">
+                        {{ bagNum == bagNumList|last 
+                            ? bagNum.bags ~'+' : bagNum.bags}}
+                    </label>
+                </td>
+                <td>CAD ${{ bagNum.dailyPrice }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+    <div class="ml-1/5 w-3/5 mx-auto bg-blue-100" id="vehicleList">
+        <div class="text-right">
+            <span class="font-bold pr-3 inline-block">SORT BY :</span>
+            <select id="sortSelector">
+                <option>Featured</option>
+                <option name="lowToHigh">Price low to high</option>
+                <option name="highToLow">Price high to low</option>
+            </select>
         </div>
-        <div class="mx-12 my-5 flex flex-row ">
-            <div class="w-1/5">
-                <div class="fixed w-1/5">
-                    <div class="border-solid border-2 border-teal-800 p-5 block">
-                        <p class="font-bold text-2xl pb-3 inline-block ">Filters</p>
-                        <div class="block pb-4">
-                            <div class="flex ">
-                                <span class="font-bold text-base flex-1">VEHICLE TYPE</span>
-                                <span class="flex-1 text-center font-bold">Total from</span>
-                            </div>
-                            <ul>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" name="Car" class="vehicleFilter">
-                                        <span class="font-bold">Cars</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['carMinPrice'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" name="SUV" class="vehicleFilter">
-                                        <span class="font-bold">SUVs</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['suvMinPrice'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" name="Van" class="vehicleFilter">
-                                        <span class="font-bold ">Vans</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['vanMinPrice'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" name="Truck" class="vehicleFilter">
-                                        <span class="font-bold">Trucks</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['truckMinPrice'] }}</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="block pb-4">
-                            <p class="font-bold text-base">NUMBER OF PASSENGERS</p>
-                            <ul>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="2" class="passFilter">
-                                        <span class="font-bold">2</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['pass2'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="4" class="passFilter">
-                                        <span class="font-bold">4</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['pass4'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="5" class="passFilter">
-                                        <span class="font-bold">5</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['pass5'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="7" class="passFilter">
-                                        <span class="font-bold">7+</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['pass7'] }}</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <p class="font-bold text-base">NUMBER OF BAGS</p>
-                            <ul>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="3" class="bagFilter">
-                                        <span class="font-bold">3+</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['bag3'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="4" class="bagFilter">
-                                        <span class="font-bold">4+</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['bag4'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="5" class="bagFilter">
-                                        <span class="font-bold">5+</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['bag5'] }}</span>
-                                    </div>
-                                </li>
-                                <li class="flex">
-                                    <div class="flex-1">
-                                        <input type="checkbox" value="7" class="bagFilter">
-                                        <span class="font-bold">7+</span>
-                                    </div>
-                                    <div class="flex flex-1 text-sm">
-                                        <span class="flex-1 text-right pr-2">CAD </span>
-                                        <span class="flex-1 text-left">{{ vehiclesInfo['bag7'] }}</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mx-5 w-3/5 mx-auto bg-blue-100" id="vehicleList">
-                {% for index,vehicle in allVehicles|sort((a,b)=> a.id <=> b.id) %}
-
-                    <div class="pl-10   flex items-center hover:bg-green-300 border border-white flex-row vehicles {{ vehicle.category }} {{ "bags_" ~ vehicle.bags }} {{ "passengers_" ~ vehicle.passengers }}">
-                        <div class="inline-block w-1/3">
-                            <img src= {{ vehicle.photoPath }} class="w-2/3 mx-auto"/>
-                        </div>
-                        <div class="flex flex-col pl-20 w-2/3">
-                            <div>
-                                <p class="font-bold text-2xl subtype">{{ vehicle.subtype }}</p>
-                            </div>
-                            <div class="flex flex-row">
-                                <div class="w-1/2">
-                                    <p>{{ vehicle.description }}</p><br>
-                                    <div class="flex flex-row">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24">
-                                            <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
-                                            <span>&nbsp;&nbsp;<b class="passengers">{{ vehicle.passengers }}</b></span>&nbsp; People<br></svg>
-                                    </div>
-
-                                    <div class="flex flex-row">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-                                        <span>&nbsp;&nbsp;<b class="bags">{{ vehicle.bags }}</b></span>&nbsp; Bags<br></svg>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p class="text-lg font-bold">CAD
-                                        <span class="dailyPrice">{{ vehicle.dailyPrice }}</span></p><br><br>
-                                    <form method="POST" action="/review_reserve/{{ vehicle.id }}">
-                                        <input type="submit" value="SELECT"
-                                               class="btSelect font-bold text-lg px-4 py-1 text-blue-800 bg-yellow-100 border-solid border-teal-800 border-2"/>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+        <div>
+            {% include "cards/car_selection_card.html.twig" %}
         </div>
     </div>
+</div>
 
     <script>
-
-        function toggleVehicles() {
-            var isAllUnchecked = $(".vehicleFilter:checked").length === 0;
-            var passengerNum = $(".passFilter:checked").first().val() === undefined ? 0 : $(".passFilter:checked").first().val();
-            var bagNum = $(".bagFilter:checked").first().val() === undefined ? 0 : $(".bagFilter:checked").first().val();
-
-            $(".vehicles").hide();
-
-            if (isAllUnchecked) {
-                $(".vehicles").map(function (i, item) {
-                    var curPassNum = item.querySelector(".passengers").innerText;
-                    var curBagNum = item.querySelector(".bags").innerText;
-                    if (curPassNum >= passengerNum && curBagNum >= bagNum) {
-                        // alert("satisfied: " + curPassNum + ", " + curBagNum);
-                        $(item).show();
-                    }
-                });
-            } else {
-                $(".vehicleFilter:checked").map(function () {
-                    $(`.${this.name}`).map(function (i, item) {
-                        var curPassNum = item.querySelector(".passengers").innerText;
-                        var curBagNum = item.querySelector(".bags").innerText;
-                        if (curPassNum >= passengerNum && curBagNum >= bagNum) {
-                            // alert("satisfied: " + curPassNum + ", " + curBagNum);
-                            $(item).show();
-                        }
-                    })
-
-                })
-            }
-        }
-
         function sortLowToHigh(a, b) {
             return Number(a.querySelector(".dailyPrice").innerText) - Number(b.querySelector(".dailyPrice").innerText);
         }
@@ -254,12 +92,23 @@
             return a.querySelector(".subtype").innerText < b.querySelector(".subtype").innerText ? -1 : 1;
         }
 
-        $(document).ready(function () {
-
+        $(document).ready(function () 
+        {
             $("input[type=checkbox]").on("click", function () {
-                toggleVehicles();
-            })
+                let isAllUnchecked = $("input[type=checkbox]:checked").length === 0;
+                if(isAllUnchecked === true){
+                    $(".vehicles").removeClass("hidden");
+                    return;
+                }
 
+                $(".vehicles").addClass("hidden");
+                let name = $(this).attr("name");
+
+                $(`input[name=${name}]:checked`).each(function (){
+                    let selGroup = $(this).val();
+                    $(`.${selGroup}`).removeClass("hidden");
+                });
+            });
 
             $("#sortSelector").change(function () {
                 if ($(this).find("option:selected").attr("name") === "lowToHigh") {

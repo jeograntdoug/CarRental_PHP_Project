@@ -1,4 +1,6 @@
-<li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/">Reservation</a></li>
-<li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/summary/profile">Profile</a></li>
-<li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/summary/orders">Orders</a></li>
-<li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/summary/map">Map</a></li>
+{% if loginUser %}
+    <li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/">Reservation</a></li>
+    <li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/users/{{loginUser.id}}">Profile</a></li>
+    <li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/summary/orders">Orders</a></li>
+    <li class="mx-5 my-2 font-bold text-lg hover:text-red-800 text-white"><a href="/summary/map">Map</a></li>
+{% endif %}
