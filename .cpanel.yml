@@ -1,0 +1,5 @@
+---
+deployment:
+    tasks:
+        - export DEPLOYPATH=/home/cp4966/heok.ipd20.com/
+        - / index.php $DEPLOYPATH
