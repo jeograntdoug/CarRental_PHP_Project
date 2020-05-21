@@ -17,7 +17,8 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "App\\": "src/",
+      "App\\Controller\\": ["src/Controller/" , "src/Controller/Admin/", "src/Controller/User/"]
     }
   },
   "autoload-dev": {
