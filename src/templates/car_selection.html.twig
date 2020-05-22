@@ -5,8 +5,9 @@
 {% endblock title %}
 
 {% block section %}
-<div>
-    <div class="fixed w-1/5 inline-block border-2 border-teal-800 p-5">
+<div class="flex">
+    <div class="w-1/4">
+    <div class="fixed w-1/4 inline-block border-2 border-teal-800 p-5">
         <h1 class="font-bold text-4xl text-dark">CHOOSE A VEHICLE CLASS</h1>
         <table>
             <tr>
@@ -63,7 +64,8 @@
 
         </table>
     </div>
-    <div class="ml-1/5 w-3/5 mx-auto bg-blue-100" id="vehicleList">
+    </div>
+    <div class="w-3/5 bg-blue-100" id="vehicleList">
         <div class="text-right">
             <span class="font-bold pr-3 inline-block">SORT BY :</span>
             <select id="sortSelector">

@@ -11,7 +11,7 @@
                     <div class="inline-block pr-5">
                         <span class="font-bold">Hello,
                             <a id="userProfile" class="text-xl font-bold text-red-500 pl-1 inline-block"
-                               href="/users/{{ loginUser.id }}">{{ loginUser.name }}</a>
+                               href="/users/{{ loginUser.id }}">{{ loginUser.firstname }}</a>
                         </span>
                         {% if loginUser.role == 'admin' %}
                             <a class="underline" href="/admin">Go To Admin Page</a>

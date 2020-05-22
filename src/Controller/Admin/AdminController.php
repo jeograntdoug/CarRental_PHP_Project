@@ -121,6 +121,21 @@ class AdminController
         ]);;    
     }
 
+    public function showJson (Request $request, Response $response, array $args)
+    {
+        $id = $args['id'];
+
+        $item = DB::queryFirstRow(
+            "SELECT %l FROM %l
+            WHERE id = %i",
+            implode(",",$this->fieldList),
+            $this->tableName, $id
+        );
+
+        $response->getBody()->write(json_encode($item));
+        return $response;
+    }
+
     public function edit (Request $request, Response $response, array $args)
     {
         $id = $args['id'];

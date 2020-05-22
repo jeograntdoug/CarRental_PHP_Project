@@ -9,6 +9,11 @@ use DB;
 
 class UserReservationController
 {
+    public function reviewReservation(Request $request, Response $response) {
+        $view = Twig::fromRequest($request);
+        return $view->render($response, 'review_reserve.html.twig');
+    }
+
     public function showAvaliableCar (Request $request, Response $response, array $args) {
         $view = Twig::fromRequest($request);
 

@@ -26,8 +26,9 @@
             <div>
                 <p class="text-lg font-bold">CAD
                     <span class="dailyPrice">{{ vehicle.dailyPrice }}</span>
-                </p><br><br>
-                <button id="btSelect" class="font-bold text-lg px-4 py-1 text-blue-800 bg-yellow-100 border-solid border-teal-800 border-2">Select</button>
+                </p>
+                <button class="btSelect font-bold text-lg px-4 py-1 text-blue-800 bg-yellow-100 border-solid border-teal-800 border-2">Select</button>
+                <span class="vehicleId">{{ vehicle.id}}</span>
             </div>
         </div>
     </div>
@@ -35,8 +36,23 @@
 
 <script>
     $(document).ready(function () {
-        $("#btSelect").click(function () {
-            
+        $(".btSelect").click(function () {
+            let carTypeId = $(this).next(".vehicleId").text();
+            let dailyPrice = $(this).prev().children(".dailyPrice").text();
+
+            if (typeof(Storage) !== "undefined") {
+                if(sessionStorage.selCar){
+                    let selCar = JSON.parse(sessionStorage.selCar); 
+                    selCar.carTypeId = carTypeId;
+                    selCar.dailyPrice = dailyPrice;
+
+                    sessionStorage.selCar = JSON.stringify(selCar);
+                }
+            } else {
+                alert("Sorry, your browser does not support web storage...");
+            }
+
+            window.location.href = "/review_reserve";
         });
     });
 </script>

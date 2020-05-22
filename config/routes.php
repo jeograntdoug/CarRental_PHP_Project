@@ -112,48 +112,13 @@
 
         $app->get('/car_selection', UserReservationController::class . ':showAvaliableCar');
         $app->post('/car_selection', UserReservationController::class . ':chooseCar' );
-
-        $app->get('/review_reserve', function (Request $request, Response $response, array $args) {
-            $view = Twig::fromRequest($request);
-
-
-            $selId = $_SESSION['selVehicleTypeId'];
-            $selVehicle = DB::queryFirstRow("SELECT * FROM carTypes WHERE id = %s", $selId);
-            $_SESSION['selVehicle'] = $selVehicle;
-            if (isset($_SESSION['userId'])) {
-                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
-            } else {
-                $userInfo = false;
-            }
-            return $view->render($response, 'review_reserve.html.twig', [
-                'selVehicle' => $selVehicle,
-                'userInfo' => $userInfo,
-                'dateLocationData' => $_SESSION
-            ]);
-        });
-
-        $app->post('/review_reserve/{id:[0-9]+}', function (Request $request, Response $response, array $args) {
-            $view = Twig::fromRequest($request);
-
-            $selId = $args['id'];
-
-            $_SESSION['selVehicleTypeId'] = $selId;
-            $selVehicle = DB::queryFirstRow("SELECT * FROM carTypes WHERE id = %s", $selId);
-            $_SESSION['selVehicle'] = $selVehicle;
-            if (isset($_SESSION['userId'])) {
-                $userInfo = DB::queryFirstRow("SELECT * FROM users WHERE id= %s", $_SESSION['userId']);
-            } else {
-                $userInfo = false;
-            }
-            return $view->render($response, 'review_reserve.html.twig', [
-                'selVehicle' => $selVehicle,
-                'userInfo' => $userInfo,
-                'dateLocationData' => $_SESSION,
-                'url' => '/review_reserve'
-            ]);
-        });
+        $app->get('/review_reserve', UserReservationController::class . ':reviewReservation');
+        $app->get('/ajax/review_reserve/store/{id:[0-9]+}', AdminStoreController::class . ':showJson');
+        $app->get('/ajax/review_reserve/cartype/{id:[0-9]+}', AdminCarTypeController::class . ':showJson');
+        $app->post('/reserve_submit', AdminReservationController::class . ":create");
 
 
+/*
         $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
@@ -191,8 +156,7 @@
 
             return $response;
         });
-
-
+*/
         $app->post('/modified_datetime', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 
