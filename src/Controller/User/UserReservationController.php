@@ -29,8 +29,8 @@ class UserReservationController
 
         $vehicleList = DB::query(
             "SELECT ct.*
-            FROM carrental.cars AS c
-            LEFT JOIN carrental.carTypes AS ct
+            FROM cars AS c
+            LEFT JOIN carTypes AS ct
             ON ct.id = c.carTypeid
             WHERE c.storeId = 3
             AND c.status = 'avaliable'
@@ -55,8 +55,8 @@ class UserReservationController
 
         $minPriceList = DB::query(
             "SELECT %l, min(ct.dailyPrice) AS 'dailyPrice'
-            FROM carrental.cars AS c
-            LEFT JOIN carrental.carTypes AS ct
+            FROM cars AS c
+            LEFT JOIN carTypes AS ct
             ON ct.id = c.carTypeid
             WHERE c.storeId = 3
             AND c.status = 'avaliable'
