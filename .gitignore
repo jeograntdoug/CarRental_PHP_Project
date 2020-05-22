@@ -94,5 +94,6 @@ sftp.json
 /node_modules
 /tmp
 /cache
+/logs
 
 .env
