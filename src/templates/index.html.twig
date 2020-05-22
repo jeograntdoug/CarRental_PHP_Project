@@ -215,7 +215,6 @@
             });
         }
 
-       //google.maps.event.addDomListener(window, 'load', initMap);
 
         function formatStoreInfo(store) {
             return `<p class="font-bold text-base">${store.storeName}</p>
@@ -386,6 +385,7 @@
         }
 
         $(document).ready(function () {
+            google.maps.event.addDomListener(window, 'load', initMap);
 
             $("#formTimeAndLocation").submit(function () {
                 let input = {

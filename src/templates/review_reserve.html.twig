@@ -170,8 +170,7 @@
                     <div class="text-xs text-right">
                         ${carType.passengers} passengers, 
                         ${carType.bags} bags
-                    </div>
-                    `;
+                    </div>`;
                     $("#tdCarType").html(text);
                     netFees = carType.dailyPrice * rentDays;
                     tps = netFees * 0.05;
@@ -201,7 +200,7 @@
 
             if (typeof(Storage) !== "undefined") {
                 if(sessionStorage.selCar){
-                    selCar = JSON.parse(sessionStorage.selCar);
+                    let selCar = JSON.parse(sessionStorage.selCar);
                     startDateTime = `${selCar.pickupDate} ${selCar.pickupTime}`;
                     returnDateTime = `${selCar.returnDate} ${selCar.returnTime}`;
                     $("#tdPickDate").text(startDateTime);
@@ -254,15 +253,18 @@
                     dataType: "json",
                     data: JSON.stringify(dataString)
                 }).done(function (response) {
-                    toastr.success("Your reservation has been saved!", "Reservation success");
+                    toastr.success("Let's go to Home Page!", "Reservation success");
+                    $("#btSubmit").hide();
                     sessionStorage.removeItem('selCar');
-                    window.location.replace("/");
+                    setTimeout(delayLittle, 2000);
                 }).fail(function (jqxhr) {
                     toastr.error("Cannot save your reservation. Please contact to store", "Reservation success");
-                }).always(function () {
-
                 });
             })
+
+            function delayLittle(){
+                window.location.replace("/");
+            }
 
         })
     </script>
