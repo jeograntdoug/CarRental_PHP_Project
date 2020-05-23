@@ -16,7 +16,7 @@
             </ul>
         {% endif %}
 
-        <form class="text-lg p-4" id="formTimeAndLocation" method="post" action="/car_selection">
+        <div class="text-lg p-4">
             <div class="">
                 <div class="flex inline-block">
                     <span class="mb-2 font-bold w-5/12 ">1. PICK-UP TIME</span>
@@ -109,9 +109,9 @@
             <div id="googleMap" class="my-5 w-3/4" style="height: 500px"></div>
 
             <div class="my-6 text-right">
-                <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
+                <button id="btContinue" class="px-8 py-2 mt-8 rounded bg-green-700 text-white">CONTINUE</button>
             </div>
-        </form>
+        </div>
     </div>
 
 {% endblock section %}
@@ -125,6 +125,7 @@
         var defaultLocation = {lat: 45.5017, lng: -73.5673};
         var map;
         var markers = [];
+        var isStoreChanged = false;
 
         // Sets the map on all markers in the array.
         function setMapOnAll(map) {
@@ -195,6 +196,7 @@
                 }
                 curLocationElement.val(`${store.storeName}  (${store.address} ${store.postCode})`);
                 curLocationElement.next().next().val(store.id);
+                isStoreChanged = true;
             })
 
             markers.push(marker);
@@ -428,23 +430,33 @@
                     if(selCar.returnStoreId){
                         if(selCar.returnStoreId == selCar.pickupStoreId){
                             $("#returnStoreId").val(selCar.returnStoreId);
-                            return;
+                        } else {
+                            $.ajax({
+                                url: "/ajax/review_reserve/store/" + selCar.returnStoreId,
+                                type: "GET",
+                                dataType: "json"
+                            }).done(function (data) {
+                                $("#ckbIsDiffLocation").prop("checked",true);
+                                let text = `${data.storeName} (${data.address} ${data.postCode})`;
+                                $("#returnSearchText").val(text);
+                                $("#returnLocation").show();
+                            });
                         }
-                        $.ajax({
-                            url: "/ajax/review_reserve/store/" + selCar.returnStoreId,
-                            type: "GET",
-                            dataType: "json"
-                        }).done(function (data) {
-                            $("#ckbIsDiffLocation").prop("checked",true);
-                            let text = `${data.storeName} (${data.address} ${data.postCode})`;
-                            $("#returnSearchText").val(text);
-                            $("#returnLocation").show();
-                        });
                     }
                 }
+            } else {
+                $("#pickupSearchText").val("");
+                $("#returnSearchText").val("");
+                $("#pickupStoreId").val("");
+                $("#returnStoreId").val("");
+                $("#pickupDate").val(getTodayDate);
+                $("#pickupTime").val(getNowTime);
+                $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
+                $("#returnTime").val(getNowTime);
             }
 
-            $("#formTimeAndLocation").submit(function () {
+            $("#btContinue").click(function () {
+                event.preventDefault();
                 let input = {
                     pickupDate : $("#pickupDate").val(),
                     pickupTime : $("#pickupTime").val(),
@@ -458,13 +470,19 @@
                     if (typeof(Storage) !== "undefined") {
                         let data = JSON.stringify(input);
                         sessionStorage.selCar = data;
+                        if(isStoreChanged){
+                            nextUrl = "/car_selection?pickupStoreId=" + input.pickupStoreId;
+                        }
+                        window.location.href = nextUrl;
                     } else {
                         alert("Sorry, your browser does not support web storage...");
                     }
-                } else {
-                    event.preventDefault();
                 }
             });
+
+            $("#pickupStoreId").change(function () {
+                console.log("hello");
+            })
 
 
             $("#pickupDate").attr('min', getTodayDate);
@@ -566,17 +584,6 @@
             $("#returnSearchText").on("focus", function () {
                 curLocationElement = $("#returnSearchText");
             })
-
-            $(window).bind("pageshow", function () {
-                $("#pickupSearchText").val("");
-                $("#returnSearchText").val("");
-                $("#pickupStoreId").val("");
-                $("#returnStoreId").val("");
-                $("#pickupDate").val(getTodayDate);
-                $("#pickupTime").val(getNowTime);
-                $("#returnDate").val(getReturnDate(Number($("#rentDays").val())));
-                $("#returnTime").val(getNowTime);
-            });
         })
 
 

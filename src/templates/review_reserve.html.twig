@@ -36,7 +36,7 @@
                 <div class="my-8 px-5 py-3 bg-gray-400 border-black border">
                     <table class="w-full">
                         <tr><th>VEHICLE</th></tr>
-                        <tr><th class="text-right"><a class="underline text-xs text-green-700" href="/car_selection">MODIFY</a></th></tr> 
+                        <tr><th class="text-right"><a id="btModifyCarType" class="underline text-xs text-green-700" href="/car_selection">MODIFY</a></th></tr> 
 
                         <tr><td>CarType</td></tr>
                         <tr><td id="tdCarType" class="text-sm">CarType</td></tr>
@@ -109,6 +109,11 @@
                 </div>
                 {% if loginUser != false %}
                     <div class="flex justify-center mt-10">
+                        <button id="btStartOver"
+                                class="font-bold text-lg bg-green-700 text-white w-1/4 mr-2 py-2 px-5 inline-block">
+                            START OVER
+                        </button>
+
                         <button id="btSubmit"
                                 class="font-bold text-lg bg-green-700 text-white w-1/4 py-2 px-5 inline-block">
                             RESERVE ORDER
@@ -209,6 +214,9 @@
                     rentDays = (new Date(returnDateTime) - new Date(startDateTime)) / (1000*60*60*24);
 
                     setStoreInfo("tdPickStore", selCar.pickupStoreId);
+                    // set carType modification url
+                    $("#btModifyCarType").attr("href", "/car_selection?pickupStoreId=" + selCar.pickupStoreId);
+
                     if(selCar.pickupStoreId == selCar.returnStoreId){
                         $("#tdReturnStore").text("Same as PICK-UP STORE");
                     } 
@@ -222,6 +230,17 @@
                 alert("Sorry, your browser does not support web storage...");
             }
 
+
+            $("#btStartOver").click(function () {
+                if (typeof(Storage) !== "undefined") {
+                    if(sessionStorage.selCar){
+                        sessionStorage.removeItem("selCar");
+                        window.location.replace("/");
+                    }
+                } else {
+                    alert("Sorry, your browser does not support web storage...");
+                }
+            });
 
             $("#btSubmit").on('click', function () {
                 let selCar = {};

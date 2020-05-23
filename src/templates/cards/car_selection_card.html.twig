@@ -33,6 +33,11 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="pl-10 flex items-center hover:bg-green-300 border border-white flex-row">
+    There is no car avaliable. Go back to previous page.
+</div>
+{% endfor %}
 
 <script>
     $(document).ready(function () {
@@ -56,4 +61,3 @@
         });
     });
 </script>
-{% endfor %}

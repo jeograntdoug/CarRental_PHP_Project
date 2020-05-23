@@ -110,8 +110,7 @@
             return $response;
         });
 
-        $app->get('/car_selection', UserReservationController::class . ':showAvaliableCar');
-        $app->post('/car_selection', UserReservationController::class . ':chooseCar' );
+        $app->get('/car_selection', UserReservationController::class . ':chooseCar' );
         $app->get('/review_reserve', UserReservationController::class . ':reviewReservation');
         $app->get('/ajax/review_reserve/store/{id:[0-9]+}', AdminStoreController::class . ':showJson');
         $app->get('/ajax/review_reserve/cartype/{id:[0-9]+}', AdminCarTypeController::class . ':showJson');

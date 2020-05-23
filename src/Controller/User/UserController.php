@@ -203,7 +203,7 @@ class UserController
     private function photoFileToBinary($idPhoto){
         if($this->isValidPhoto($idPhoto))
         {
-            $tmpPath = __DIR__ . '/../../tmp/'. session_id() .'.' ;
+            $tmpPath = __DIR__ . '/../../../tmp/'. session_id() .'.' ;
 
             if($idPhoto->getClientMediaType() == 'image/png'){
                 $tmpPath .= 'png';

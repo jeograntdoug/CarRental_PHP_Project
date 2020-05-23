@@ -42,6 +42,48 @@
     </footer>
 </div>
 
+<script>
+    let resvInfoPaths= [
+        "/",
+        "/car_selection",
+        "/review_reserve",
+        "/login",
+        "/register",
+    ];
+
+    let nextUrl = "#";
+
+    if(typeof(Storage) !== "undefined"){
+        let pathname = document.location.pathname;
+        let index = resvInfoPaths.indexOf(pathname);
+
+        if( index !== -1)
+        {
+            if(sessionStorage.prevPath == "/review_reserve"
+                && sessionStorage.prevPath != pathname)
+            {
+                nextUrl = sessionStorage.prevPath;
+            } 
+            else if(index === 0)
+            {
+                nextUrl = "/car_selection";
+            }
+            else if(index === 1)
+            {
+                nextUrl = "/review_reserve";
+            }
+        } 
+        else 
+        {
+            if(typeof(Storage) !== "undefined"){
+                sessionStorage.removeItem("selCar");
+            }
+        }
+
+        sessionStorage.prevPath = pathname;
+    }
+
+</script>
     {% block scripts %}
     {% endblock scripts %}
 </body>

@@ -11,6 +11,7 @@
     $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 
 
+    $baseUrl = '';
     if (strpos($_SERVER['HTTP_HOST'], "ipd20.com") !== false) {
         // hosting on ipd20.com
         DB::$user = 'cp4966_heok';

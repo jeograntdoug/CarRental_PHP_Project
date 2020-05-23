@@ -14,32 +14,23 @@ class UserReservationController
         return $view->render($response, 'review_reserve.html.twig');
     }
 
-    public function showAvaliableCar (Request $request, Response $response, array $args) {
-        $view = Twig::fromRequest($request);
-
-        $vehiclesInfo = $_SESSION;
-
-        $allVehicles = DB::query("SELECT * FROM carTypes");
-
-        return $view->render($response, 'car_selection.html.twig', [
-            'allVehicles' => $allVehicles,
-            'vehiclesInfo' => $vehiclesInfo
-        ]);
-    }
-
     public function chooseCar (Request $request, Response $response, array $args) 
     {
         $view = Twig::fromRequest($request);
-        $dateLocationData = $request->getParsedBody();
+        $get = $request->getQueryParams();
+
+        if(!isset($get['pickupStoreId'])){
+            return $response->withHeader("Location","/");
+        }
 
         $vehicleList = DB::query(
             "SELECT ct.*
             FROM cars AS c
             LEFT JOIN carTypes AS ct
             ON ct.id = c.carTypeid
-            WHERE c.storeId = 3
+            WHERE c.storeId = %s
             AND c.status = 'avaliable'
-            GROUP BY ct.id"
+            GROUP BY ct.id", $get['pickupStoreId']
         );
 
         $categoryPriceList = $this->getMinPrice("category");
