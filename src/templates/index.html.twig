@@ -108,16 +108,18 @@
 
             <div id="googleMap" class="my-5 w-3/4" style="height: 500px"></div>
 
-            <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTHaPcilifXM74SAWo-_yGmXDnEwGYR4Y&language=en&region-CA&callback=initMap">
-            </script>
-
             <div class="my-6 text-right">
                 <input type="submit" class="px-8 py-2 mt-8 rounded bg-green-700 text-white" value="CONTINUE">
             </div>
         </form>
     </div>
 
+{% endblock section %}
+
+{% block scripts %}
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFc-jhoXzMv4NW-2qF400eEgu7AvkpscQ&language=en&region-CA&callback=initMap">
+</script>
     <script>
         var curLocationElement = $("#pickupSearchText");
         var defaultLocation = {lat: 45.5017, lng: -73.5673};
@@ -385,7 +387,62 @@
         }
 
         $(document).ready(function () {
-            google.maps.event.addDomListener(window, 'load', initMap);
+            {# google.maps.event.addDomListener(window, 'load', initMap); #}
+
+            if (typeof(Storage) !== "undefined") {
+                if(sessionStorage.selCar){
+                    let selCar = JSON.parse(sessionStorage.selCar);
+                    if(selCar.pickupDate){
+                        $("#pickupDate").val(selCar.pickupDate);
+                    }
+                    if(selCar.pickupTime){
+                        $("#pickupTime").val(selCar.pickupTime);
+                    }
+                    if(selCar.returnDate){
+                        $("#returnDate").val(selCar.returnDate);
+                    }
+                    if(selCar.returnTime){
+                        $("#returnTime").val(selCar.returnTime);
+                    }
+
+                    if(selCar.pickupDate || selCar.pickupTime
+                        || selCar.returnDate || selCar.returnTime)
+                    {
+                        let dayDiff = (new Date(selCar.returnDate + " " + selCar.returnTime)
+                                - new Date(selCar.pickupDate + " " + selCar.pickupTime)) / (60*60*24*1000);
+                        $("#rentDays").val(dayDiff);
+                    }
+
+                    if(selCar.pickupStoreId){
+                        $.ajax({
+                            url: "/ajax/review_reserve/store/" + selCar.pickupStoreId,
+                            type: "GET",
+                            dataType: "json"
+                        }).done(function (data) {
+                            let text = `${data.storeName} (${data.address} ${data.postCode})`;
+                            $("#pickupStoreId").val(selCar.pickupStoreId);
+                            $("#pickupSearchText").val(text);
+                        });
+                    }
+
+                    if(selCar.returnStoreId){
+                        if(selCar.returnStoreId == selCar.pickupStoreId){
+                            $("#returnStoreId").val(selCar.returnStoreId);
+                            return;
+                        }
+                        $.ajax({
+                            url: "/ajax/review_reserve/store/" + selCar.returnStoreId,
+                            type: "GET",
+                            dataType: "json"
+                        }).done(function (data) {
+                            $("#ckbIsDiffLocation").prop("checked",true);
+                            let text = `${data.storeName} (${data.address} ${data.postCode})`;
+                            $("#returnSearchText").val(text);
+                            $("#returnLocation").show();
+                        });
+                    }
+                }
+            }
 
             $("#formTimeAndLocation").submit(function () {
                 let input = {
@@ -431,7 +488,7 @@
                 "hideEasing": "linear",
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
-            }
+            };
 
             $('form input').keydown(function (e) {
                 if (e.keyCode == 13) {
@@ -443,16 +500,15 @@
             $("#pickupSearchText").on("change keypress paste", function () {
                 var input = $(this).val();
                 resetMapCenter(input.substr(0, input.length - 6));
-            })
+            });
 
             $("#returnSearchText").on("change keypress paste", function () {
                 var input = $(this).val();
                 resetMapCenter(input.substr(0, input.length - 6));
-            })
+            });
 
 
             $("#pickupSearchText").on('keypress', function () {
-                //alert(getTodayDate());
                 searchCities(this, "#pickupLocationList");
             });
 
@@ -531,6 +587,6 @@
 
 
     </script>
+{% endblock scripts %}
 
-{% endblock section %}
 

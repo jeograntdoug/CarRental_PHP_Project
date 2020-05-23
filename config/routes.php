@@ -117,46 +117,6 @@
         $app->get('/ajax/review_reserve/cartype/{id:[0-9]+}', AdminCarTypeController::class . ':showJson');
         $app->post('/reserve_submit', AdminReservationController::class . ":create");
 
-
-/*
-        $app->post('/reserve_submit', function (Request $request, Response $response, array $args) {
-            $view = Twig::fromRequest($request);
-
-            //$response = $response->withHeader('Content-type', 'application/json; charset=UTF-8');
-
-            $jsonText = $request->getBody()->getContents();
-
-            $reservationData = json_decode($jsonText, true);
-
-            $datetime = $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime'];
-
-            $json = array(
-                "userId" => $_SESSION['userId'],
-                "carTypeId" => $_SESSION['selVehicleTypeId'],
-                "startDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['pickupDate'] . " " . $_SESSION['pickupTime']),
-                "returnDateTime" => date_create_from_format('Y-m-d H:i', $_SESSION['returnDate'] . " " . $_SESSION['returnTime']),
-                "dailyPrice" => $reservationData['dailyPrice'],
-                "netFees" => $reservationData['netFees'],
-                "tps" => $reservationData['tps'],
-                "tvq" => $reservationData['tvq'],
-                "rentDays" => $reservationData['rentDays'],
-                "rentStoreId" => $_SESSION['pickupStoreId'],
-                "returnStoreId" => isset($_SESSION['returnStoreId']) ? $_SESSION['returnStoreId'] : $_SESSION['pickupStoreId'], //FIXME when return store is implemented!!!
-            );
-
-            $result = DB::insert("reservations", $json);
-
-            if ($result) {
-                $result = array(
-                    "url" => "../summary/profile"
-                );
-            }
-
-            $response->getBody()->write(json_encode($result));
-
-            return $response;
-        });
-*/
         $app->post('/modified_datetime', function (Request $request, Response $response, array $args) {
             $view = Twig::fromRequest($request);
 

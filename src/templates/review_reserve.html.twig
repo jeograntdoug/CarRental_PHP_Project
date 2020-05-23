@@ -197,6 +197,7 @@
             let tvq = 0;
             let startDateTime = '';
             let returnDateTime = '';
+            let userId = "{{ loginUser.id }}";
 
             if (typeof(Storage) !== "undefined") {
                 if(sessionStorage.selCar){
@@ -234,7 +235,7 @@
                 }
 
                 let dataString = {
-                    userId: {{ loginUser.id }},
+                    userId: userId,
                     rentDays: rentDays,
                     netFees: netFees,
                     tps: tps,
