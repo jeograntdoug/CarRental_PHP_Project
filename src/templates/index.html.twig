@@ -468,8 +468,15 @@
 
                 if(isValidForm(input)){
                     if (typeof(Storage) !== "undefined") {
-                        let data = JSON.stringify(input);
-                        sessionStorage.selCar = data;
+                        
+                        if(sessionStorage.selCar){
+                            let oldSelCar = JSON.parse(sessionStorage.selCar);
+                            input.dailyPrice = oldSelCar.dailyPrice;
+                            input.carTypeId = oldSelCar.carTypeId;
+                        } 
+
+                        sessionStorage.selCar = JSON.stringify(input);
+
                         if(isStoreChanged){
                             nextUrl = "/car_selection?pickupStoreId=" + input.pickupStoreId;
                         }
