@@ -14,7 +14,7 @@ class UserReservationController
         return $view->render($response, 'review_reserve.html.twig');
     }
 
-    public function chooseCar (Request $request, Response $response, array $args) 
+    public function showCarTypesInStore (Request $request, Response $response, array $args) 
     {
         $view = Twig::fromRequest($request);
         $get = $request->getQueryParams();
@@ -22,6 +22,7 @@ class UserReservationController
         if(!isset($get['pickupStoreId'])){
             return $response->withHeader("Location","/");
         }
+        $storeId = $get['pickupStoreId'];
 
         $vehicleList = DB::query(
             "SELECT ct.*
@@ -30,12 +31,12 @@ class UserReservationController
             ON ct.id = c.carTypeid
             WHERE c.storeId = %s
             AND c.status = 'avaliable'
-            GROUP BY ct.id", $get['pickupStoreId']
+            GROUP BY ct.id", $storeId
         );
 
-        $categoryPriceList = $this->getMinPrice("category");
-        $psgNumPriceList = $this->getMinPrice("passengers");
-        $bagNumPriceList = $this->getMinPrice("bags");
+        $categoryPriceList = $this->getMinPrice("category", $storeId);
+        $psgNumPriceList = $this->getMinPrice("passengers", $storeId);
+        $bagNumPriceList = $this->getMinPrice("bags", $storeId);
 
         return $view->render($response, 'car_selection.html.twig', [
             'vehicleList' => $vehicleList,
@@ -45,7 +46,7 @@ class UserReservationController
         ]);
     }
 
-    private function getMinPrice($column)
+    private function getMinPrice($column, $storeId)
     {
         $column = "ct." . $column;
 
@@ -54,9 +55,9 @@ class UserReservationController
             FROM cars AS c
             LEFT JOIN carTypes AS ct
             ON ct.id = c.carTypeid
-            WHERE c.storeId = 3
+            WHERE c.storeId = %s
             AND c.status = 'avaliable'
-            GROUP BY %l", $column, $column
+            GROUP BY %l", $column, $storeId, $column
         );
         return $minPriceList;
     }

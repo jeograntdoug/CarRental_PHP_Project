@@ -129,9 +129,6 @@
 {% endblock section %}
 
 {% block scripts %}
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFc-jhoXzMv4NW-2qF400eEgu7AvkpscQ&language=en&region-CA&callback=initMap">
-</script>
     <script>
         var curLocationElement = $("#pickupSearchText");
         var defaultLocation = {lat: 45.5017, lng: -73.5673};
@@ -487,9 +484,9 @@
                         sessionStorage.selCar = JSON.stringify(input);
 
                         if(isStoreChanged){
-                            nextUrl = "/car_selection?pickupStoreId=" + input.pickupStoreId;
+                            sessionStorage.nextUrl = "/car_selection?pickupStoreId=" + input.pickupStoreId;
                         }
-                        window.location.href = nextUrl;
+                        window.location.href = sessionStorage.nextUrl;
                     } else {
                         alert("Sorry, your browser does not support web storage...");
                     }
@@ -584,14 +581,14 @@
             })
         })
 
-        initMap();
-
-
         $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
             console.log("Ajax error occured on " + settings.url);
             alert("Ajax error occurred");
         });
     </script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFc-jhoXzMv4NW-2qF400eEgu7AvkpscQ&callback=initMap">
+</script>
 {% endblock scripts %}
 
 

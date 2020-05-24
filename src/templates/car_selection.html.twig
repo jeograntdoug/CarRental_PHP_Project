@@ -5,76 +5,80 @@
 {% endblock title %}
 
 {% block section %}
-<div class="flex">
-    <div class="w-1/4 lg:w-1/5">
-        <div class="sticky top-0 border-2 border-teal-800 p-2">
-            <h1 class="font-bold text-lg text-center">CHOOSE A VEHICLE CLASS</h1>
-            <table class="text-left">
-                <tr>
-                    <th class="pt-4">VEHICLE TYPE</th>
-                    <th class="pt-4">Total From</th>
-                </tr>
+<div class="max-w-5xl mx-auto">
+    <h1 class="font-bold text-4xl py-4">CAR SELECTION</h1>
+    <hr class="border-2 border-gray-500 mb-2">
+    <div class="flex">
+        <div class="w-1/4">
+            <div class="sticky top-0 border-2 border-teal-800 p-2">
+                <h1 class="font-bold text-lg text-center">CHOOSE A VEHICLE CLASS</h1>
+                <table class="text-left">
+                    <tr>
+                        <th class="pt-4">VEHICLE TYPE</th>
+                        <th class="pt-4">Total From</th>
+                    </tr>
 
-                {% for category in categoryPriceList %}
-                <tr>
-                    <td>
-                        <input type="checkbox" name="carType" value="{{ category.category }}">
-                        <label>{{ category.category }}s</label>
-                    </td>
-                
-                    <td class="text-xs">${{ category.dailyPrice }}</td>
-                </tr>
-                {% endfor %}
+                    {% for category in categoryPriceList %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="carType" value="{{ category.category }}">
+                            <label>{{ category.category }}s</label>
+                        </td>
+                    
+                        <td class="text-xs">${{ category.dailyPrice }}</td>
+                    </tr>
+                    {% endfor %}
 
-                <tr>
-                    <th class="pt-4">NUMBER OF PASSENGERS</th>
-                    <th class="pt-4"></th>
-                </tr>
+                    <tr>
+                        <th class="pt-4">NUMBER OF PASSENGERS</th>
+                        <th class="pt-4"></th>
+                    </tr>
 
-                {% for psgNum in psgNumPriceList %}
-                <tr>
-                    <td>
-                        <input type="checkbox" name="psgNum" value="passengers_{{ psgNum.passengers }}">
-                        <label>
-                            {{ psgNum == psgNumList|last 
-                                ? psgNum.passengers ~'+' : psgNum.passengers }}
-                        </label>
-                    </td>
-                    <td class="text-xs">${{ psgNum.dailyPrice }}</td>
-                </tr>
-                {% endfor %}
+                    {% for psgNum in psgNumPriceList %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="psgNum" value="passengers_{{ psgNum.passengers }}">
+                            <label>
+                                {{ psgNum == psgNumList|last 
+                                    ? psgNum.passengers ~'+' : psgNum.passengers }}
+                            </label>
+                        </td>
+                        <td class="text-xs">${{ psgNum.dailyPrice }}</td>
+                    </tr>
+                    {% endfor %}
 
-                <tr>
-                    <th class="pt-4">NUMBER OF BAGS</th>
-                    <th class="pt-4"></th>
-                </tr>
-                {% for bagNum in bagNumPriceList %}
-                <tr>
-                    <td>
-                        <input type="checkbox" name="bagNum" value="bags_{{ bagNum.bags }}">
-                        <label>
-                            {{ bagNum == bagNumList|last 
-                                ? bagNum.bags ~'+' : bagNum.bags}}
-                        </label>
-                    </td>
-                    <td class="text-xs">${{ bagNum.dailyPrice }}</td>
-                </tr>
-                {% endfor %}
+                    <tr>
+                        <th class="pt-4">NUMBER OF BAGS</th>
+                        <th class="pt-4"></th>
+                    </tr>
+                    {% for bagNum in bagNumPriceList %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="bagNum" value="bags_{{ bagNum.bags }}">
+                            <label>
+                                {{ bagNum == bagNumList|last 
+                                    ? bagNum.bags ~'+' : bagNum.bags}}
+                            </label>
+                        </td>
+                        <td class="text-xs">${{ bagNum.dailyPrice }}</td>
+                    </tr>
+                    {% endfor %}
 
-            </table>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="w-4/5 lg:w-3/5 bg-blue-100" id="vehicleList">
-        <div class="text-right">
-            <span class="font-bold pr-3 inline-block">SORT BY :</span>
-            <select id="sortSelector">
-                <option>Featured</option>
-                <option name="lowToHigh">Price low to high</option>
-                <option name="highToLow">Price high to low</option>
-            </select>
-        </div>
-        <div>
-            {% include "cards/car_selection_card.html.twig" %}
+        <div class="w-4/5 bg-blue-100" id="vehicleList">
+            <div class="text-right">
+                <span class="font-bold pr-3 inline-block">SORT BY :</span>
+                <select id="sortSelector">
+                    <option>Featured</option>
+                    <option name="lowToHigh">Price low to high</option>
+                    <option name="highToLow">Price high to low</option>
+                </select>
+            </div>
+            <div>
+                {% include "cards/car_selection_card.html.twig" %}
+            </div>
         </div>
     </div>
 </div>
@@ -101,14 +105,31 @@
                     $(".vehicles").removeClass("hidden");
                     return;
                 }
-
+                
                 $(".vehicles").addClass("hidden");
-                let name = $(this).attr("name");
+                
+                let filteredCars = $(".vehicles");
+                let filterGroups = ["carType", "bagNum", "psgNum"];
 
-                $(`input[name=${name}]:checked`).each(function (){
-                    let selGroup = $(this).val();
-                    $(`.${selGroup}`).removeClass("hidden");
+                filterGroups.forEach(function (group) {
+                    let filters = [];
+                    $(`input[name=${group}]:checked`).each(function (){
+                        filters.push($(this).val());
+                    });
+
+                    if(filters.length !== 0){
+                        filteredCars = filteredCars.filter(function () {
+                            let result = false;
+                            let element = this;
+                            filters.forEach(function (item) {
+                                result = result || $(element).hasClass(item);
+                            });
+                            return result;
+                        });
+                    }
                 });
+
+                filteredCars.removeClass("hidden");
             });
 
             $("#sortSelector").change(function () {

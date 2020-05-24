@@ -47,7 +47,6 @@
     */
     
     // next page url of current page
-    let nextUrl = "#";
 
     let resvInfoPaths= [
         "/",
@@ -59,31 +58,12 @@
 
     if(typeof(Storage) !== "undefined"){
         let pathname = document.location.pathname;
-        let index = resvInfoPaths.indexOf(pathname);
-
-        if( index !== -1)
-        {
-            if(sessionStorage.prevPath == "/review_reserve"
-                && sessionStorage.prevPath != pathname)
-            {
-                nextUrl = sessionStorage.prevPath;
-            } 
-            else if(index === 0)
-            {
-                nextUrl = "/car_selection";
-            }
-            else if(index === 1)
-            {
-                nextUrl = "/review_reserve";
-            }
-        } 
-        else 
-        {
+        if(!resvInfoPaths.includes(pathname)){
             if(typeof(Storage) !== "undefined"){
                 sessionStorage.removeItem("selCar");
+                sessionStorage.removeItem("nextUrl");
             }
         }
-        sessionStorage.prevPath = pathname;
     }
 </script>
 
