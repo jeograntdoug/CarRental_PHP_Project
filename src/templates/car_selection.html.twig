@@ -6,66 +6,65 @@
 
 {% block section %}
 <div class="flex">
-    <div class="w-1/4">
-    <div class="fixed w-1/4 inline-block border-2 border-teal-800 p-5">
-        <h1 class="font-bold text-4xl text-dark">CHOOSE A VEHICLE CLASS</h1>
-        <table>
-            <tr>
-                <th class="pt-4 text-left">VEHICLE TYPE</th>
-                <th class="pt-4 text-left">Total From</th>
-            </tr>
+    <div class="w-1/4 lg:w-1/5">
+        <div class="sticky top-0 border-2 border-teal-800 p-2">
+            <h1 class="font-bold text-lg text-center">CHOOSE A VEHICLE CLASS</h1>
+            <table class="text-left">
+                <tr>
+                    <th class="pt-4">VEHICLE TYPE</th>
+                    <th class="pt-4">Total From</th>
+                </tr>
 
+                {% for category in categoryPriceList %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="carType" value="{{ category.category }}">
+                        <label>{{ category.category }}s</label>
+                    </td>
+                
+                    <td class="text-xs">${{ category.dailyPrice }}</td>
+                </tr>
+                {% endfor %}
 
-            {% for category in categoryPriceList %}
-            <tr>
-                <td>
-                    <input type="checkbox" name="carType" value="{{ category.category }}">
-                    <label class="font-bold">{{ category.category }}s</label>
-                </td>
-            
-                <td>CAD ${{ category.dailyPrice }}</td>
-            </tr>
-            {% endfor %}
+                <tr>
+                    <th class="pt-4">NUMBER OF PASSENGERS</th>
+                    <th class="pt-4"></th>
+                </tr>
 
-            <tr>
-                <th class="pt-4 text-left">NUMBER OF PASSENGERS</th>
-                <th class="pt-4 text-left"></th>
-            </tr>
+                {% for psgNum in psgNumPriceList %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="psgNum" value="passengers_{{ psgNum.passengers }}">
+                        <label>
+                            {{ psgNum == psgNumList|last 
+                                ? psgNum.passengers ~'+' : psgNum.passengers }}
+                        </label>
+                    </td>
+                    <td class="text-xs">${{ psgNum.dailyPrice }}</td>
+                </tr>
+                {% endfor %}
 
-            {% for psgNum in psgNumPriceList %}
-            <tr>
-                <td>
-                    <input type="checkbox" name="psgNum" value="passengers_{{ psgNum.passengers }}">
-                    <label class="font-bold">
-                        {{ psgNum == psgNumList|last 
-                            ? psgNum.passengers ~'+' : psgNum.passengers }}
-                    </label>
-                </td>
-                <td>CAD ${{ psgNum.dailyPrice }}</td>
-            </tr>
-            {% endfor %}
+                <tr>
+                    <th class="pt-4">NUMBER OF BAGS</th>
+                    <th class="pt-4"></th>
+                </tr>
+                {% for bagNum in bagNumPriceList %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="bagNum" value="bags_{{ bagNum.bags }}">
+                        <label>
+                            {{ bagNum == bagNumList|last 
+                                ? bagNum.bags ~'+' : bagNum.bags}}
+                        </label>
+                    </td>
+                    <td class="text-xs">${{ bagNum.dailyPrice }}</td>
+                </tr>
+                {% endfor %}
 
-            <tr>
-                <th class="pt-4 text-left">NUMBER OF BAGS</th>
-                <th class="pt-4 text-left"></th>
-            </tr>
-            {% for bagNum in bagNumPriceList %}
-            <tr>
-                <td>
-                    <input type="checkbox" name="bagNum" value="bags_{{ bagNum.bags }}">
-                    <label class="font-bold">
-                        {{ bagNum == bagNumList|last 
-                            ? bagNum.bags ~'+' : bagNum.bags}}
-                    </label>
-                </td>
-                <td>CAD ${{ bagNum.dailyPrice }}</td>
-            </tr>
-            {% endfor %}
-
-        </table>
+            </table>
+        </div>
     </div>
-    </div>
-    <div class="w-3/5 bg-blue-100" id="vehicleList">
+    <div class="w-4/5 lg:w-3/5 bg-blue-100" id="vehicleList">
         <div class="text-right">
             <span class="font-bold pr-3 inline-block">SORT BY :</span>
             <select id="sortSelector">
@@ -124,7 +123,8 @@
                     //alert("featured");
                     $(".vehicles").sort(sortFeatured).appendTo($("#vehicleList"));
                 }
-            })
+            });
+
 
 
         })

@@ -14,35 +14,41 @@
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <!-- Toastr-->
+    <!-- Toastr msg box -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
-    <!-- Icons -->
-   {# <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
+    <!-- Font awesome -->
     <link rel="stylesheet" href="/resources/fontawesome/css/all.min.css">
-
 
 </head>
 
-<body class="">
-<div class="bg-gray-200 relative min-h-screen h-full">
-    <header class="bg-gray-900 text-gray-300">
+<body>
+<div class="bg-gray-200 relative">
+    <header class="bg-gray-800 text-gray-300">
         {% include 'layouts/header.html.twig' %}
     </header>
 
-    <section class="min-h-screen h-full">
+    <section>
         {% block section %}
         {% endblock section %}
     </section>
     
-    <footer class="text-center bg-green-600 text-white w-full">
+    <footer class="bg-gray-800 text-gray-300">
         {% include 'layouts/footer.html.twig' %}
     </footer>
 </div>
 
 <script>
+    /**
+     * Manage sessionStorage to keep&delete information 
+     * of reservation in proccess
+    */
+    
+    // next page url of current page
+    let nextUrl = "#";
+
     let resvInfoPaths= [
         "/",
         "/car_selection",
@@ -50,8 +56,6 @@
         "/login",
         "/register",
     ];
-
-    let nextUrl = "#";
 
     if(typeof(Storage) !== "undefined"){
         let pathname = document.location.pathname;
@@ -79,11 +83,10 @@
                 sessionStorage.removeItem("selCar");
             }
         }
-
         sessionStorage.prevPath = pathname;
     }
-
 </script>
+
     {% block scripts %}
     {% endblock scripts %}
 </body>
